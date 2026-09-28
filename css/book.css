@@ -1,0 +1,1232 @@
+/* ==========================================================================
+   觀音法門定課 - 仿古經書摺本版 (Traditional Sutra Book Accordion Edition) v1.5
+   對標頂級電子書 (Apple Books, Kindle, CBETA) 與法鼓山實體課誦本之排版標準：
+   1. 原生 HTML5 <ruby> / <rt> 自然流動字行，徹底告別積木方塊感
+   2. 三大純淨讀誦模式：【經書注音】、【純淨大字】、【三音研習】
+   3. 沉浸全屏誦經模式 (Zen Immersive Fullscreen)：點擊正文即隱退工具列，全屏專注讀誦
+   4. 溫潤古宣紙與曜石金泥夜修，低對比護眼，莊嚴如古代手抄/木刻大藏經
+   5. 支援傳統直書右至左 (vertical-rl) 經摺與橫書經本自由切換
+   ========================================================================== */
+
+:root {
+  /* 暖日古宣紙（仿古大藏經標準色） */
+  --book-bg-outer: #1c1815;
+  --book-silk-border: #3d3126;
+  --book-silk-gold: #c59b27;
+  --book-paper: #f4eee1;
+  --book-paper-crease: #e5dcce;
+  --book-ink: #221c18;
+  --book-ink-light: #5a4f46;
+  --book-cinnabar: #b83b26; /* 法鼓朱砂紅 */
+  --book-gold: #9e7936;
+  --book-gold-light: rgba(158, 121, 54, 0.12);
+  --book-line-red: rgba(184, 59, 38, 0.32); /* 經書朱絲欄 */
+
+  --font-sutra: 'Noto Serif TC', 'Songti TC', 'DFKai-SB', 'BiauKai', serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --char-size: 1.85rem;
+  --ruby-size: 0.52rem;
+}
+
+[data-theme="dark"] {
+  /* 曜石金泥版（夜修暗調） */
+  --book-bg-outer: #0d0c0b;
+  --book-silk-border: #221d18;
+  --book-silk-gold: #8f6e24;
+  --book-paper: #191714;
+  --book-paper-crease: #12100e;
+  --book-ink: #ded4c5;
+  --book-ink-light: #948b7f;
+  --book-cinnabar: #d65942;
+  --book-gold: #c9a767;
+  --book-gold-light: rgba(201, 167, 103, 0.15);
+  --book-line-red: rgba(214, 89, 66, 0.28);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--book-bg-outer);
+  color: var(--book-ink);
+  font-family: var(--font-sutra);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.3s ease;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==================== 頂部古典導覽列 ==================== */
+.book-header {
+  background: var(--book-silk-border);
+  border-bottom: 2px solid var(--book-silk-gold);
+  padding: 0.55rem 1.25rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+}
+
+.book-header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+}
+
+.book-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sutra-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--book-cinnabar);
+  color: var(--book-cinnabar);
+  font-size: 0.95rem;
+  font-weight: 700;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  background: rgba(184, 59, 38, 0.08);
+  letter-spacing: 0;
+}
+
+.book-title-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.book-main-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #dfd0bb;
+  letter-spacing: 0.12em;
+}
+
+.book-badge-edition {
+  font-size: 0.72rem;
+  border: 1px solid var(--book-silk-gold);
+  color: var(--book-silk-gold);
+  padding: 0.1rem 0.5rem;
+  border-radius: 4px;
+}
+
+.book-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.book-btn {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--book-silk-gold);
+  color: #dfd0bb;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.84rem;
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.book-btn:hover {
+  background: var(--book-silk-gold);
+  color: #1a1612;
+}
+
+.book-btn.btn-active {
+  background: var(--book-silk-gold);
+  color: #1a1612;
+  font-weight: 700;
+}
+
+.btn-gold-highlight {
+  border-color: var(--book-silk-gold) !important;
+  background: rgba(197, 155, 39, 0.22) !important;
+  color: #f7e7c4 !important;
+  font-weight: 600;
+}
+.btn-gold-highlight:hover {
+  background: var(--book-silk-gold) !important;
+  color: #1a1612 !important;
+}
+
+/* ==================== 經書副導覽列 ==================== */
+.book-subnav {
+  background: rgba(30, 24, 20, 0.96);
+  border-bottom: 1px solid rgba(197, 155, 39, 0.4);
+  padding: 0.4rem 1.25rem;
+  position: sticky;
+  top: 48px;
+  z-index: 90;
+  backdrop-filter: blur(8px);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+}
+
+.book-subnav-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.book-tabs {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.book-tab-btn {
+  background: transparent;
+  border: 1px solid rgba(197, 155, 39, 0.35);
+  color: #dfd0bb;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  font-size: 0.84rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.book-tab-btn:hover {
+  border-color: var(--book-silk-gold);
+  color: #fff;
+}
+
+.book-tab-btn.active {
+  background: var(--book-silk-gold);
+  color: #1a1612;
+  border-color: var(--book-silk-gold);
+  font-weight: 700;
+}
+
+.book-controls-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.reading-mode-selector {
+  display: inline-flex;
+  gap: 2px;
+  background: rgba(0,0,0,0.3);
+  padding: 2px;
+  border-radius: 4px;
+}
+
+.mode-btn.active,
+.drawer-btn-readmode.active {
+  background: var(--book-cinnabar) !important;
+  color: #fff !important;
+  font-weight: 700;
+}
+
+.book-check-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  color: #dfd0bb;
+  cursor: pointer;
+}
+
+.book-check-item input[type="checkbox"] {
+  accent-color: var(--book-cinnabar);
+  cursor: pointer;
+}
+
+/* 沉浸模式喚回懸浮印章按鈕 */
+.floating-zen-btn {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  z-index: 999;
+  background: var(--book-silk-border);
+  color: var(--book-silk-gold);
+  border: 1.5px solid var(--book-silk-gold);
+  border-radius: 20px;
+  padding: 5px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+  font-family: var(--font-sutra);
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+.floating-zen-btn.hidden {
+  display: none !important;
+}
+
+.floating-zen-btn:hover {
+  background: var(--book-silk-gold);
+  color: #1a1612;
+  transform: scale(1.05);
+}
+
+.floating-zen-btn .zen-lotus-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  border: 1px solid var(--book-cinnabar);
+  color: var(--book-cinnabar);
+  font-size: 0.78rem;
+  font-weight: bold;
+}
+
+.floating-zen-btn .zen-lotus-hint {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+/* ==================== 仿造古法經書舞臺 ==================== */
+.book-stage-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.25rem 2rem 1.25rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sutra-book-wrapper {
+  background-color: var(--book-paper);
+  border: 4px solid var(--book-silk-border);
+  border-radius: 6px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), inset 0 0 100px rgba(0, 0, 0, 0.03);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sutra-inner-border {
+  border: 2px solid var(--book-cinnabar);
+  outline: 1px solid var(--book-silk-gold);
+  outline-offset: 4px;
+  margin: 14px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: var(--book-paper);
+  box-sizing: border-box;
+  flex: 1;
+}
+
+/* 經書首頁扉頁標題 */
+.book-cover-header {
+  text-align: center;
+  padding: 0.4rem 0;
+  border-bottom: 2px double var(--book-line-red);
+  margin-bottom: 0.6rem;
+  flex-shrink: 0;
+}
+
+.book-cover-title {
+  font-size: 1.65rem;
+  font-weight: 900;
+  color: var(--book-cinnabar);
+  letter-spacing: 0.2em;
+  margin-bottom: 0.25rem;
+}
+
+.book-cover-sub {
+  font-size: 0.85rem;
+  color: var(--book-ink-light);
+  letter-spacing: 0.08em;
+}
+
+/* ==================== 直排經摺版 (大藏經傳統雙絲欄經摺裝) ==================== */
+.sutra-book-wrapper.layout-vertical-rl {
+  height: calc(100vh - 170px);
+  min-height: 520px;
+}
+
+.layout-vertical-rl .sutra-content-body {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  padding: 0.8rem 1.6rem;
+  display: block;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+  background-image: repeating-linear-gradient(
+    to left,
+    transparent 0px,
+    transparent 180px,
+    rgba(0, 0, 0, 0.025) 180px,
+    rgba(0, 0, 0, 0.06) 184px,
+    transparent 188px
+  );
+}
+
+.layout-vertical-rl .sutra-book-section {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 2.2rem;
+  height: 100%;
+  white-space: nowrap;
+}
+
+.layout-vertical-rl .sutra-line-flow {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 1.35rem;
+  height: 100%;
+  white-space: nowrap;
+  line-height: 1.7;
+}
+
+.layout-vertical-rl .sutra-gatha-stanza {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 1.6rem;
+  height: 100%;
+  white-space: nowrap;
+}
+
+.layout-vertical-rl .sutra-mantra-container {
+  display: inline-block;
+  vertical-align: top;
+  height: 100%;
+  white-space: nowrap;
+}
+
+.layout-vertical-rl .sutra-line-flow.gatha-row,
+.layout-vertical-rl .sutra-line-flow.mantra-row,
+.layout-vertical-rl .sutra-line-flow.prose-row,
+.layout-vertical-rl .sutra-line-flow.chant-row,
+.layout-vertical-rl .sutra-line-flow.chant-honorific-row {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 1.25rem;
+  height: 100%;
+  white-space: nowrap;
+  line-height: 1.7;
+}
+
+/* ==================== 橫排經本版 (現代古典書籍裝) ==================== */
+.sutra-book-wrapper.layout-horizontal-tb {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.layout-horizontal-tb .sutra-content-body {
+  writing-mode: horizontal-tb;
+  padding: 1.5rem 2.2rem;
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
+  box-sizing: border-box;
+}
+
+.layout-horizontal-tb .sutra-book-section {
+  margin-bottom: 2.2rem;
+}
+
+/* ==================== 經文典籍典雅一致橫排對齊系統 ==================== */
+.layout-horizontal-tb .sutra-content-body {
+  writing-mode: horizontal-tb;
+  padding: 1.5rem 2rem;
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
+  box-sizing: border-box;
+}
+
+.layout-horizontal-tb .sutra-book-section {
+  max-width: 680px;
+  margin: 0 auto 2.2rem auto;
+  width: 100%;
+}
+
+/* 1. 五言與七言詩偈 (Gathas: 普門品偈頌、開經偈、迴向偈、發願偈) */
+.layout-horizontal-tb .sutra-gatha-stanza {
+  margin-bottom: 1.25rem;
+  text-align: left;
+}
+.layout-horizontal-tb .sutra-line-flow.gatha-row {
+  text-align: left;
+  line-height: 2.3;
+  margin-bottom: 0.25rem;
+  letter-spacing: 0.08em;
+  font-size: var(--char-size);
+  white-space: nowrap; /* 10 個字剛好一行，絕不在第 18 字腰折成 18+2！ */
+}
+
+/* 2. 大悲咒神咒陀羅尼 (Mantra: 齊頭排列，閱讀視線整齊) */
+.layout-horizontal-tb .sutra-mantra-container {
+  max-width: 100%;
+  margin: 0.8rem 0 1.8rem 0;
+  padding: 0.8rem 1rem 0.8rem 1.4rem;
+  border-left: 2px solid var(--book-cinnabar);
+  background: rgba(184, 59, 38, 0.03);
+  border-radius: 0 8px 8px 0;
+}
+.layout-horizontal-tb .sutra-line-flow.mantra-row {
+  text-align: left !important;
+  line-height: 2.15;
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.06em;
+  font-size: calc(var(--char-size) * 0.95);
+}
+
+/* 3. 長行散文 (Prose: 普門品長行、心經正文：左右齊頭平尾、首行縮排) */
+.layout-horizontal-tb .sutra-line-flow.prose-row {
+  text-align: justify !important;
+  text-justify: inter-ideograph;
+  text-indent: 2em;
+  line-height: 2.35;
+  margin-bottom: 1.15rem;
+  letter-spacing: 0.04em;
+  font-size: var(--char-size);
+}
+
+/* 4. 讚偈與聖號 (Chant: 楊枝淨水讚、觀音菩薩聖號：齊頭對齊不晃動) */
+.layout-horizontal-tb .section-chant {
+  max-width: 680px;
+  margin: 0 auto 2.2rem auto;
+}
+.layout-horizontal-tb .sutra-line-flow.chant-row {
+  text-align: left;
+  line-height: 2.25;
+  margin-bottom: 0.45rem;
+  letter-spacing: 0.07em;
+  font-size: var(--char-size);
+}
+.layout-horizontal-tb .sutra-line-flow.chant-honorific-row {
+  text-align: left;
+  line-height: 2.4;
+  margin-top: 1.1rem;
+  margin-bottom: 0.65rem;
+  font-weight: 700;
+  color: var(--book-cinnabar);
+  letter-spacing: 0.08em;
+  font-size: calc(var(--char-size) * 1.05);
+}
+
+/* 通用行設定（兜底容錯） */
+.layout-horizontal-tb .sutra-line-flow {
+  text-align: left;
+  line-height: 2.3;
+  margin-bottom: 0.85rem;
+  font-size: var(--char-size);
+  letter-spacing: 0.05em;
+}
+
+/* 段落經題引首 */
+.sutra-section-lead {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 2rem;
+}
+
+.layout-vertical-rl .sutra-section-lead {
+  writing-mode: vertical-rl;
+}
+
+.layout-horizontal-tb .sutra-section-lead {
+  writing-mode: horizontal-tb;
+  margin: 1.2rem 0 0.6rem 0;
+  display: block;
+  border-left: 3px solid var(--book-cinnabar);
+  padding-left: 0.6rem;
+}
+
+.sutra-section-lead .lead-title {
+  font-size: 1.12rem;
+  font-weight: 900;
+  color: var(--book-cinnabar);
+  letter-spacing: 0.15em;
+  background: rgba(184, 59, 38, 0.07);
+  padding: 0.35rem 0.25rem;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.layout-horizontal-tb .sutra-section-lead .lead-title {
+  padding: 0.2rem 0.6rem;
+}
+
+/* ==================== 原生 HTML5 Ruby 經文字元排版 ==================== */
+.sutra-ruby {
+  display: inline-ruby;
+  position: relative;
+  cursor: pointer;
+  ruby-position: over;
+  padding: 0;
+  margin: 0;
+  border-radius: 3px;
+  transition: background-color 0.15s ease;
+}
+
+.layout-vertical-rl .sutra-ruby {
+  ruby-position: right;
+  display: inline-ruby;
+  margin-bottom: 0.08rem;
+}
+
+.sutra-ruby:hover {
+  background: var(--book-gold-light);
+}
+
+.sutra-char {
+  font-size: var(--char-size);
+  font-weight: 700;
+  color: var(--book-ink);
+  font-family: var(--font-sutra);
+  line-height: 1;
+}
+
+.sutra-rt {
+  font-size: 0.44em;
+  color: var(--book-cinnabar) !important;
+  font-family: var(--font-sutra);
+  font-weight: 600;
+  line-height: 1;
+  user-select: none;
+  letter-spacing: 0;
+}
+
+.layout-vertical-rl .sutra-rt {
+  margin-left: 2px;
+}
+
+.sutra-pinyin {
+  display: block;
+  font-size: calc(var(--ruby-size) * 0.9);
+  color: var(--book-ink-light);
+  font-family: var(--font-sans);
+  line-height: 1;
+  letter-spacing: -0.2px;
+  user-select: none;
+}
+
+.layout-vertical-rl .sutra-pinyin {
+  display: none !important; /* 直排時隱藏英文拼音，維護古典漢傳書卷大氣 */
+}
+
+.sutra-punct {
+  color: var(--book-cinnabar);
+  font-weight: 700;
+  font-size: calc(var(--char-size) * 0.85);
+  font-family: var(--font-sutra);
+  display: inline-block;
+  padding: 0;
+  margin: 0 0.04em;
+  user-select: none;
+  vertical-align: baseline;
+}
+
+.layout-vertical-rl .sutra-punct {
+  margin-bottom: 0.12rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.sutra-space {
+  display: inline-block;
+  width: 1.2em;
+}
+
+/* ==================== 三大純淨閱讀模式樣式 ==================== */
+/* 【純淨大字版】(極致清淨，無注音拼音干擾，老參及每日定課熟讀首選) */
+body.mode-pure .sutra-rt,
+body.mode-pure .sutra-pinyin {
+  display: none !important;
+}
+body.mode-pure .sutra-char {
+  font-size: calc(var(--char-size) * 1.14);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+body.mode-pure .layout-vertical-rl .sutra-line-flow {
+  margin-left: 1.6rem;
+  line-height: 1.85;
+}
+body.mode-pure .layout-horizontal-tb .sutra-line-flow {
+  line-height: 2.2;
+  margin-bottom: 0.9rem;
+}
+
+/* 句讀標點隱藏 */
+body.hide-punct .sutra-punct {
+  display: none !important;
+}
+
+/* 默誦遮蔽模式 */
+.sutra-ruby.masked .sutra-char {
+  background: var(--book-paper-crease);
+  color: transparent;
+  border-radius: 4px;
+  border: 1px dashed var(--book-cinnabar);
+}
+.sutra-ruby.masked .sutra-rt,
+.sutra-ruby.masked .sutra-pinyin {
+  opacity: 0;
+}
+.sutra-ruby.masked.revealed .sutra-char {
+  background: var(--book-gold-light);
+  color: var(--book-cinnabar);
+  border: 1px solid var(--book-cinnabar);
+}
+.sutra-ruby.masked.revealed .sutra-rt,
+.sutra-ruby.masked.revealed .sutra-pinyin {
+  opacity: 1;
+}
+
+/* 字級 */
+body.size-large {
+  --char-size: 2.3rem;
+  --ruby-size: 0.65rem;
+}
+body.size-xlarge {
+  --char-size: 2.8rem;
+  --ruby-size: 0.78rem;
+}
+
+/* 經書尾頁典籍跋語與朱印 */
+.book-footer-colophon {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 2px double var(--book-line-red);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  color: var(--book-ink-light);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.layout-vertical-rl .book-footer-colophon {
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  flex-shrink: 0;
+  border-top: 1px solid var(--book-line-red);
+  font-size: 0.75rem;
+}
+
+.colophon-stamp-seal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--book-cinnabar);
+  font-weight: 700;
+}
+
+/* ==================== 電子書專屬分頁指示與翻頁導航系統 ==================== */
+.book-pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.6rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--book-line-red);
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 6px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.page-nav-btn {
+  background: rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--book-silk-gold);
+  color: var(--book-ink);
+  padding: 0.28rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.2s ease;
+}
+
+.page-nav-btn:hover:not(:disabled) {
+  background: var(--book-silk-gold);
+  color: #1a1612;
+}
+
+.page-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.page-status-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.84rem;
+  color: var(--book-ink-light);
+  font-weight: 600;
+}
+
+.page-counter-badge {
+  color: var(--book-cinnabar);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.page-progress-slider {
+  width: 110px;
+  accent-color: var(--book-cinnabar);
+  cursor: pointer;
+}
+
+/* 點擊螢幕兩側快速換頁遮罩 (Tap-to-turn zones) */
+.page-touch-tap-zone {
+  position: absolute;
+  top: 60px;
+  bottom: 60px;
+  width: 18%;
+  z-index: 15;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: auto;
+}
+.page-touch-tap-zone.zone-prev {
+  left: 0;
+}
+.page-touch-tap-zone.zone-next {
+  right: 0;
+}
+.page-touch-tap-zone:hover {
+  opacity: 0.45;
+  background: linear-gradient(to right, rgba(184, 59, 38, 0.15), transparent);
+}
+.page-touch-tap-zone.zone-next:hover {
+  background: linear-gradient(to left, rgba(184, 59, 38, 0.15), transparent);
+}
+
+/* 典雅古風滾動條 */
+.sutra-content-body::-webkit-scrollbar {
+  height: 7px;
+  width: 7px;
+}
+.sutra-content-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 4px;
+}
+.sutra-content-body::-webkit-scrollbar-thumb {
+  background: var(--book-silk-gold);
+  border-radius: 4px;
+}
+.sutra-content-body::-webkit-scrollbar-thumb:hover {
+  background: var(--book-cinnabar);
+}
+
+/* ==================== 沉浸全屏誦經模式 (Zen Immersive Fullscreen) ==================== */
+body.zen-immersive-active .book-header,
+body.zen-immersive-active .book-subnav {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+}
+
+body.zen-immersive-active .book-stage-container {
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100vh !important;
+  max-width: 100vw !important;
+  width: 100vw !important;
+}
+
+body.zen-immersive-active .sutra-book-wrapper {
+  height: 100vh !important;
+  max-height: 100vh !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body.zen-immersive-active .sutra-inner-border {
+  height: calc(100vh - 12px) !important;
+  margin: 6px !important;
+  padding: 8px 14px !important;
+  border-radius: 0 !important;
+}
+
+body.zen-immersive-active .sutra-book-wrapper.layout-vertical-rl {
+  height: 100vh !important;
+}
+
+body.zen-immersive-active .layout-vertical-rl .sutra-content-body {
+  height: calc(100vh - 60px) !important;
+}
+
+body.zen-immersive-active .layout-horizontal-tb .sutra-content-body {
+  max-height: calc(100vh - 50px) !important;
+}
+
+/* ==================== 模態彈窗 (日曆 & 祈福卡 & 手機QR) ==================== */
+.zen-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+.zen-modal-overlay.hidden {
+  display: none !important;
+}
+.zen-modal-card {
+  background: var(--book-paper);
+  color: var(--book-ink);
+  border: 2px solid var(--book-cinnabar);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 580px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
+.zen-modal-card.modal-xl {
+  max-width: 920px;
+}
+.modal-header-bar {
+  background: var(--book-silk-border);
+  color: #dfd0bb;
+  padding: 0.75rem 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--book-silk-gold);
+}
+.modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.modal-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #dfd0bb;
+}
+.btn-close-modal {
+  background: transparent;
+  border: none;
+  color: #dfd0bb;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.modal-body-content {
+  padding: 1.25rem;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* 底抽屜樣式 (手機專屬極簡收納) */
+.zen-bottom-drawer {
+  background: var(--book-paper);
+  color: var(--book-ink);
+  border-top: 3px solid var(--book-cinnabar);
+  border-radius: 16px 16px 0 0;
+  width: 100%;
+  max-width: 600px;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
+  z-index: 1050;
+  overflow: hidden;
+  animation: slideUpDrawer 0.25s ease-out;
+}
+
+@keyframes slideUpDrawer {
+  from { transform: translate(-50%, 100%); }
+  to { transform: translate(-50%, 0); }
+}
+
+.drawer-header-bar {
+  background: var(--book-silk-border);
+  color: #dfd0bb;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--book-silk-gold);
+}
+
+.drawer-body-content {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.drawer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.drawer-label {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--book-cinnabar);
+}
+
+.drawer-controls,
+.drawer-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Toast 提示 */
+.app-toast-container {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+.app-toast {
+  background: var(--book-silk-border);
+  color: #dfd0bb;
+  border: 1px solid var(--book-silk-gold);
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  animation: fadeInOut 2.6s forwards;
+}
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(10px); }
+  12% { opacity: 1; transform: translateY(0); }
+  85% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+/* ==================== 手機與窄螢幕極致人體工學優化 (@media <= 1024px) ==================== */
+@media (max-width: 1024px) {
+  :root, body {
+    --char-size: 1.32rem;
+    --ruby-size: 0.42rem;
+  }
+
+  .book-header {
+    padding: 0.35rem 0.5rem;
+  }
+  
+  .book-header-inner {
+    gap: 0.35rem;
+  }
+
+  .book-brand {
+    gap: 0.35rem;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  
+  .sutra-stamp {
+    width: 26px;
+    height: 26px;
+    font-size: 0.82rem;
+  }
+  
+  .book-main-title {
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  
+  .book-brand .edition-label {
+    display: none !important;
+  }
+
+  .btn-label-desktop {
+    display: none !important;
+  }
+  
+  .book-btn.btn-compact {
+    padding: 0.32rem 0.48rem;
+    font-size: 0.85rem;
+  }
+  
+  .book-actions {
+    gap: 0.25rem;
+  }
+
+  /* 手機頂部按鈕精煉收納：只保留核心 4 個按鈕，次要按鈕移至底抽屜避免擠爆標題 */
+  .book-actions .book-btn {
+    display: none;
+  }
+  .book-actions #openMobileQrBtn,
+  .book-actions #zenImmersiveToggleBtn,
+  .book-actions #directionToggleBtn,
+  .book-actions #openSettingsDrawerBtn {
+    display: inline-flex !important;
+  }
+
+  /* 副導覽列收納：隱藏繁瑣控制項，移至底抽屜 */
+  .book-subnav {
+    padding: 0.25rem 0.5rem;
+  }
+  
+  .book-controls-group {
+    display: none !important; /* 釋放全部高度給經文 */
+  }
+  
+  .book-tabs {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding: 2px;
+    justify-content: flex-start;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .book-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .book-tab-btn {
+    padding: 0.32rem 0.65rem;
+    font-size: 0.82rem;
+    flex-shrink: 0;
+  }
+
+  /* 經書舞臺邊距縮減，最大化螢幕利用率 */
+  .book-stage-container {
+    margin: 0.3rem auto 0.8rem auto;
+    padding: 0 0.35rem;
+  }
+  
+  .sutra-inner-border {
+    margin: 4px;
+    padding: 8px 10px;
+  }
+  
+  /* 直排經摺版：大藏經傳統在首行經題引首，隱藏橫式扉頁標題釋放完整垂直高度 */
+  .layout-vertical-rl .book-cover-header {
+    display: none !important;
+  }
+
+  .layout-horizontal-tb .book-cover-header {
+    padding: 0.2rem 0;
+    margin-bottom: 0.35rem;
+  }
+  .layout-horizontal-tb .book-cover-title {
+    font-size: 1.22rem;
+    letter-spacing: 0.08em;
+  }
+  .layout-horizontal-tb .book-cover-sub {
+    font-size: 0.72rem;
+  }
+
+  /* 手機端橫排經本 (乾淨閱讀欄寬與邊距) */
+  .layout-horizontal-tb .sutra-content-body {
+    padding: 0.75rem 0.8rem;
+    max-height: calc(100vh - 150px);
+  }
+
+  .layout-horizontal-tb .sutra-book-section {
+    max-width: 100%;
+    margin: 0 auto 1.8rem auto;
+  }
+
+  /* 手機端直排經摺 (高度充分利用) */
+  .sutra-book-wrapper.layout-vertical-rl {
+    height: calc(100vh - 128px);
+    min-height: 460px;
+  }
+  
+  .layout-vertical-rl .sutra-content-body {
+    height: 100%;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .layout-vertical-rl .sutra-line-flow {
+    margin-left: 1.15rem !important;
+  }
+  
+  .layout-vertical-rl .sutra-book-section {
+    margin-left: 1.5rem !important;
+  }
+
+  /* 手機端大悲咒容器寬度與邊距適配 */
+  .layout-horizontal-tb .sutra-mantra-container {
+    max-width: 100%;
+    margin: 0.6rem 0 1.2rem 0;
+    padding: 0.5rem 0.6rem 0.5rem 0.8rem;
+  }
+  .layout-horizontal-tb .sutra-line-flow.mantra-row {
+    font-size: calc(var(--char-size) * 0.95);
+    line-height: 2.1;
+  }
+  
+  /* 手機端五言偈頌行字級微調，確保 10 字平穩舒展 */
+  .layout-horizontal-tb .sutra-line-flow.gatha-row {
+    letter-spacing: 0.05em;
+    font-size: calc(var(--char-size) * 0.95);
+  }
+
+  /* 手機沉浸模式時直排經摺全屏展開 */
+  body.zen-immersive-active .sutra-book-wrapper.layout-vertical-rl {
+    height: 100vh !important;
+  }
+  body.zen-immersive-active .layout-vertical-rl .sutra-content-body {
+    height: calc(100vh - 28px) !important;
+  }
+}

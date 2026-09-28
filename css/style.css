@@ -1,0 +1,696 @@
+/* ==========================================================================
+   《觀音法門定課》法鼓山修持體驗樣式表 (v3.0)
+   1. 緊湊易讀排版 (Compact Line Spacing)：大幅縮減行距，視線流暢，讀誦順暢
+   2. 移除底部工具列與木魚：全站工具集中頂部，回歸自心純粹讀誦
+   3. 移除自動導讀：專注當下個人與大眾口誦心惟
+   4. 法鼓山雲端祈福美學：心安平安，溫潤端莊
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@300;400;500;600&display=swap');
+
+:root {
+  /* 【暖沙禪石】日間護眼暖灰調 (Stone/Warm Sand) - 預設 */
+  --bg-base: #f6f3eb;
+  --bg-card: #ffffff;
+  --bg-card-subtle: #f0ece0;
+  --bg-active: #e6dfd1;
+  --border-main: rgba(90, 78, 65, 0.15);
+  --border-focus: rgba(166, 124, 64, 0.45);
+
+  --text-main: #241f1a;
+  --text-sub: #544b41;
+  --text-muted: #887d70;
+
+  --accent-gold: #9e743a;
+  --accent-gold-light: #fbf5e8;
+  --accent-gold-border: rgba(158, 116, 58, 0.35);
+
+  --accent-green: #3d6854;
+  --accent-green-light: #eaf2ed;
+  --accent-red: #b33927;
+
+  --shadow-sm: 0 1px 6px rgba(60, 48, 35, 0.05);
+  --shadow-md: 0 6px 20px rgba(60, 48, 35, 0.08);
+
+  --font-serif: 'Noto Serif TC', 'BiauKai', 'DFKai-SB', 'Songti TC', serif;
+  --font-sans: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* 經文字級變數 (標準模式 - 緊湊易讀) */
+  --char-size: 1.6rem;
+  --ruby-size: 0.72rem;
+  --ruby-height: 0.95rem;
+}
+
+/* 【曜石夜修】夜間專注暗調 (Obsidian & Tea Ash) */
+[data-theme="dark"] {
+  --bg-base: #121215;
+  --bg-card: #1b1b20;
+  --bg-card-subtle: #23232a;
+  --bg-active: #2e2e38;
+  --border-main: rgba(255, 255, 255, 0.09);
+  --border-focus: rgba(197, 178, 153, 0.4);
+
+  --text-main: #f0f0f4;
+  --text-sub: #a0a2ac;
+  --text-muted: #6e707c;
+
+  --accent-gold: #c8a87b;
+  --accent-gold-light: rgba(200, 168, 123, 0.12);
+  --accent-gold-border: rgba(200, 168, 123, 0.35);
+
+  --accent-green: #9eb3a4;
+  --accent-green-light: rgba(158, 179, 164, 0.12);
+  --accent-red: #d17567;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+/* 大字模式 */
+body.font-large {
+  --char-size: 2.05rem;
+  --ruby-size: 0.88rem;
+  --ruby-height: 1.15rem;
+}
+
+/* 特大模式 */
+body.font-xlarge {
+  --char-size: 2.55rem;
+  --ruby-size: 1.05rem;
+  --ruby-height: 1.35rem;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  font-family: var(--font-serif);
+  min-height: 100vh;
+  line-height: 1.4;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  padding-bottom: 2.5rem; /* 底部不再留巨大空白 */
+}
+
+/* ==========================================================================
+   頂部導覽列 (Top Navigation Header)
+   ========================================================================== */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-card);
+  border-bottom: none;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(12px);
+}
+
+.header-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0.6rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brand-emblem {
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid var(--accent-gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: var(--accent-gold);
+  background: var(--accent-gold-light);
+}
+
+.brand-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.badge-version {
+  font-size: 0.65rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: var(--bg-card-subtle);
+  color: var(--accent-gold);
+  border: 1px solid var(--border-main);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.btn-header {
+  background: var(--bg-card-subtle);
+  color: var(--text-sub);
+  border: 1px solid var(--border-main);
+  border-radius: 7px;
+  padding: 0.38rem 0.75rem;
+  font-size: 0.84rem;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-header:hover {
+  background: var(--bg-active);
+  color: var(--text-main);
+  border-color: var(--border-focus);
+}
+
+.btn-header.btn-primary {
+  background: var(--accent-gold);
+  color: #ffffff;
+  border-color: var(--accent-gold);
+  font-weight: 600;
+}
+
+.btn-header.btn-primary:hover {
+  filter: brightness(1.08);
+}
+
+/* ==========================================================================
+   定課模式分頁列 (Mode Tab Navigation)
+   ========================================================================== */
+.mode-navigation {
+  background: var(--bg-card);
+  border-bottom: none;
+  padding: 0.45rem 1.25rem;
+}
+
+.nav-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.mode-tab-bar {
+  display: inline-flex;
+  background: var(--bg-card-subtle);
+  padding: 2px;
+  border-radius: 8px;
+  border: 1px solid var(--border-main);
+  gap: 2px;
+}
+
+.mode-tab-btn {
+  border: none;
+  background: transparent;
+  padding: 0.42rem 0.95rem;
+  border-radius: 6px;
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-sub);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.mode-tab-btn:hover {
+  color: var(--text-main);
+}
+
+.mode-tab-btn.active {
+  background: var(--bg-card);
+  color: var(--accent-gold);
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-focus);
+}
+
+.mode-tab-badge {
+  font-size: 0.68rem;
+  padding: 0.08rem 0.38rem;
+  border-radius: 999px;
+  background: var(--bg-card-subtle);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+}
+
+.mode-tab-btn.active .mode-tab-badge {
+  background: var(--accent-gold-light);
+  color: var(--accent-gold);
+}
+
+/* ==========================================================================
+   頂部誦經工具列 (Top Reading Controls Toolbar)
+   ========================================================================== */
+.main-container {
+  max-width: 1060px;
+  margin: 1.2rem auto 0 auto;
+  padding: 0 1.2rem;
+}
+
+.top-controls-toolbar {
+  background: var(--bg-card);
+  border: 1px solid var(--border-main);
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1.2rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.toolbar-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+  font-family: var(--font-sans);
+}
+
+.toggle-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.84rem;
+  color: var(--text-sub);
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-item input {
+  accent-color: var(--accent-gold);
+  cursor: pointer;
+}
+
+.btn-toggle-group {
+  display: inline-flex;
+  background: var(--bg-card-subtle);
+  padding: 2px;
+  border-radius: 6px;
+  border: 1px solid var(--border-main);
+}
+
+.btn-toggle-opt {
+  border: none;
+  background: transparent;
+  padding: 0.25rem 0.55rem;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-family: var(--font-sans);
+  color: var(--text-sub);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-toggle-opt.active {
+  background: var(--bg-card);
+  color: var(--accent-gold);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ==========================================================================
+   經卷聖殿主體 (The Scripture Scroll Board) - 緊湊自然行距
+   ========================================================================== */
+.scripture-scroll-board {
+  background: var(--bg-card);
+  border: 1px solid var(--border-main);
+  border-radius: 12px;
+  padding: 2.2rem 2.8rem;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (max-width: 768px) {
+  .scripture-scroll-board {
+  background: var(--bg-card);
+  border: 1px solid var(--border-main);
+  border-radius: 12px;
+  padding: 2.2rem 2.8rem;
+  box-shadow: var(--shadow-sm);
+}
+}
+
+.board-header { text-align: center; margin-bottom: 1.5rem; padding-bottom: 0.5rem; }
+
+.board-title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-main);
+  margin-bottom: 0.3rem;
+}
+
+.board-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+}
+
+/* 經文段落 (Section) */
+.scripture-section {
+  margin-bottom: 2rem;
+}
+
+.section-head { display: none; }
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  letter-spacing: 0.05em;
+}
+
+/* 經文分句 (Sentence Block) - 緊湊讀誦設計 */
+.sentence-block {
+  margin-bottom: 0.35rem; /* 行距大幅縮小 */
+  padding: 0.2rem 0.4rem;
+  border-radius: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.3rem 0.2rem;     /* 字距與行距緊貼 */
+  line-height: 1;
+}
+
+.sentence-block:hover {
+  background-color: var(--bg-card-subtle);
+}
+
+.sentence-block.gatha-center {
+  justify-content: center;
+}
+
+/* ==========================================================================
+   三音垂直字元單元 (.word-unit) - 緊密易讀
+   ========================================================================== */
+.word-unit {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
+  user-select: none;
+  position: relative;
+  cursor: pointer;
+  padding: 0.05rem 0.12rem;
+  border-radius: 3px;
+  transition: background-color 0.12s ease;
+}
+
+.word-unit:hover {
+  background: var(--bg-active);
+}
+
+/* 頂層注音 (雅緻古金，緊貼國字) */
+.ruby-bopomofo {
+  font-size: var(--ruby-size);
+  font-family: var(--font-serif);
+  color: var(--accent-gold);
+  line-height: 1.1;
+  height: var(--ruby-height);
+  margin-bottom: 0.05rem;
+  font-weight: 500;
+}
+
+/* 中層正體國字 (思源宋體大字，讀誦清晰) */
+.ruby-char {
+  font-size: var(--char-size);
+  font-weight: 600;
+  color: var(--text-main);
+  letter-spacing: 0.02em;
+  min-width: 1.15em;
+  line-height: 1.05;
+}
+
+/* 底層漢語拼音 (小巧緊湊) */
+.ruby-pinyin {
+  font-size: var(--ruby-size);
+  font-family: var(--font-sans);
+  color: var(--text-muted);
+  line-height: 1.1;
+  height: var(--ruby-height);
+  margin-top: 0.08rem;
+  letter-spacing: 0.01em;
+}
+
+/* 標點符號單元 */
+.punct-unit {
+  display: inline-flex;
+  align-items: flex-end;
+  font-size: calc(var(--char-size) * 0.85);
+  color: var(--text-muted);
+  padding-bottom: var(--ruby-height);
+  margin-right: 0.25rem;
+  line-height: 1.05;
+}
+
+/* 空格單元 */
+.word-spacer {
+  display: inline-block;
+  width: calc(var(--char-size) * 0.7);
+}
+
+/* 遮蔽背誦模式樣式 */
+.word-unit.masked .ruby-char {
+  background: var(--bg-card-subtle);
+  color: transparent;
+  border-radius: 4px;
+  border: 1px dashed var(--border-focus);
+}
+
+.word-unit.masked .ruby-bopomofo,
+.word-unit.masked .ruby-pinyin {
+  opacity: 0;
+}
+
+.word-unit.masked.revealed .ruby-char {
+  background: var(--accent-gold-light);
+  color: var(--accent-gold);
+  border: 1px solid var(--accent-gold);
+}
+
+.word-unit.masked.revealed .ruby-bopomofo,
+.word-unit.masked.revealed .ruby-pinyin {
+  opacity: 1;
+}
+
+/* 顯隱控制 */
+body.hide-zhuyin .ruby-bopomofo {
+  display: none;
+}
+body.hide-pinyin .ruby-pinyin {
+  display: none;
+}
+body.hide-punct .punct-unit {
+  display: none;
+}
+
+/* ==========================================================================
+   模態彈窗 (Modals)
+   ========================================================================== */
+.zen-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+.zen-modal-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.zen-modal-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-main);
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-md { max-width: 520px; }
+.modal-lg { max-width: 800px; }
+.modal-xl { max-width: 1040px; }
+
+.modal-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.4rem;
+  border-bottom: none;
+}
+
+.modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.modal-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.btn-close-modal {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-main);
+  color: var(--text-muted);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.15s ease;
+}
+
+.btn-close-modal:hover {
+  background: var(--bg-active);
+  color: var(--text-main);
+}
+
+.modal-body-content {
+  padding: 1.4rem;
+}
+
+/* ==========================================================================
+   日曆打卡樣式 (🙏 合掌圖示)
+   ========================================================================== */
+.cal-nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.6rem;
+  border-bottom: none;
+}
+
+.cal-title-month {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.cal-grid-7 {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.35rem;
+  margin-top: 0.85rem;
+}
+
+.cal-day-cell {
+  aspect-ratio: 1;
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-main);
+  border-radius: 6px;
+  padding: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.15s ease;
+}
+
+.cal-day-cell.today {
+  border-color: var(--accent-gold);
+  background: var(--accent-gold-light);
+}
+
+.cal-day-num {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+}
+
+.cal-gassho-icon {
+  font-size: 1.2rem;
+  text-align: center;
+  line-height: 1;
+}
+
+/* Toast 通知 */
+.toast-container {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  pointer-events: none;
+}
+
+.toast-item {
+  background: var(--bg-card);
+  border: 1px solid var(--accent-gold);
+  color: var(--text-main);
+  padding: 0.55rem 1.3rem;
+  border-radius: 999px;
+  box-shadow: var(--shadow-md);
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+/* 經文段落自然微空行，無任何線條 */
+.scripture-section {
+  margin-bottom: 1.2rem;
+}
+.scripture-section:not(:last-child) {
+  padding-bottom: 0.4rem;
+}

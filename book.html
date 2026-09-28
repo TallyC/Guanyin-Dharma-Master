@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="stone">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>觀音法門定課 — 仿造古法經書摺本版（大藏經直排雙絲欄）</title>
+  <meta name="description" content="仿造傳統大藏經朱絲欄經摺裝古典排版：普門品、大悲咒、心經三音對照，直書右往左摺頁與橫排自由切換。">
+  <link rel="stylesheet" href="css/book.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ==================== 頂部古典典籍導覽列 ==================== -->
+  <header class="book-header">
+    <div class="book-header-inner">
+      <div class="book-brand">
+        <div class="sutra-stamp">經</div>
+        <div class="book-title-wrap">
+          <span class="book-main-title">觀音法門定課</span>
+          <span class="book-badge-edition edition-label">仿古經摺裝版</span>
+          <span class="book-badge-edition" style="border-color:var(--book-cinnabar); color:var(--book-cinnabar);">v1.6</span>
+        </div>
+      </div>
+
+      <div class="book-actions">
+        <!-- 手機掃碼同步預覽 -->
+        <button id="openMobileQrBtn" class="book-btn btn-compact btn-gold-highlight" title="手機掃碼同步沉浸誦經">
+          <span>📱</span><span class="btn-label-desktop">手機預覽</span>
+        </button>
+        <!-- 一鍵切換沉浸誦經全屏模式 -->
+        <button id="zenImmersiveToggleBtn" class="book-btn btn-compact" title="切換沉浸純淨全屏誦經">
+          <span>🔲</span><span id="zenImmersiveText" class="btn-label-desktop">沉浸誦經</span>
+        </button>
+        <!-- 一鍵切換回現代修持版 -->
+        <a href="index.html" class="book-btn btn-compact" title="切換回現代閱讀版面">
+          <span>📿</span><span class="btn-label-desktop">現代修持版</span>
+        </a>
+        <button id="directionToggleBtn" class="book-btn btn-compact" title="切換直排經摺 / 橫排經本">
+          <span>📜</span><span id="directionText" class="btn-label-desktop">切換橫排經本</span>
+        </button>
+        <button id="recordPracticeBtn" class="book-btn btn-active btn-compact" title="記錄今日定課">
+          <span>🙏</span><span id="recordPracticeText" class="btn-label-desktop">今日定課打卡</span>
+        </button>
+        <button id="openCalendarBtn" class="book-btn btn-compact" title="檢視每日修持日曆">
+          <span>📅</span><span class="btn-label-desktop">修持日曆</span>
+        </button>
+        <button id="openDedicationBtn" class="book-btn btn-compact" title="開啟法鼓山雲端祈福迴向小卡">
+          <span>🌸</span><span class="btn-label-desktop">雲端祈福卡</span>
+        </button>
+        <button id="openSettingsDrawerBtn" class="book-btn btn-compact" title="經本閱讀與字級設置">
+          <span>⚙️</span><span class="btn-label-desktop">經本設置</span>
+        </button>
+        <button id="themeToggleBtn" class="book-btn btn-compact" title="切換暖沙古紙 / 曜石金泥夜修">
+          <span>🌙</span><span class="btn-label-desktop">金泥夜修</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== 經書分頁與細項控制列 ==================== -->
+  <nav class="book-subnav" id="bookSubnav" aria-label="定課模式切換">
+    <div class="book-subnav-inner">
+      <div class="book-tabs">
+        <button class="book-tab-btn active" data-mode="merged">三門合併完整定課</button>
+        <button class="book-tab-btn" data-mode="pumenpin">普門品課誦</button>
+        <button class="book-tab-btn" data-mode="dabeizhou">大悲咒課誦</button>
+        <button class="book-tab-btn" data-mode="xinjing">心經課誦</button>
+      </div>
+
+      <div class="book-controls-group">
+        <!-- 電子書三大閱讀模式 -->
+        <div class="reading-mode-selector" style="display:inline-flex; gap:2px; background:rgba(0,0,0,0.3); padding:2px; border-radius:4px;">
+          <button class="book-btn mode-btn active" data-readmode="zhuyin" style="padding:0.2rem 0.55rem; font-size:0.75rem;">經書注音</button>
+          <button class="book-btn mode-btn" data-readmode="pure" style="padding:0.2rem 0.55rem; font-size:0.75rem;">純淨大字</button>
+          <button class="book-btn mode-btn" data-readmode="study" style="padding:0.2rem 0.55rem; font-size:0.75rem;">三音研習</button>
+        </div>
+
+        <!-- 標點顯隱 -->
+        <label class="book-check-item">
+          <input type="checkbox" id="togglePunct" checked>
+          <span>標點</span>
+        </label>
+
+        <!-- 字級大小 -->
+        <div style="display:inline-flex; gap:2px; background:rgba(0,0,0,0.3); padding:2px; border-radius:4px;">
+          <button class="book-btn" style="padding:0.2rem 0.5rem; font-size:0.75rem;" data-size="normal">標準</button>
+          <button class="book-btn" style="padding:0.2rem 0.5rem; font-size:0.75rem;" data-size="large">大字</button>
+          <button class="book-btn" style="padding:0.2rem 0.5rem; font-size:0.75rem;" data-size="xlarge">特大</button>
+        </div>
+
+        <!-- 默誦背誦 -->
+        <div style="display:inline-flex; gap:2px; background:rgba(0,0,0,0.3); padding:2px; border-radius:4px;">
+          <button class="book-btn" style="padding:0.2rem 0.5rem; font-size:0.75rem;" data-mask="none">全顯</button>
+          <button class="book-btn" style="padding:0.2rem 0.5rem; font-size:0.75rem;" data-mask="char">默誦背</button>
+        </div>
+
+        <!-- 段落直達 -->
+        <div style="display:inline-flex; align-items:center; gap:0.3rem;">
+          <span style="font-size:0.8rem; color:#aaa;">段落：</span>
+          <select id="sectionQuickSelect" class="book-btn" style="padding:0.25rem 0.5rem; cursor:pointer;">
+          </select>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 沉浸全屏狀態下的半透明喚回懸浮印章 -->
+  <button id="floatingZenMenuBtn" class="floating-zen-btn hidden" title="輕觸喚出經書功能選單">
+    <span class="zen-lotus-icon">經</span>
+    <span class="zen-lotus-hint">功能</span>
+  </button>
+
+  <!-- ==================== 仿造古法經書摺本舞臺 ==================== -->
+  <main class="book-stage-container">
+    
+    <div id="bookStageWrapper" class="sutra-book-wrapper layout-vertical-rl">
+      <!-- 左右點擊快速翻頁區 (電子書人體工學) -->
+      <div id="tapZonePrev" class="page-touch-tap-zone zone-prev" title="上一頁 / 上一折"></div>
+      <div id="tapZoneNext" class="page-touch-tap-zone zone-next" title="下一頁 / 下一折"></div>
+
+      <div class="sutra-inner-border">
+        
+        <!-- 經書首頁扉頁 -->
+        <header class="book-cover-header">
+          <h1 id="bookCoverTitle" class="book-cover-title">觀音法門完整定課</h1>
+          <p id="bookCoverSub" class="book-cover-sub">大悲總持・普門廣度・般若空慧・法鼓山課誦儀軌連貫修持</p>
+        </header>
+
+        <!-- 經文核心載體 (由 book.js 動態渲染) -->
+        <div id="sutraBodyContainer" class="sutra-content-body"></div>
+
+        <!-- 電子書專屬分頁指示與翻頁導航列 -->
+        <div class="book-pagination-bar" id="bookPaginationBar">
+          <button id="bookPrevPageBtn" class="page-nav-btn" title="翻至上一頁 (鍵盤 ← 或 PageUp)">
+            <span>◀</span> <span class="page-btn-text">上一頁</span>
+          </button>
+          
+          <div class="page-status-wrap">
+            <span id="pageCounterDisplay" class="page-counter-badge">第 1 / 1 頁</span>
+            <input type="range" id="pageProgressSlider" class="page-progress-slider" min="1" max="1" value="1" title="滑動跳頁">
+          </div>
+
+          <button id="bookNextPageBtn" class="page-nav-btn" title="翻至下一頁 (鍵盤 → 或 Space / PageDown)">
+            <span class="page-btn-text">下一頁</span> <span>▶</span>
+          </button>
+        </div>
+
+        <!-- 經書尾頁典籍跋語與朱印 -->
+        <footer class="book-footer-colophon">
+          <div class="colophon-stamp-seal">
+            <span>印</span>
+            <span>法鼓傳燈・觀音妙法・普門利生</span>
+          </div>
+          <div>CBETA 大藏經底本與法鼓山課誦實錄校勘・純淨供修</div>
+        </footer>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==================== 模態彈窗 (日曆 & 祈福卡) ==================== -->
+  <div id="calendarModal" class="zen-modal-overlay hidden" aria-hidden="true" role="dialog">
+    <div class="zen-modal-card">
+      <div class="modal-header-bar">
+        <div class="modal-title-wrap">
+          <span>🙏</span>
+          <h3 class="modal-title">定課修持日曆</h3>
+        </div>
+        <button id="closeCalendarModalBtn" class="btn-close-modal">✕</button>
+      </div>
+      <div class="modal-body-content">
+        <div id="calendarMount"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="dedicationModal" class="zen-modal-overlay hidden" aria-hidden="true" role="dialog">
+    <div class="zen-modal-card modal-xl">
+      <div class="modal-header-bar">
+        <div class="modal-title-wrap">
+          <span>🌸</span>
+          <h3 class="modal-title">法鼓山觀音定課・雲端祈福小卡</h3>
+        </div>
+        <button id="closeDedicationModalBtn" class="btn-close-modal">✕</button>
+      </div>
+      <div class="modal-body-content">
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:1.5rem;">
+          <div>
+            <canvas id="dedicationCardCanvas" width="800" height="1066" style="width:100%; height:auto; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,0.25); border:1px solid #c59b27;"></canvas>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:1rem;">
+            <div>
+              <label style="font-weight:600; display:block; margin-bottom:0.4rem;">小卡雅緻典藏風格：</label>
+              <div style="display:flex; gap:1rem;">
+                <label style="cursor:pointer;"><input type="radio" name="cardStyle" value="warm_gold" checked> 暖微沙・金印 (法鼓暖調)</label>
+                <label style="cursor:pointer;"><input type="radio" name="cardStyle" value="celadon_sage"> 自然清綠・翠玉印</label>
+              </div>
+            </div>
+            <div>
+              <label style="font-weight:600; display:block; margin-bottom:0.4rem;">祈福法語類別：</label>
+              <select id="blessingPresetSelect" class="book-btn" style="width:100%; padding:0.45rem;">
+                <option value="大悲心起，心安平安。祈願身心安和，障礙消除，福慧增長。">【心安平安】身心安和・消災迎福</option>
+                <option value="祈願諸佛菩薩慈悲護佑，身心安康，遠離病苦，自在吉祥。">【身心康泰】健康平安・早日康復</option>
+                <option value="處處起慈悲，念念生智慧。祈願事業順遂，化解阻礙，圓滿成就。">【事業順遂】利人利己・廣結善緣</option>
+                <option value="開發自性般若，開啟本具光明。祈願學業進步，考試吉祥，增長智慧。">【學業功課】啟發智慧・考試如意</option>
+                <option value="心量擴大，煩惱自少。祈願慈悲沒有敵人，智慧不起煩惱。">【心靈法喜】安心安身・解脫自在</option>
+              </select>
+            </div>
+            <div>
+              <label style="font-weight:600; display:block; margin-bottom:0.4rem;">迴向祝福對象：</label>
+              <input type="text" id="recipientInput" class="book-btn" style="width:100%; text-align:left;" value="父母師長與一切有情">
+            </div>
+            <div>
+              <label style="font-weight:600; display:block; margin-bottom:0.4rem;">迴向發願者署名：</label>
+              <input type="text" id="dedicatorInput" class="book-btn" style="width:100%; text-align:left;" value="佛弟子">
+            </div>
+            <div>
+              <label style="font-weight:600; display:block; margin-bottom:0.4rem;">祈福發願文句：</label>
+              <textarea id="blessingMsgInput" class="book-btn" rows="3" style="width:100%; text-align:left; resize:vertical;">大悲心起，心安平安。祈願身心安和，障礙消除，福慧增長。</textarea>
+            </div>
+            <div style="display:flex; gap:0.75rem; margin-top:0.5rem;">
+              <button id="downloadCardBtn" class="book-btn btn-active" style="flex:1; justify-content:center;">📥 下載祈福小卡 (PNG)</button>
+              <button id="copyCardTextBtn" class="book-btn" style="flex:1; justify-content:center;">📋 複製祈願法語</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <!-- ==================== 手機掃碼同步預覽彈窗 ==================== -->
+  <div id="mobileQrModal" class="zen-modal-overlay hidden" aria-hidden="true" role="dialog">
+    <div class="zen-modal-card" style="max-width: 440px; text-align:center;">
+      <div class="modal-header-bar">
+        <div class="modal-title-wrap">
+          <span>📱</span>
+          <h3 class="modal-title">手機掃碼同步沉浸誦經</h3>
+        </div>
+        <button id="closeMobileQrModalBtn" class="btn-close-modal">✕</button>
+      </div>
+      <div class="modal-body-content" style="padding:1.4rem; display:flex; flex-direction:column; align-items:center; gap:1rem;">
+        <div class="qr-image-frame" style="background:#fff; padding:12px; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.25); border:2px solid var(--book-silk-gold);">
+          <img src="assets/mobile_qr.svg" alt="手機掃碼網址" style="width:210px; height:210px; display:block;">
+        </div>
+        
+        <div style="font-size:0.9rem; color:var(--book-ink); line-height:1.6; text-align:left; background:rgba(0,0,0,0.04); padding:0.8rem 1rem; border-radius:8px; width:100%; border-left:3px solid var(--book-cinnabar);">
+          <p style="font-weight:700; margin-bottom:0.3rem; color:var(--book-cinnabar);">📖 手機連線三步驟：</p>
+          <p>1. 手機連線至與本電腦相同的 <strong>Wi-Fi</strong> 網路。</p>
+          <p>2. 打開手機相機或 LINE 掃描上方 QR Code。</p>
+          <p>3. 或在手機瀏覽器直接輸入下方專屬網址。</p>
+        </div>
+
+        <div style="width:100%; display:flex; gap:0.5rem;">
+          <input id="mobileUrlInput" type="text" readonly value="http://192.168.0.143:8080/book.html" class="book-btn" style="flex:1; text-align:center; font-family:monospace; font-size:0.85rem; user-select:all; background:rgba(0,0,0,0.06); color:var(--book-ink);">
+          <button id="copyMobileUrlBtn" class="book-btn btn-active" style="white-space:nowrap;">📋 複製網址</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 經本細部設置底抽屜 (手機專屬極簡收納) ==================== -->
+  <div id="settingsDrawer" class="zen-modal-overlay hidden" aria-hidden="true" role="dialog">
+    <div class="zen-bottom-drawer">
+      <div class="drawer-header-bar">
+        <div class="modal-title-wrap">
+          <span>⚙️</span>
+          <h3 class="modal-title">經本閱讀與讀誦設置</h3>
+        </div>
+        <button id="closeSettingsDrawerBtn" class="btn-close-modal">✕</button>
+      </div>
+      <div class="drawer-body-content">
+        <!-- 電子書三大閱讀模式 -->
+        <div class="drawer-row">
+          <span class="drawer-label">閱讀模式：</span>
+          <div class="drawer-btn-group">
+            <button class="book-btn drawer-btn-readmode active" data-readmode="zhuyin">經書注音</button>
+            <button class="book-btn drawer-btn-readmode" data-readmode="pure">純淨大字</button>
+            <button class="book-btn drawer-btn-readmode" data-readmode="study">三音研習</button>
+          </div>
+        </div>
+
+        <!-- 輔助標點開關 -->
+        <div class="drawer-row">
+          <span class="drawer-label">句讀標點：</span>
+          <div class="drawer-controls">
+            <label class="book-check-item">
+              <input type="checkbox" id="drawerTogglePunct" checked>
+              <span>朱砂標點</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 字級大小 -->
+        <div class="drawer-row">
+          <span class="drawer-label">字級大小：</span>
+          <div class="drawer-btn-group">
+            <button class="book-btn drawer-btn-size" data-size="normal">標準</button>
+            <button class="book-btn drawer-btn-size" data-size="large">大字</button>
+            <button class="book-btn drawer-btn-size" data-size="xlarge">特大</button>
+          </div>
+        </div>
+
+        <!-- 默誦模式 -->
+        <div class="drawer-row">
+          <span class="drawer-label">默誦背誦：</span>
+          <div class="drawer-btn-group">
+            <button class="book-btn drawer-btn-mask" data-mask="none">全顯</button>
+            <button class="book-btn drawer-btn-mask" data-mask="char">默誦背</button>
+          </div>
+        </div>
+
+        <!-- 段落直達 -->
+        <div class="drawer-row">
+          <span class="drawer-label">段落直達：</span>
+          <select id="drawerSectionQuickSelect" class="book-btn" style="width:100%; padding:0.45rem;">
+          </select>
+        </div>
+
+        <!-- 修持與功能快捷 (手機版完整支援) -->
+        <div class="drawer-row" style="flex-direction:column; align-items:flex-start; gap:0.5rem; border-top:1px dashed var(--book-line-red); padding-top:0.8rem; width:100%;">
+          <span class="drawer-label">定課與修持功能：</span>
+          <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:0.5rem; width:100%;">
+            <button id="drawerRecordBtn" class="book-btn btn-active" style="justify-content:center;">
+              <span>🙏</span><span id="drawerRecordText">今日定課打卡</span>
+            </button>
+            <button id="drawerCalendarBtn" class="book-btn" style="justify-content:center;">
+              <span>📅</span><span>修持日曆</span>
+            </button>
+            <button id="drawerDedicationBtn" class="book-btn" style="justify-content:center;">
+              <span>🌸</span><span>雲端祈福卡</span>
+            </button>
+            <button id="drawerThemeBtn" class="book-btn" style="justify-content:center;">
+              <span>🌙</span><span>夜修切換</span>
+            </button>
+          </div>
+          <div style="width:100%; margin-top:0.3rem;">
+            <a href="index.html" class="book-btn" style="width:100%; justify-content:center; text-decoration:none;">
+              <span>📿</span><span>返回現代修持版</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="app-toast-container"></div>
+
+  <!-- 資料庫與核心邏輯 -->
+  <script src="js/safe_storage.js"></script>
+  <script src="data/pinyin_engine.js"></script>
+  <script src="data/guanyin_scriptures.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/dedication_card.js"></script>
+  <script src="js/book.js"></script>
+</body>
+</html>
