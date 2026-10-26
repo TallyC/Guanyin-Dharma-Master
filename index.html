@@ -229,16 +229,14 @@
           <span id="dailyCheckIndicator" class="w-1.5 h-1.5 rounded-full bg-stone-400 hidden"></span>
         </button>
 
-        <!-- 系統設定 (⚙️ 所有色調、字級、字體、排版、標誌設定融為一體，置於驚嘆號旁) -->
-        <button id="openSettingsBtn" class="px-2.5 sm:px-3 py-1.5 rounded-full bg-panel-elevated border border-zen hover:border-zen-focus text-xs c-main transition-all flex items-center gap-1 shadow-sm" title="開啟系統設定（色調、字級大小、字體風格、禪意標誌）">
+        <!-- 系統設定 (⚙️ 僅保留純圖案，置於燈泡旁) -->
+        <button id="openSettingsBtn" class="p-2 sm:px-2.5 sm:py-2 rounded-full bg-panel-elevated border border-zen hover:border-zen-focus text-xs c-main transition-all flex items-center justify-center shadow-sm" title="開啟系統設定（色調、字級大小、字體風格、禪意標誌）">
           <span class="text-xs">⚙️</span>
-          <span class="text-xs">設定</span>
         </button>
 
-        <!-- 工具使用說明 (❗ 預設驚嘆號，置於首頁最右方) -->
-        <button onclick="openGuideModal()" class="px-2.5 sm:px-3 py-1.5 rounded-full bg-panel-elevated border border-zen hover:border-zen-focus text-xs c-main transition-all flex items-center gap-1 shadow-sm" title="修持功能與法器設計目的說明">
-          <span class="text-xs font-bold text-amber-500">❗</span>
-          <span class="text-xs">說明</span>
+        <!-- 工具使用說明 (💡 燈泡圖案，置於首頁最右方) -->
+        <button onclick="openGuideModal()" class="p-2 sm:px-2.5 sm:py-2 rounded-full bg-panel-elevated border border-zen hover:border-zen-focus text-xs c-main transition-all flex items-center justify-center shadow-sm" title="修持功能與法器設計目的說明">
+          <span class="text-xs">💡</span>
         </button>
       </div>
 
@@ -536,7 +534,7 @@
       
       <div class="flex items-center justify-between mb-3.5 pb-2.5 border-b border-zen">
         <div class="flex items-center gap-2">
-          <span class="text-base c-gold">ⓘ</span>
+          <span class="text-base">💡</span>
           <h3 class="text-base font-bold c-main">修持功能與工具列設計目的</h3>
         </div>
         <button onclick="closeGuideModal()" class="c-muted hover:c-main text-xl font-bold p-1">✕</button>
