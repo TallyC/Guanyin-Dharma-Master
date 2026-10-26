@@ -1154,6 +1154,7 @@
         }
       };
     })();
+    window.ZenAudio = ZenAudio;
 
     document.addEventListener('touchstart', ZenAudio.unlock, { once: true, passive: true });
     document.addEventListener('touchend', ZenAudio.unlock, { once: true, passive: true });
@@ -1178,6 +1179,7 @@
       textAlign: 'center',
       lineHeight: 'normal'
     };
+    window.AppState = AppState;
 
     // 6. 初始化與偏好載入
     window.addEventListener('DOMContentLoaded', () => {
@@ -1387,12 +1389,18 @@
 
       const scopeText = AppState.currentPracticeKey === 'pumenpin' 
         ? (AppState.pumenpinScope === 'jisong' ? '偈頌專修' : '全品持誦')
-        : (practice.subtitle || '');
+        : (practice.theme || '');
       document.getElementById('readingScopeIndicator').textContent = scopeText;
 
       preparePagesAndRender();
       showView('reading');
       ZenAudio.playChime();
+
+      if (AppState.followMasterChant) {
+        playMasterChantBackground();
+      } else {
+        stopMasterChantAudio();
+      }
     }
 
     function preparePagesAndRender() {
@@ -1600,19 +1608,19 @@
         const formattedLine = formatDirectives(line);
 
         if (isHeaderTag) {
-          html += `<div class="text-xs sm:text-sm font-bold c-gold pt-2 pb-0.5 tracking-widest">${line}</div>`;
+          html += `<div class="text-xs sm:text-sm font-bold c-gold pt-2 pb-0.5 tracking-widest">${formattedLine}</div>`;
         } else if (isFayuan) {
-          html += `<div class="py-0.5 c-gold font-medium">${line}</div>`;
+          html += `<div class="py-0.5 c-gold font-medium">${formattedLine}</div>`;
         } else if (isSix) {
-          html += `<div class="py-0.5 c-crimson font-medium">${line}</div>`;
+          html += `<div class="py-0.5 c-crimson font-medium">${formattedLine}</div>`;
         } else if (isJingyun) {
           // 啟白發願文：大眾同誦，正式主文樣式，絕不縮小或淡化
-          html += `<p class="py-1 leading-relaxed c-main font-medium">${line}</p>`;
+          html += `<p class="py-1 leading-relaxed c-main font-medium">${formattedLine}</p>`;
         } else if (isExactShenghao) {
-          html += `<div class="py-1 text-base sm:text-lg font-bold c-gold tracking-widest">${line}</div>`;
+          html += `<div class="py-1 text-base sm:text-lg font-bold c-gold tracking-widest">${formattedLine}</div>`;
         } else {
           // 普通經句：一律採用舒緩護眼的主內文字色 c-main，絕無突兀亮色
-          html += `<p class="py-0.5 leading-relaxed c-main">${line}</p>`;
+          html += `<p class="py-0.5 leading-relaxed c-main">${formattedLine}</p>`;
         }
       });
 
@@ -1694,14 +1702,15 @@
         `;
 
         sec.lines.forEach(line => {
+          const formattedLine = formatDirectives(line);
           if (line.startsWith('南無大悲觀世音')) {
-            innerHtml += `<p class="c-gold font-medium my-1">${line}</p>`;
+            innerHtml += `<p class="c-gold font-medium my-1">${formattedLine}</p>`;
           } else if (line.startsWith('我若向')) {
-            innerHtml += `<p class="c-crimson font-medium my-1">${line}</p>`;
+            innerHtml += `<p class="c-crimson font-medium my-1">${formattedLine}</p>`;
           } else if (line.startsWith('經云：')) {
-            innerHtml += `<p class="text-xs sm:text-sm c-muted italic mb-2">${line}</p>`;
+            innerHtml += `<p class="py-1 leading-relaxed c-main font-medium">${formattedLine}</p>`;
           } else {
-            innerHtml += `<p class="my-1">${line}</p>`;
+            innerHtml += `<p class="my-1">${formattedLine}</p>`;
           }
         });
 
@@ -2124,78 +2133,152 @@
       }
     }
 
-    // 13.5 迴向小卡 Canvas 繪製（溫潤雅致，符合禪美學）
+    // 13.5 快速選取法鼓山主題祝福語
+    function selectBlessing(title, sub) {
+      const titleInput = document.getElementById('blessingTitleInput');
+      const subInput = document.getElementById('blessingSubInput');
+      if (titleInput) titleInput.value = title;
+      if (subInput) subInput.value = sub;
+      generateDedicationCardImage();
+    }
+
+    // 全新極致禪意迴向祝福卡 (置中超大墨寶祝福、宋瓷宣紙留白、紅赭硃砂落款)
     function generateDedicationCardImage() {
       const canvas = document.getElementById('dedicationCanvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
-      const author = document.getElementById('dedicateNameInput').value.trim() || '佛弟子';
-      const target = document.getElementById('dedicateTargetInput').value.trim() || '法界眾生、闔家眷屬';
+      const titleInput = document.getElementById('blessingTitleInput');
+      const subInput = document.getElementById('blessingSubInput');
+      const nameInput = document.getElementById('dedicateNameInput');
+      const targetInput = document.getElementById('dedicateTargetInput');
+
+      const blessingTitle = (titleInput ? titleInput.value.trim() : '') || '平安無事';
+      const blessingSub = (subInput ? subInput.value.trim() : '') || '心安就有平安・隨緣安住福慧圓滿';
+      const author = (nameInput ? nameInput.value.trim() : '') || '佛弟子';
+      const target = (targetInput ? targetInput.value.trim() : '') || '法界眾生、闔家眷屬';
 
       // 依當前主題自適應底色
       if (AppState.theme === 'parchment') {
-        ctx.fillStyle = '#EAE2D3';
+        ctx.fillStyle = '#F5EFE6'; // 宋代暖宣紙
+        ctx.fillRect(0, 0, 800, 560);
       } else if (AppState.theme === 'celadon') {
-        ctx.fillStyle = '#222928';
+        ctx.fillStyle = '#1C2322'; // 沉香青瓷暗玉
+        ctx.fillRect(0, 0, 800, 560);
       } else {
-        ctx.fillStyle = '#24262A';
+        ctx.fillStyle = '#1F2125'; // 曜石銀灰
+        ctx.fillRect(0, 0, 800, 560);
       }
-      ctx.fillRect(0, 0, 800, 520);
 
-      // 外邊框：紅赭
-      ctx.strokeStyle = AppState.theme === 'parchment' ? '#8F3B30' : '#A85A48';
-      ctx.lineWidth = 3.5;
-      ctx.strokeRect(28, 28, 744, 464);
+      // 雅致圓角外框 (現代東方微邊框，拒絕老舊公文粗框)
+      ctx.save();
+      const strokeColor = AppState.theme === 'parchment' ? 'rgba(143, 59, 48, 0.4)' : 'rgba(209, 176, 122, 0.35)';
+      ctx.strokeStyle = strokeColor;
+      ctx.lineWidth = 1.5;
+      
+      const x = 32, y = 30, w = 736, h = 500, r = 16;
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+      ctx.stroke();
 
-      // 內細框
-      ctx.strokeStyle = AppState.theme === 'parchment' ? 'rgba(143, 59, 48, 0.25)' : 'rgba(168, 90, 72, 0.25)';
+      // 內圈極細微距襯線
+      ctx.strokeStyle = AppState.theme === 'parchment' ? 'rgba(143, 59, 48, 0.12)' : 'rgba(255, 255, 255, 0.08)';
       ctx.lineWidth = 1;
-      ctx.strokeRect(38, 38, 724, 444);
+      ctx.strokeRect(40, 38, 720, 484);
+      ctx.restore();
 
-      // 頂部標題
-      ctx.fillStyle = AppState.theme === 'parchment' ? '#8F3B30' : '#D1B07A';
-      ctx.font = 'bold 25px "Noto Serif TC", serif';
       ctx.textAlign = 'center';
-      ctx.fillText('觀音法門定課・修持迴向', 400, 95);
 
-      // 功德主與對象
-      ctx.fillStyle = AppState.theme === 'parchment' ? '#332B24' : '#EDE7DE';
-      ctx.font = '16px "Noto Serif TC", serif';
-      ctx.fillText('迴向功德主：' + author + '    ｜    祈福對象：' + target, 400, 145);
+      // 1. 頂部優雅小標
+      ctx.fillStyle = AppState.theme === 'parchment' ? '#7A6B5F' : '#9E978E';
+      ctx.font = '13px "Noto Serif TC", serif';
+      ctx.letterSpacing = '6px';
+      ctx.fillText('——　觀 音 法 門 定 課 ・ 修 持 迴 向　——', 400, 75);
 
-      // 迴向偈
-      ctx.fillStyle = AppState.theme === 'parchment' ? '#8F3B30' : '#D1B07A';
-      ctx.font = '21px "Noto Serif TC", serif';
-      ctx.fillText('願消三障諸煩惱　願得智慧真明了', 400, 225);
-      ctx.fillText('普願罪障悉消除　世世常行菩薩道', 400, 270);
+      // 2. 核心大字祝福 (置中大字體，如聖嚴法師春聯墨寶，深刻感受被祝福！)
+      ctx.fillStyle = AppState.theme === 'parchment' ? '#9E382B' : '#E0A367';
+      ctx.font = 'bold 44px "Noto Serif TC", "Songti TC", "Kaiti TC", serif';
+      ctx.letterSpacing = '10px';
+      ctx.fillText(blessingTitle, 400, 142);
 
-      // 讚偈
-      ctx.fillStyle = AppState.theme === 'parchment' ? '#63564B' : '#B8B3AA';
+      // 3. 祝福勉勵副標
+      ctx.fillStyle = AppState.theme === 'parchment' ? '#68594E' : '#C7BFB5';
       ctx.font = '15px "Noto Serif TC", serif';
-      ctx.fillText('千處祈求千處現　苦海常作度人舟', 400, 345);
-      ctx.fillText('南無大悲觀世音菩薩摩訶薩', 400, 380);
+      ctx.letterSpacing = '2px';
+      ctx.fillText(blessingSub, 400, 185);
 
-      // 底部落款
-      ctx.fillStyle = AppState.theme === 'parchment' ? '#8E7E70' : '#88837A';
-      ctx.font = '13px sans-serif';
-      ctx.fillText('法鼓山觀音法門定課系統敬製 ・ ' + getTodayString(), 400, 445);
+      // 細緻中線裝飾
+      ctx.strokeStyle = AppState.theme === 'parchment' ? 'rgba(143, 59, 48, 0.25)' : 'rgba(209, 176, 122, 0.25)';
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(260, 212);
+      ctx.lineTo(540, 212);
+      ctx.stroke();
 
+      // 4. 迴向四句偈 (空靈優美排版)
+      ctx.fillStyle = AppState.theme === 'parchment' ? '#332B24' : '#EDE7DE';
+      ctx.font = '17px "Noto Serif TC", "Songti TC", serif';
+      ctx.letterSpacing = '3px';
+      ctx.fillText('願以此功德　莊嚴佛淨土', 400, 254);
+      ctx.fillText('上報四重恩　下濟三途苦', 400, 288);
+      ctx.fillText('若有見聞者　悉發菩提心', 400, 322);
+      ctx.fillText('盡此一報身　同生極樂國', 400, 356);
+
+      // 5. 發心人與功德受享
+      ctx.fillStyle = AppState.theme === 'parchment' ? '#5E4E42' : '#B8B3AA';
+      ctx.font = '14px "Noto Serif TC", serif';
+      ctx.letterSpacing = '1px';
+      ctx.fillText('發心修持：' + author + '　｜　祈福迴向：' + target, 400, 412);
+
+      const now = new Date();
+      const dateStr = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日';
+      const practice = cleanData[AppState.currentPracticeKey];
+      const pName = practice ? (practice.shortName || practice.name) : '觀音定課';
+      ctx.fillStyle = AppState.theme === 'parchment' ? '#8F7E70' : '#88837A';
+      ctx.font = '12px "Noto Serif TC", serif';
+      ctx.fillText(dateStr + '　' + pName + '定課圓滿', 400, 442);
+
+      // 6. 典雅硃砂印鑑 (方印：福慧圓滿)
+      ctx.save();
+      const sealX = 645, sealY = 415, sealSize = 46;
+      ctx.fillStyle = '#9E382B';
+      ctx.beginPath();
+      ctx.rect(sealX, sealY, sealSize, sealSize);
+      ctx.fill();
+      ctx.strokeStyle = '#82281D';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = '#FDFBF7';
+      ctx.font = 'bold 13px "Noto Serif TC", serif';
+      ctx.textAlign = 'center';
+      ctx.letterSpacing = '0px';
+      ctx.fillText('福慧', sealX + sealSize/2, sealY + 18);
+      ctx.fillText('圓滿', sealX + sealSize/2, sealY + 36);
+      ctx.restore();
+
+      // 即時導出圖片
       try {
         const dataUrl = canvas.toDataURL('image/png');
-        const imgEl = document.getElementById('cardPreviewImage');
-        const tipEl = document.getElementById('cardPreviewTip');
-
-        if (imgEl) {
-          imgEl.src = dataUrl;
-          imgEl.classList.remove('hidden');
+        const img = document.getElementById('cardPreviewImage');
+        const tip = document.getElementById('cardPreviewTip');
+        if (img) {
+          img.src = dataUrl;
+          img.classList.remove('hidden');
         }
-        if (tipEl) {
-          tipEl.textContent = '📱 手機長按圖片即可「儲存影像」或分享；電腦可右鍵另存圖片';
+        if (tip) {
+          tip.textContent = '長按上方小卡即可直接「儲存圖片」或分享至社群同修';
         }
-
-        showToast('迴向小卡已繪製生成！');
       } catch (e) {
-        showToast('迴向文準備完畢');
+        console.warn('Canvas export error:', e);
       }
     }
 
@@ -2265,17 +2348,7 @@
       }
     }
 
-    // 啟動定課：若開啟「隨法師念誦」，直接進入經文並於背景播放，絕無彈窗遮擋！
-    function startPracticeFromDrawer() {
-      closePracticeDrawer();
-      openPractice(AppState.currentPracticeKey);
 
-      if (AppState.followMasterChant) {
-        playMasterChantBackground();
-      } else {
-        stopMasterChantAudio();
-      }
-    }
 
     // 背景隨法師念誦核心播放控制
     function playMasterChantBackground() {
