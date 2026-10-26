@@ -1,304 +1,2315 @@
 <!DOCTYPE html>
-<html lang="zh-TW" data-theme="stone">
+<html lang="zh-TW" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>觀音法門定課 v1.2 — 普門品・大悲咒・心經（法鼓山修持定課）</title>
-  <meta name="description" content="法鼓山觀音法門修持定課：普門品、大悲咒、心經三音對照，雲端祈福小卡與修持日曆。">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>觀音法門定課 ｜ 法鼓山修持系統</title>
+  
+  <!-- 引入 Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ========================================================
+       禪意空靈美學色彩系統（曜石銀灰、宋代宣紙、沉香天青）
+       微調減輕厚重感，提升透氣感與文人雅致
+       ======================================================== */
+    :root {
+      /* 預設：曜石銀灰 (Obsidian Silver & Tea - 輕盈空靈暗調) */
+      --bg-base: #1E2023;
+      --bg-card: #27292E;
+      --bg-elevated: #31343B;
+      --bg-header: rgba(30, 32, 35, 0.92);
+      --border-zen: rgba(220, 215, 205, 0.12);
+      --border-focus: #B87358;
+      
+      --text-main: #EDE7DE;   /* 柔和象牙白 */
+      --text-sub: #B8B3AA;    /* 銀灰霧 */
+      --text-muted: #88837A;  /* 沉靜石灰 */
+      --text-gold: #D1B07A;   /* 溫潤古茶金 */
+      --text-crimson: #C4725F;/* 赭紅 */
+      --accent-ochre: #944D3B;/* 雅致紅赭 */
+      --accent-darkred: #78322E;
+      --shadow-zen: 0 8px 24px -6px rgba(0, 0, 0, 0.45);
+    }
+
+    [data-theme="parchment"] {
+      /* 宋代宣紙 (Song Dynasty Warm Parchment - 柔和溫潤不刺眼) */
+      --bg-base: #F4EFE6;
+      --bg-card: #EAE3D5;
+      --bg-elevated: #DDD4C3;
+      --bg-header: rgba(244, 239, 230, 0.94);
+      --border-zen: rgba(100, 80, 60, 0.15);
+      --border-focus: #8F3B30;
+      
+      --text-main: #332B24;   /* 溫和焦墨 */
+      --text-sub: #63564B;    /* 木炭灰 */
+      --text-muted: #8E7E70;  /* 泥沙灰 */
+      --text-gold: #8F3B30;   /* 硃砂印紅 */
+      --text-crimson: #8F3B30;
+      --accent-ochre: #8F4C3B;
+      --accent-darkred: #73302C;
+      --shadow-zen: 0 8px 20px -6px rgba(60, 45, 35, 0.12);
+    }
+
+    [data-theme="celadon"] {
+      /* 沉香天青 (Celadon & Mist - 冷香天青灰茶) */
+      --bg-base: #1C2221;
+      --bg-card: #252D2C;
+      --bg-elevated: #2F3938;
+      --bg-header: rgba(28, 34, 33, 0.92);
+      --border-zen: rgba(180, 205, 200, 0.14);
+      --border-focus: #9A665A;
+      
+      --text-main: #E5EBE8;   /* 凝脂玉色 */
+      --text-sub: #A8B5B1;    /* 天青銀霧 */
+      --text-muted: #74827F;  /* 暮色灰 */
+      --text-gold: #CDB388;   /* 茶花淡金 */
+      --text-crimson: #B0695B;
+      --accent-ochre: #8F4C3B;
+      --accent-darkred: #73302C;
+      --shadow-zen: 0 8px 24px -6px rgba(0, 0, 0, 0.45);
+    }
+
+    /* 基礎重設與平滑捲動 */
+    html, body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      transition: background-color 0.22s ease, color 0.22s ease;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* 字體微調類別 */
+    .font-kaiti {
+      font-family: "Kaiti TC", "BiauKai", "楷體", "STKaiti", serif !important;
+    }
+    .font-songti {
+      font-family: "Songti TC", "Noto Serif TC", "Source Han Serif TC", "MingLiU", serif !important;
+    }
+    .font-heiti {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", "Microsoft JhengHei", sans-serif !important;
+    }
+
+    /* 護眼背景與文字樣式強制綁定 */
+    .bg-main { background-color: var(--bg-base) !important; }
+    .bg-panel { background-color: var(--bg-card) !important; }
+    .bg-panel-elevated { background-color: var(--bg-elevated) !important; }
+    .border-zen { border-color: var(--border-zen) !important; }
+    .border-zen-focus { border-color: var(--border-focus) !important; }
+
+    .c-main { color: var(--text-main) !important; }
+    .c-sub { color: var(--text-sub) !important; }
+    .c-muted { color: var(--text-muted) !important; }
+    .c-gold { color: var(--text-gold) !important; }
+    .c-crimson { color: var(--text-crimson) !important; }
+
+    /* 按鈕專用紅赭色與深咖啡色 */
+    .btn-ochre {
+      background-color: var(--accent-ochre) !important;
+      color: #F8F5F0 !important;
+    }
+    .btn-ochre:hover {
+      filter: brightness(1.08);
+    }
+    .btn-darkred {
+      background-color: var(--accent-darkred) !important;
+      color: #F8F5F0 !important;
+    }
+    .btn-darkred:hover {
+      filter: brightness(1.08);
+    }
+
+    /* 禪意卡片陰影與微邊框 */
+    .zen-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-zen);
+      box-shadow: var(--shadow-zen);
+    }
+
+    /* 水印底圖：柔和微暈 */
+    .zen-watermark-bg {
+      background-image: radial-gradient(circle at 50% 15%, rgba(184, 115, 88, 0.035) 0%, transparent 65%);
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    /* 動態翻頁動效 */
+    .page-turn-left {
+      animation: pageTurnLeft 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .page-turn-right {
+      animation: pageTurnRight 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes pageTurnLeft {
+      from { opacity: 0.35; transform: translateX(14px) scale(0.99); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    @keyframes pageTurnRight {
+      from { opacity: 0.35; transform: translateX(-14px) scale(0.99); }
+      to { opacity: 1; transform: translateX(0) scale(1); }
+    }
+
+    /* 法器敲擊微回彈動效 */
+    .striking {
+      transform: scale(0.92);
+      filter: brightness(1.15);
+    }
+
+    /* 彈窗遮罩 */
+    .modal-backdrop {
+      background-color: rgba(18, 20, 22, 0.75);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    /* 隱藏滾動條 */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* 專業佛教隨身經本字級階梯 (20px ~ 40px，符合壇場持誦與長者護眼需求) */
+    .font-step-0, .font-step-0 p, .font-step-0 div { font-size: 20px !important; line-height: 1.75 !important; }
+    .font-step-1, .font-step-1 p, .font-step-1 div { font-size: 24px !important; line-height: 1.8 !important; }
+    .font-step-2, .font-step-2 p, .font-step-2 div { font-size: 28px !important; line-height: 1.85 !important; }
+    .font-step-3, .font-step-3 p, .font-step-3 div { font-size: 34px !important; line-height: 1.9 !important; }
+    .font-step-4, .font-step-4 p, .font-step-4 div { font-size: 40px !important; line-height: 1.95 !important; }
+
+    @media (max-width: 640px) {
+      .font-step-0, .font-step-0 p, .font-step-0 div { font-size: 19px !important; line-height: 1.7 !important; }
+      .font-step-1, .font-step-1 p, .font-step-1 div { font-size: 22px !important; line-height: 1.75 !important; }
+      .font-step-2, .font-step-2 p, .font-step-2 div { font-size: 26px !important; line-height: 1.8 !important; }
+      .font-step-3, .font-step-3 p, .font-step-3 div { font-size: 30px !important; line-height: 1.85 !important; }
+      .font-step-4, .font-step-4 p, .font-step-4 div { font-size: 36px !important; line-height: 1.9 !important; }
+    }
+  </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col justify-between zen-watermark-bg text-base antialiased selection:bg-stone-700 selection:text-white">
 
-  <!-- ==================== 頂部全功能導覽列 ==================== -->
-  <header class="app-header">
-    <div class="header-inner">
-      <div class="brand-group">
-        <!-- 使用純 SVG 向量繪製金色蓮花，杜絕任何 emoji 在 Windows 缺字變問號 '?' -->
-        <div class="brand-emblem" title="觀音法門">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3c-2.5 3-4 6-4 9a4 4 0 0 0 8 0c0-3-1.5-6-4-9z"/>
-            <path d="M12 12c-3-1.5-6-1.5-8 1a5 5 0 0 0 7 4"/>
-            <path d="M12 12c3-1.5 6-1.5 8 1a5 5 0 0 1-7 4"/>
-          </svg>
+  <!-- ==================== 頂部全域導航欄 (HEADER) ==================== -->
+  <header class="sticky top-0 z-40 w-full backdrop-blur-md border-b border-zen px-3 sm:px-6 py-2.5 transition-colors" style="background-color: var(--bg-header);">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      
+      <!-- 左側：標誌與專案徽章 (點擊可回首頁) -->
+      <div id="brandLogoHomeBtn" class="flex items-center gap-2.5 cursor-pointer group" title="返回定課首頁">
+        <div id="headerLogoContainer" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden border border-zen flex items-center justify-center bg-panel shadow-sm transition-transform group-hover:scale-105">
+          <img id="headerLogoImg" src="assets/logos/logo_01_kundika_vase.jpg" alt="觀音法門" class="w-full h-full object-cover">
         </div>
-        <div class="brand-title">
-          <span>觀音法門定課</span>
-          <span class="badge-version">v1.5</span>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h1 class="text-sm sm:text-base font-bold tracking-wider c-main">觀音法門定課</h1>
+            <span class="text-[10px] px-1.5 py-0.2 rounded-full border border-zen c-muted font-medium">定課版 1.5</span>
+          </div>
+          <p class="text-[10px] c-muted hidden sm:block">法鼓山僧團課誦標準 ｜ 觀世音菩薩修持隨誦</p>
         </div>
       </div>
 
-      <!-- 頂部功能快捷按鈕 -->
-      <div class="header-actions">
-        <button id="recordPracticeBtn" class="btn-header btn-primary" title="記錄今日定課">
-          <span>🙏</span><span id="recordPracticeText">今日定課打卡</span>
+      <!-- 右側：一鍵色調切換、指引、排版、日課、設定按鈕群 -->
+      <div class="flex items-center gap-1 sm:gap-1.5">
+        
+        <!-- 一鍵切換色調 (直覺頂部切換：曜石 / 宣紙 / 天青) -->
+        <button id="quickThemeBtn" onclick="cycleTheme()" class="px-2.5 py-1.5 rounded-full bg-panel-elevated border border-zen hover:border-zen-focus text-xs c-main transition-all flex items-center gap-1 shadow-sm" title="一鍵切換護眼背景色調 (曜石銀灰 / 宋代宣紙 / 沉香天青)">
+          <span id="quickThemeIcon" class="text-xs">🌙</span>
+          <span id="quickThemeText" class="text-[11px] sm:text-xs font-medium">曜石</span>
         </button>
-        <button id="openCalendarBtn" class="btn-header" title="檢視每日修持日曆">
-          <span>📅</span><span>修持日曆</span>
+
+        <!-- 修持與法器設計目的指引 (ⓘ) -->
+        <button onclick="openGuideModal()" class="px-2 sm:px-2.5 py-1.5 rounded-full bg-panel-elevated border border-zen hover:border-zen-focus text-xs c-main transition-all flex items-center gap-1" title="修持功能與法器設計目的說明">
+          <span class="text-xs">ⓘ</span>
+          <span class="hidden sm:inline text-xs">說明</span>
         </button>
-        <button id="openDedicationBtn" class="btn-header" title="開啟法鼓山雲端祈福迴向小卡">
-          <span>🌸</span><span>雲端祈福卡</span>
+
+        <!-- 排版設定按鈕 (Aa) -->
+        <button id="openTypographyBtn" class="px-2 sm:px-2.5 py-1.5 rounded-full bg-panel-elevated border border-zen hover:border-zen-focus text-xs c-main transition-all flex items-center gap-1" title="字體與排版設定">
+          <span class="text-xs font-bold font-serif">字級</span>
+          <span class="hidden sm:inline text-xs">排版</span>
         </button>
-        <button id="themeToggleBtn" class="btn-header" title="切換日間暖沙 / 夜間曜石護眼主題">
-          <span id="themeIcon">🌙</span><span id="themeText">夜修暗調</span>
+
+        <!-- 日課打卡記錄 (🙏) -->
+        <button id="openDailyRecordsBtn" class="px-2 sm:px-2.5 py-1.5 rounded-full bg-panel-elevated border border-zen hover:border-zen-focus text-xs c-main transition-all flex items-center gap-1" title="檢視修持紀錄與迴向小卡">
+          <span>🙏</span>
+          <span class="hidden sm:inline text-xs">日課</span>
+          <span id="dailyCheckIndicator" class="w-1.5 h-1.5 rounded-full bg-stone-400 hidden"></span>
+        </button>
+
+        <!-- 系統設定選單 (⚙️) -->
+        <button id="openSettingsBtn" class="p-1.5 sm:px-2 sm:py-1.5 rounded-full bg-panel-elevated border border-zen hover:border-zen-focus text-xs c-main transition-all flex items-center gap-1" title="更換禪意標誌與詳細設定">
+          <span class="text-xs">⚙️</span>
         </button>
       </div>
+
     </div>
   </header>
 
-  <!-- ==================== 定課模式切換選單 ==================== -->
-  <nav class="mode-navigation" aria-label="定課模式切換">
-    <div class="nav-inner">
-      <div class="mode-tab-bar">
-        <button class="mode-tab-btn active" data-mode="merged">
-          <span>三門合併完整定課</span>
-        </button>
-        <button class="mode-tab-btn" data-mode="pumenpin">
-          <span>普門品課誦</span>
-        </button>
-        <button class="mode-tab-btn" data-mode="dabeizhou">
-          <span>大悲咒課誦</span>
-        </button>
-        <button class="mode-tab-btn" data-mode="xinjing">
-          <span>心經課誦</span>
-        </button>
-      </div>
-
-      <!-- 右側切換至經書版與段落直達 -->
-      <div style="display:flex; align-items:center; gap:0.6rem;">
-        <a href="book.html" class="btn-header" style="text-decoration:none; background:var(--accent-gold-light); color:var(--accent-gold); border-color:var(--accent-gold); font-weight:600;" title="切換至傳統經書摺本模式">
-          <span>📖</span><span>仿造經書版</span>
-        </a>
-        <div style="display:flex; align-items:center; gap:0.4rem; margin-left:0.3rem;">
-          <label for="sectionQuickSelect" style="font-size:0.84rem; color:var(--text-muted);">段落直達：</label>
-          <select id="sectionQuickSelect" class="btn-header" style="padding:0.35rem 0.6rem; cursor:pointer;">
-            <!-- 動態產生 -->
-          </select>
+  <!-- ==================== 主內容區域 (MAIN VIEWPORT) ==================== -->
+  <main class="flex-1 w-full max-w-4xl mx-auto px-3 sm:px-6 py-3.5 sm:py-5 flex flex-col justify-start">
+    
+    <!-- ==================== 視圖 1：三種定課首頁導覽 (HOME VIEW) ==================== -->
+    <div id="homeView" class="w-full space-y-4 sm:space-y-5 transition-opacity duration-200">
+      
+      <!-- 歡迎與禪修指引卡 -->
+      <div class="zen-card rounded-2xl p-4 sm:p-5 border border-zen relative overflow-hidden">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 relative z-10">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs px-2 py-0.5 rounded-full border border-zen c-crimson bg-stone-900/10 font-medium">聖嚴法師開示</span>
+              <span class="text-xs c-muted">觀世音菩薩修持法門</span>
+            </div>
+            <h2 class="text-base sm:text-xl font-bold tracking-wider c-main">三種法鼓山觀音法門定課</h2>
+            <p class="text-xs sm:text-sm c-sub mt-1 leading-relaxed">
+              「救苦救難，普渡眾生。」依個人修持因緣，恭選一門精進誦念；經咒儀軌一律包含淨水開經、大悲發願、三皈依與迴向。
+            </p>
+          </div>
+          <div class="flex items-center gap-2 self-end sm:self-center">
+            <button onclick="quickStartRecommended()" class="px-3.5 py-1.5 rounded-full btn-ochre text-xs font-bold transition-all shadow-md flex items-center gap-1.5">
+              <span>▶</span>
+              <span>今日定課</span>
+            </button>
+          </div>
         </div>
       </div>
+
+      <!-- 三大定課選擇卡片網格 (文字與圖像各異) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4">
+
+        <!-- 卡片 1：《普門品》定課 -->
+        <div class="zen-card rounded-2xl p-4 sm:p-5 border border-zen flex flex-col justify-between hover:border-zen-focus transition-all group relative cursor-pointer" onclick="openPracticeDrawer('pumenpin')">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 rounded-xl bg-panel-elevated border border-zen flex items-center justify-center text-xl shadow-inner group-hover:scale-105 transition-transform">
+                ⛵
+              </div>
+              <span class="text-[11px] px-2 py-0.5 rounded-full border border-zen c-muted font-medium">每日約 20 分鐘</span>
+            </div>
+            <h3 class="text-base font-bold tracking-wide c-main mb-1 group-hover:c-gold transition-colors">《普門品》定課</h3>
+            <p class="text-xs c-crimson font-medium mb-1.5">慈悲救護 ｜ 普門示現</p>
+            <p class="text-xs c-muted leading-relaxed line-clamp-3">
+              收錄完整長行經文、三十二偈頌與持地菩薩流通分；祈求菩薩十四無畏、三十二應化身解脫諸難。
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-zen flex items-center justify-between text-xs">
+            <span class="c-sub text-[11px]">長行偈頌・流通分</span>
+            <button class="px-2.5 py-1 rounded-full bg-panel-elevated border border-zen c-main text-xs group-hover:btn-ochre transition-all">
+              進入修持 ➔
+            </button>
+          </div>
+        </div>
+
+        <!-- 卡片 2：〈大悲咒〉定課 -->
+        <div class="zen-card rounded-2xl p-4 sm:p-5 border border-zen flex flex-col justify-between hover:border-zen-focus transition-all group relative cursor-pointer" onclick="openPracticeDrawer('dabeizhou')">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 rounded-xl bg-panel-elevated border border-zen flex items-center justify-center text-xl shadow-inner group-hover:scale-105 transition-transform">
+                🪷
+              </div>
+              <span class="text-[11px] px-2 py-0.5 rounded-full border border-zen c-muted font-medium">每日 7~21 遍</span>
+            </div>
+            <h3 class="text-base font-bold tracking-wide c-main mb-1 group-hover:c-gold transition-colors">〈大悲咒〉定課</h3>
+            <p class="text-xs c-crimson font-medium mb-1.5">千手千眼 ｜ 陀羅尼除障</p>
+            <p class="text-xs c-muted leading-relaxed line-clamp-3">
+              完整收錄八十四句大悲陀羅尼，包含大悲發願祈願文（南無大悲觀世音，願我速知一切法…刀山摧折、火湯枯竭）。
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-zen flex items-center justify-between text-xs">
+            <span class="c-sub text-[11px]">84句陀羅尼・發宏願</span>
+            <button class="px-2.5 py-1 rounded-full bg-panel-elevated border border-zen c-main text-xs group-hover:btn-ochre transition-all">
+              進入修持 ➔
+            </button>
+          </div>
+        </div>
+
+        <!-- 卡片 3：《心經》定課 -->
+        <div class="zen-card rounded-2xl p-4 sm:p-5 border border-zen flex flex-col justify-between hover:border-zen-focus transition-all group relative cursor-pointer" onclick="openPracticeDrawer('xinjing')">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="w-10 h-10 rounded-xl bg-panel-elevated border border-zen flex items-center justify-center text-xl shadow-inner group-hover:scale-105 transition-transform">
+                ⭕
+              </div>
+              <span class="text-[11px] px-2 py-0.5 rounded-full border border-zen c-muted font-medium">每日 3~7 遍</span>
+            </div>
+            <h3 class="text-base font-bold tracking-wide c-main mb-1 group-hover:c-gold transition-colors">《心經》定課</h3>
+            <p class="text-xs c-crimson font-medium mb-1.5">般若空慧 ｜ 心無罣礙</p>
+            <p class="text-xs c-muted leading-relaxed line-clamp-3">
+              玄奘大師譯本二百六十字經文，照見五蘊皆空、度一切苦厄；銜接大悲發願與十稱觀音，開啟深般若心燈。
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-zen flex items-center justify-between text-xs">
+            <span class="c-sub text-[11px]">般若核心・空慧解脫</span>
+            <button class="px-2.5 py-1 rounded-full bg-panel-elevated border border-zen c-main text-xs group-hover:btn-ochre transition-all">
+              進入修持 ➔
+            </button>
+          </div>
+        </div>
+
+      </div>
+
     </div>
-  </nav>
 
-  <!-- ==================== 主課誦區 ==================== -->
-  <main class="main-container">
-
-    <!-- 頂部誦經人因工程控制列 (集中於上方) -->
-    <div class="top-controls-toolbar">
-      <!-- 1. 音標與標點顯隱開關 -->
-      <div class="toolbar-group">
-        <span class="toolbar-label">顯示開關：</span>
-        <label class="toggle-item">
-          <input type="checkbox" id="toggleZhuyin" checked>
-          <span>注音</span>
-        </label>
-        <label class="toggle-item">
-          <input type="checkbox" id="togglePinyin" checked>
-          <span>拼音</span>
-        </label>
-        <label class="toggle-item">
-          <input type="checkbox" id="togglePunct" checked>
-          <span>標點</span>
-        </label>
-      </div>
-
-      <!-- 2. 字級大小切換 -->
-      <div class="toolbar-group">
-        <span class="toolbar-label">字級：</span>
-        <div class="btn-toggle-group">
-          <button class="btn-toggle-opt active" data-size="normal">標準</button>
-          <button class="btn-toggle-opt" data-size="large">大字</button>
-          <button class="btn-toggle-opt" data-size="xlarge">特大</button>
+    <!-- ==================== 視圖 2：讀誦與定課修持視圖 (READING VIEW) ==================== -->
+    <div id="readingView" class="w-full flex-col hidden space-y-3 pb-24">
+      
+      <!-- 頂部經文導航工具列 -->
+      <div class="zen-card rounded-xl px-3 py-2 border border-zen flex items-center justify-between">
+        
+        <div class="flex items-center gap-2">
+          <button onclick="returnToHome()" class="px-2.5 py-1 rounded-full bg-panel-elevated border border-zen hover:border-zen-focus text-xs c-main transition-all flex items-center gap-1">
+            <span>←</span>
+            <span class="hidden sm:inline">首頁</span>
+          </button>
+          <div class="flex items-center gap-1.5">
+            <span id="readingPracticeBadge" class="text-xs font-bold c-crimson">【心經】</span>
+            <span id="readingScopeIndicator" class="text-[11px] c-muted hidden sm:inline">全品讀誦</span>
+          </div>
         </div>
+
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          <!-- 官方念誦影音伴誦按鈕 -->
+          <button onclick="openDdmPlayer()" class="px-2.5 py-1 rounded-full bg-panel-elevated border border-amber-800/30 hover:border-amber-600 text-xs c-gold font-medium transition-all flex items-center gap-1 shadow-sm" title="開啟法鼓山官方念誦影音 (YouTube)">
+            <span>🎬</span>
+            <span class="hidden sm:inline text-xs">官方念誦</span>
+            <span class="sm:hidden text-xs">伴誦</span>
+          </button>
+
+          <!-- 翻頁 / 卷軸 模式切換 -->
+          <button id="changeReadingModeBtn" onclick="toggleReadingMode()" class="px-2.5 py-1 rounded-full bg-panel-elevated border border-zen hover:border-zen-focus text-xs c-main transition-all flex items-center gap-1">
+            <span id="readingModeIcon">📜</span>
+            <span id="readingModeText" class="text-xs">卷軸模式</span>
+          </button>
+        </div>
+
       </div>
 
-      <!-- 3. 研讀與背誦遮蔽切換 -->
-      <div class="toolbar-group">
-        <span class="toolbar-label">讀誦模式：</span>
-        <div class="btn-toggle-group">
-          <button class="btn-toggle-opt active" data-mask="none">三音齊全</button>
-          <button class="btn-toggle-opt" data-mask="ruby">純國字</button>
-          <button class="btn-toggle-opt" data-mask="char">默誦背誦</button>
+      <!-- A. 弘一禪風單句居中經本翻頁視圖 (BOOK MODE - DEFAULT) -->
+      <div id="bookModeContainer" class="w-full flex flex-col items-center">
+        
+        <!-- 經本摺頁翻頁卡片 (嚴密置中、舒適行距、大字餘裕充足) -->
+        <div id="bookPageCard" class="w-full zen-card rounded-2xl p-4 sm:p-6 border border-zen relative min-h-[50vh] sm:min-h-[54vh] flex flex-col justify-between select-none">
+          
+          <!-- 頂部科判小標與頁碼 -->
+          <div class="flex items-center justify-between text-xs pb-2 border-b border-zen/50 w-full">
+            <div class="flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full" style="background-color: var(--accent-ochre);"></span>
+              <span id="bookPageTitle" class="font-bold c-sub tracking-wider">【楊枝淨水讚】</span>
+              <span id="bookPageSubtitle" class="text-[11px] c-muted hidden sm:inline"></span>
+            </div>
+            <div class="font-mono text-[11px] c-muted">
+              <span id="bookCurrentPageNum" class="c-gold font-bold">1</span> / <span id="bookTotalPageNum">12</span>
+            </div>
+          </div>
+
+          <!-- 經文主內容容器：緊湊舒適、字字相連、字級放大空間充裕 -->
+          <div id="bookPageContentWrap" class="flex-1 flex flex-col items-center justify-center py-3.5 sm:py-5 px-1 sm:px-4 cursor-pointer" onclick="handleCardClick(event)">
+            <div id="bookPageContent" class="w-full max-w-2xl mx-auto space-y-1 sm:space-y-1.5 tracking-wider transition-all">
+              <!-- 動態置中經句在此渲染 -->
+            </div>
+          </div>
+
+          <!-- 底部快速翻頁提示與進度按鈕 -->
+          <div class="pt-2.5 border-t border-zen/50 flex items-center justify-between text-xs w-full">
+            <button id="bookPrevPageBtn" onclick="prevBookPage()" class="px-3 py-1.5 rounded-full bg-panel-elevated border border-zen hover:border-zen-focus c-main disabled:opacity-20 disabled:cursor-not-allowed transition-all flex items-center gap-1 text-xs">
+              <span>←</span>
+              <span>上一頁</span>
+            </button>
+
+            <!-- 中間翻頁提示指引 -->
+            <span class="text-[10px] c-muted hidden sm:inline">輕觸左側/右側或滑動翻頁 ｜ 空白鍵敲木魚</span>
+
+            <button id="bookNextPageBtn" onclick="nextBookPage()" class="px-3.5 py-1.5 rounded-full btn-ochre text-xs font-bold transition-all flex items-center gap-1 shadow-sm">
+              <span id="bookNextBtnText">下一頁</span>
+              <span>→</span>
+            </button>
+          </div>
+
         </div>
+
       </div>
+
+      <!-- B. 卷軸連續視圖 (SCROLL MODE) -->
+      <div id="scrollModeContainer" class="w-full flex-col hidden">
+        <div id="sectionNavPills" class="flex items-center gap-2 overflow-x-auto pb-2.5 mb-2 no-scrollbar text-xs"></div>
+        <div id="scriptureContentContainer" class="zen-card rounded-2xl p-4 sm:p-7 space-y-5 leading-relaxed text-base sm:text-lg"></div>
+      </div>
+
+      <!-- 底部固定禪意法器工具列 (真實木魚、引磬、大磬、自動木魚、+1遍數、打卡) -->
+      <div class="fixed bottom-2.5 sm:bottom-4 left-1/2 -translate-x-1/2 z-40 w-[96%] max-w-2xl zen-card rounded-full px-2.5 sm:px-4 py-2 flex items-center justify-between border border-zen shadow-2xl bg-panel backdrop-blur-md">
+        
+        <!-- 法器群組：真實寺院木魚、真品引磬、真品大磬 -->
+        <div class="flex items-center gap-1 sm:gap-1.5">
+          <!-- 木魚 (快速鍵: Space) -->
+          <button id="strikeWoodfishBtn" onclick="strikeWoodfish()" class="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full bg-panel-elevated border border-zen hover:border-zen-focus c-gold text-xs font-medium transition-all active:scale-90" title="法鼓山真品樟木大木魚 (快速鍵: 空白鍵)">
+            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current text-amber-600/90" viewBox="0 0 24 24">
+              <path d="M12 4 C7.5 4 4 7.2 4 11.5 C4 15.5 7.5 19 12 19 C14.2 19 16.5 18 18 16.5 L20 17.5 C20.5 17.8 21 17.3 20.8 16.8 L20 14.2 C20.6 13 21 11.8 21 10.5 C21 6.5 17 4 12 4 Z M8 12.5 C7.4 12.5 7 12 7 11.5 C7 11 7.4 10.5 8 10.5 C8.6 10.5 9 11 9 11.5 C9 12 8.6 12.5 8 12.5 Z M15 13.5 C13 14.5 11 14.5 9 13.5 C8.6 13.3 8.3 13.7 8.5 14 C9.8 15.8 14.2 15.8 15.5 14 C15.7 13.7 15.4 13.3 15 13.5 Z"/>
+            </svg>
+            <span class="text-[11px] sm:text-xs">木魚</span>
+          </button>
+
+          <!-- 引磬 (快速鍵: Q) -->
+          <button id="strikeYinqingBtn" onclick="strikeYinqing()" class="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full bg-panel-elevated border border-zen hover:border-zen-focus c-gold text-xs font-medium transition-all active:scale-90" title="法鼓山真實引磬 (快速鍵: Q)">
+            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current text-amber-600/90" viewBox="0 0 24 24">
+              <path d="M7 7 C7 4.5, 17 4.5, 17 7 L17 8.5 C17 9.5, 15.5 10.5, 12 10.5 C8.5 10.5, 7 9.5, 7 8.5 Z" />
+              <rect x="10.8" y="10.5" width="2.4" height="2" rx="0.5" />
+              <rect x="11.2" y="12.5" width="1.6" height="8.5" rx="0.8" />
+              <circle cx="12" cy="21.5" r="1.1" />
+            </svg>
+            <span class="text-[11px] sm:text-xs">引磬</span>
+          </button>
+
+          <!-- 大磬 (快速鍵: B) -->
+          <button id="strikeDaqingBtn" onclick="strikeDaqing()" class="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full bg-panel-elevated border border-zen hover:border-zen-focus c-gold text-xs font-medium transition-all active:scale-90" title="法鼓山真品青銅大磬 (快速鍵: B)">
+            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current text-amber-600/90" viewBox="0 0 24 24">
+              <path d="M5 8 C5 6.5, 19 6.5, 19 8 C19 12.5, 16.5 16, 12 16 C7.5 16, 5 12.5, 5 8 Z" />
+              <ellipse cx="12" cy="17" rx="6" ry="1.5" opacity="0.65" />
+              <ellipse cx="12" cy="18.5" rx="5" ry="1.2" opacity="0.45" />
+            </svg>
+            <span class="text-[11px] sm:text-xs">大磬</span>
+          </button>
+
+          <!-- 自動木魚節拍 -->
+          <button id="autoMuyuBtn" onclick="toggleAutoMuyu()" class="hidden md:flex items-center gap-1 px-2 py-1.5 rounded-full bg-panel-elevated border border-zen hover:border-zen-focus c-muted text-[11px] font-medium transition-all" title="自動木魚伴奏 (45 BPM)">
+            <span>⏱️</span>
+            <span>常速</span>
+          </button>
+        </div>
+
+        <!-- 右側操作：+1 遍數與打卡 -->
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          <button id="incrementRepBtn" class="flex items-center gap-1 px-3 sm:px-4 py-1.5 rounded-full btn-ochre font-bold text-xs sm:text-sm active:scale-95 transition-all shadow-md" title="完成一遍經咒或佛號累加">
+            <span>+1 遍/聲</span>
+          </button>
+
+          <button onclick="finishPracticeAndCheckIn()" class="px-3 sm:px-3.5 py-1.5 rounded-full btn-darkred text-white font-medium text-xs sm:text-sm transition-all shadow flex items-center gap-1" title="完成今日定課・功德普迴向">
+            <span>🙏</span>
+            <span class="hidden sm:inline">圓滿打卡</span>
+            <span class="sm:hidden">圓滿</span>
+          </button>
+        </div>
+
+      </div>
+
     </div>
-
-    <!-- 經卷聖殿主體 (徹底無畫線、無經文前小標，連貫經本) -->
-    <article class="scripture-scroll-board">
-      <header class="board-header">
-        <h1 id="scriptureTitle" class="board-title">觀音法門完整定課（三門合修）</h1>
-        <p id="scriptureSubtitle" class="board-subtitle">大悲總持・普門廣度・般若空慧・法鼓山課誦儀軌連貫修持</p>
-      </header>
-
-      <!-- 經文主體 (純粹連貫經卷) -->
-      <div id="scriptureContainer" class="board-content">
-        <!-- 由 app.js 注入 -->
-      </div>
-    </article>
 
   </main>
 
-  <!-- ==================== 模態彈窗體系 ==================== -->
-
-  <!-- 1. 定課打卡日曆彈窗 -->
-  <div id="calendarModal" class="zen-modal-overlay hidden" aria-hidden="true" role="dialog">
-    <div class="zen-modal-card modal-lg">
-      <div class="modal-header-bar">
-        <div class="modal-title-wrap">
-          <span style="font-size:1.3rem;">🙏</span>
-          <h3 class="modal-title">定課修持日曆</h3>
-        </div>
-        <button id="closeCalendarModalBtn" class="btn-close-modal" aria-label="關閉">✕</button>
-      </div>
-      <div class="modal-body-content">
-        <div id="calendarMount"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. 法鼓山風格雲端祈福迴向小卡彈窗 -->
-  <div id="dedicationModal" class="zen-modal-overlay hidden" aria-hidden="true" role="dialog">
-    <div class="zen-modal-card modal-xl">
-      <div class="modal-header-bar">
-        <div class="modal-title-wrap">
-          <span style="font-size:1.3rem;">🌸</span>
-          <h3 class="modal-title">法鼓山觀音定課・雲端祈福小卡</h3>
-        </div>
-        <button id="closeDedicationModalBtn" class="btn-close-modal" aria-label="關閉">✕</button>
-      </div>
-      <div class="modal-body-content">
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start;">
-          
-          <!-- 左側即時預覽 Canvas -->
+  <!-- ==================== 彈窗 0：法鼓山官方念誦影音伴誦窗 (DDM YOUTUBE PLAYER) ==================== -->
+  <div id="ddmPlayerModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 modal-backdrop hidden">
+    <div class="zen-card w-full max-w-2xl rounded-2xl p-4 sm:p-6 border border-zen shadow-2xl relative flex flex-col">
+      
+      <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-zen">
+        <div class="flex items-center gap-2">
+          <span class="text-base">🎬</span>
           <div>
-            <div style="background:#ffffff; border-radius:12px; padding:0.5rem; border:1px solid var(--border-main); box-shadow:var(--shadow-sm); display:flex; justify-content:center;">
-              <canvas id="dedicationCardCanvas" width="900" height="1200" style="max-width:100%; height:auto; border-radius:8px; display:block;"></canvas>
-            </div>
-            <div style="display:flex; flex-direction:column; gap:0.6rem; margin-top:1rem;">
-              <button id="downloadCardBtn" class="btn-header btn-primary" style="justify-content:center; padding:0.75rem; font-size:0.95rem;">
-                <span>📥</span> 下載雲端祈福小卡 (PNG 圖片)
-              </button>
-              <button id="copyCardTextBtn" class="btn-header" style="justify-content:center; padding:0.65rem;">
-                <span>📋</span> 複製法鼓山祈願文 (LINE / 社群分享)
-              </button>
-            </div>
+            <h3 id="ddmPlayerTitle" class="text-sm sm:text-base font-bold c-main">法鼓山僧團官方念誦影音</h3>
+            <p class="text-[11px] c-muted">跟隨法鼓山僧團梵唄韻律・大磬木魚同步讀誦</p>
           </div>
-
-          <!-- 右側設定面板 -->
-          <div style="display:flex; flex-direction:column; gap:1.2rem;">
-
-            <!-- 風格選擇 -->
-            <div>
-              <label style="display:block; font-size:0.88rem; font-weight:600; color:var(--accent-gold); margin-bottom:0.4rem;">
-                祈福小卡雅緻風格：
-              </label>
-              <div style="display:flex; flex-direction:column; gap:0.45rem;">
-                <label style="display:flex; align-items:center; gap:0.6rem; padding:0.55rem 0.85rem; background:var(--bg-card-subtle); border-radius:8px; border:1px solid var(--border-main); cursor:pointer;">
-                  <input type="radio" name="cardStyle" value="warm_gold" checked>
-                  <span style="font-size:0.88rem; font-weight:600; color:var(--text-main);">🌅 晨曦暖金（法鼓暖米宣・水墨聖蓮・心安平安）</span>
-                </label>
-                <label style="display:flex; align-items:center; gap:0.6rem; padding:0.55rem 0.85rem; background:var(--bg-card-subtle); border-radius:8px; border:1px solid var(--border-main); cursor:pointer;">
-                  <input type="radio" name="cardStyle" value="fresh_bamboo">
-                  <span style="font-size:0.88rem; font-weight:600; color:var(--text-main);">🍃 若竹清心（清爽淡綠・生機喜悅・甘露清涼）</span>
-                </label>
-                <label style="display:flex; align-items:center; gap:0.6rem; padding:0.55rem 0.85rem; background:var(--bg-card-subtle); border-radius:8px; border:1px solid var(--border-main); cursor:pointer;">
-                  <input type="radio" name="cardStyle" value="pure_white">
-                  <span style="font-size:0.88rem; font-weight:600; color:var(--text-main);">📜 雪宣澄心（雪白宣紙・硃砂印泥・極簡典雅）</span>
-                </label>
-              </div>
-            </div>
-
-            <!-- 法鼓山經典雲端祈福選單 -->
-            <div>
-              <label for="blessingPresetSelect" style="display:block; font-size:0.88rem; font-weight:600; color:var(--accent-gold); margin-bottom:0.4rem;">
-                法鼓山經典祈願祝福語：
-              </label>
-              <select id="blessingPresetSelect" class="btn-header" style="width:100%; padding:0.6rem 0.8rem; font-size:0.88rem;">
-                <option value="心安平安，消災消難；身心康泰，六時吉祥。">🌱 【祈福消災】心安平安，消災消難；身心康泰，六時吉祥</option>
-                <option value="知福幸福，廣種福田；培福修慧，廣結善緣。">🌾 【培福修慧】知福幸福，廣種福田；培福修慧，廣結善緣</option>
-                <option value="光明遠大，和樂無諍；慈悲無敵，智慧無惱。">💼 【光明遠大】光明遠大，和樂無諍；慈悲無敵，智慧無惱</option>
-                <option value="心安身安，闔家和樂；福慧傳家，和喜自在。">🏡 【福慧傳家】心安身安，闔家和樂；福慧傳家，和喜自在</option>
-                <option value="福慧雙修，深入經藏；開發智慧，成就善法。">📚 【開發智慧】福慧雙修，深入經藏；開發智慧，成就善法</option>
-                <option value="放捨諸相，心無罣礙；往生淨土，蓮登九品。">🕊️ 【往生淨土・超薦】放捨諸相，心無罣礙；往生淨土，蓮登九品</option>
-                <option value="custom">✏️ 自訂祈願祝福語</option>
-              </select>
-            </div>
-
-            <!-- 祈福人 (迴向者) 與 受迴向者 (對象) -->
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-              <div>
-                <label for="dedicatorInput" style="display:block; font-size:0.84rem; font-weight:600; color:var(--accent-gold); margin-bottom:0.3rem;">祈福人（迴向者）：</label>
-                <input type="text" id="dedicatorInput" class="btn-header" style="width:100%; padding:0.5rem 0.7rem; font-size:0.9rem;" value="佛弟子">
-              </div>
-              <div>
-                <label for="recipientInput" style="display:block; font-size:0.84rem; font-weight:600; color:var(--accent-gold); margin-bottom:0.3rem;">受迴向者（祈福對象）：</label>
-                <input type="text" id="recipientInput" class="btn-header" style="width:100%; padding:0.5rem 0.7rem; font-size:0.9rem;" value="父母師長與一切有情">
-              </div>
-            </div>
-
-            <!-- 祈願內容輸入 -->
-            <div>
-              <label for="blessingMsgInput" style="display:block; font-size:0.84rem; font-weight:600; color:var(--accent-gold); margin-bottom:0.3rem;">祈福法語內容：</label>
-              <textarea id="blessingMsgInput" class="btn-header" style="width:100%; padding:0.55rem 0.75rem; font-size:0.9rem; resize:vertical;" rows="3">心安平安，消災消難；身心康泰，六時吉祥。</textarea>
-            </div>
-
-          </div>
-
+        </div>
+        
+        <div class="flex items-center gap-2">
+          <button onclick="minimizeDdmPlayer()" class="px-2.5 py-1 rounded-full btn-ochre text-[11px] font-bold shadow flex items-center gap-1" title="縮小為背景伴讀，返回看經文">
+            <span>📖 邊聽邊讀 (背景伴讀)</span>
+          </button>
+          <button onclick="stopDdmPlayer()" class="c-muted hover:c-main text-lg font-bold p-1" title="結束播放">✕</button>
         </div>
       </div>
+
+      <!-- 響應式 16:9 YouTube 內嵌播放器 -->
+      <div class="w-full aspect-video rounded-xl overflow-hidden bg-black/80 shadow-inner relative border border-zen">
+        <iframe id="ddmIframe" class="w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <div class="mt-3.5 flex items-center justify-between text-xs">
+        <span class="c-muted text-[11px]">✨ 支援畫中畫與背景跟誦，點擊右上角或下方返回經本</span>
+        <button onclick="closeDdmPlayer()" class="px-3.5 py-1.5 rounded-full btn-ochre text-xs font-bold transition-all">
+          返回經文讀誦
+        </button>
+      </div>
+
     </div>
   </div>
 
-  <!-- 3. 字音自訂校訂彈窗 -->
-  <div id="editCharModal" class="zen-modal-overlay hidden" aria-hidden="true" role="dialog">
-    <div class="zen-modal-card modal-md">
-      <div class="modal-header-bar">
-        <div class="modal-title-wrap">
-          <span style="font-size:1.3rem;">✏️</span>
-          <h3 class="modal-title">字音自訂校訂</h3>
+  <!-- ==================== 彈窗 0.5：修持功能與法器設計目的指引 (GUIDE MODAL) ==================== -->
+  <div id="guideModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 modal-backdrop hidden">
+    <div class="zen-card w-full max-w-lg rounded-2xl p-5 sm:p-6 border border-zen shadow-2xl relative max-h-[88vh] overflow-y-auto">
+      
+      <div class="flex items-center justify-between mb-3.5 pb-2.5 border-b border-zen">
+        <div class="flex items-center gap-2">
+          <span class="text-base c-gold">ⓘ</span>
+          <h3 class="text-base font-bold c-main">修持功能與工具列設計目的</h3>
         </div>
-        <button id="closeEditCharModalBtn" class="btn-close-modal" aria-label="關閉">✕</button>
+        <button onclick="closeGuideModal()" class="c-muted hover:c-main text-xl font-bold p-1">✕</button>
       </div>
-      <div class="modal-body-content" style="display:flex; flex-direction:column; gap:1rem;">
-        <div style="display:flex; align-items:center; justify-content:space-between; padding:0.6rem 0.9rem; background:var(--bg-card-subtle); border-radius:6px; border:1px solid var(--border-main);">
-          <span style="font-size:0.88rem; color:var(--text-muted);">原典經文字元：</span>
-          <span id="editCharOriginalPreview" style="font-size:2.2rem; color:var(--accent-gold); font-weight:700;">觀</span>
+
+      <div class="space-y-4 text-xs leading-relaxed c-sub">
+        <!-- 1. 法器目的 -->
+        <div class="p-3 rounded-xl bg-panel-elevated border border-zen">
+          <h4 class="font-bold c-gold text-sm mb-1.5 flex items-center gap-1.5">
+            <span>🪵 🔔 🥣</span>
+            <span>三大法器：身口意三密相應</span>
+          </h4>
+          <p class="mb-1 text-xs">
+            漢傳佛教叢林課誦中，法器為梵唄龍象之節律：
+          </p>
+          <ul class="list-disc list-inside space-y-1 text-xs c-main pl-1">
+            <li><strong>木魚 (空白鍵敲擊)</strong>：取自法鼓山原版 480Hz 樟木大木魚，音質沉厚圓潤，為讀誦之主節奏，攝念安心。</li>
+            <li><strong>引磬 (快捷鍵 Q)</strong>：木柄銅缽引磬，音響清越高亢，司掌起腔、讚偈起伏與轉折。</li>
+            <li><strong>大磬 (快捷鍵 B)</strong>：青銅大磬，具備 3.2Hz 悠長天然拍音，司掌開經、發願與重頂禮拜。</li>
+            <li><strong>自動常速 (每分鐘 45 拍)</strong>：每分鐘 45 拍穩健節奏，便於靜心閉目跟誦。</li>
+          </ul>
         </div>
 
-        <div>
-          <label for="editCharText" style="display:block; font-size:0.84rem; font-weight:600; color:var(--accent-gold); margin-bottom:0.25rem;">國字：</label>
-          <input type="text" id="editCharText" class="btn-header" style="width:100%; padding:0.45rem 0.7rem;" maxlength="2">
+        <!-- 2. 遍數計數目的 -->
+        <div class="p-3 rounded-xl bg-panel-elevated border border-zen">
+          <h4 class="font-bold c-gold text-sm mb-1.5 flex items-center gap-1.5">
+            <span>🔢</span>
+            <span>遍數計數 (+1 遍 / 聲)：定課落實與策進</span>
+          </h4>
+          <p class="text-xs">
+            行者預先在定課抽屜設定目標（例如大悲咒 7 遍、心經 3 遍或觀音聖號 10/108 聲）。每圓滿一遍輕點「+1 遍/聲」，系統伴隨一聲法器自動記錄，達標時引磬鳴響，策勵每日精進不懈。
+          </p>
         </div>
 
-        <div>
-          <label for="editCharZhuyin" style="display:block; font-size:0.84rem; font-weight:600; color:var(--accent-gold); margin-bottom:0.25rem;">注音符號（如 ㄍㄨㄢ）：</label>
-          <input type="text" id="editCharZhuyin" class="btn-header" style="width:100%; padding:0.45rem 0.7rem;" placeholder="例如：ㄍㄨㄢ">
-          <span style="font-size:0.75rem; color:var(--text-muted);">輸入注音自動換算為帶調拼音</span>
-        </div>
-
-        <div>
-          <label for="editCharPinyin" style="display:block; font-size:0.84rem; font-weight:600; color:var(--accent-gold); margin-bottom:0.25rem;">漢語拼音：</label>
-          <input type="text" id="editCharPinyin" class="btn-header" style="width:100%; padding:0.45rem 0.7rem;" placeholder="例如：guān">
-        </div>
-
-        <div style="display:flex; justify-content:flex-end; gap:0.6rem; margin-top:0.4rem;">
-          <button id="resetCharEditBtn" class="btn-header">還原預設</button>
-          <button id="saveCharEditBtn" class="btn-header btn-primary">儲存校訂</button>
+        <!-- 3. 圓滿打卡目的 -->
+        <div class="p-3 rounded-xl bg-panel-elevated border border-zen">
+          <h4 class="font-bold c-gold text-sm mb-1.5 flex items-center gap-1.5">
+            <span>🙏</span>
+            <span>圓滿打卡：收束功德與普皆迴向</span>
+          </h4>
+          <p class="text-xs">
+            定課誦畢時，點擊「圓滿打卡」，系統記錄今日修持日曆（🙏 合掌記號），並自動生成高解析「禪意迴向小卡」，令修行者可將功德迴向法界眾生與親眷，日日安住菩提道。
+          </p>
         </div>
       </div>
+
+      <div class="mt-4 pt-3 border-t border-zen flex justify-end">
+        <button onclick="closeGuideModal()" class="px-4 py-1.5 rounded-full btn-ochre text-xs font-bold transition-all">
+          了解，返回修持
+        </button>
+      </div>
+
     </div>
   </div>
 
-  <!-- Toast 通知容器 -->
-  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+  <!-- ==================== 彈窗 1：排版與字體微調浮層 (TYPOGRAPHY MODAL) ==================== -->
+  <div id="typographyModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
+    <div class="zen-card w-full max-w-md rounded-2xl p-6 border border-zen shadow-2xl relative">
+      
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-zen">
+        <div class="flex items-center gap-2">
+          <span class="text-base font-serif font-bold c-gold">字</span>
+          <h3 class="text-base font-bold c-main">經文字級與段落排版</h3>
+        </div>
+        <button onclick="closeTypographyModal()" class="c-muted hover:c-main text-xl font-bold p-1">✕</button>
+      </div>
 
-  <!-- 引用腳本檔案 -->
-  <script src="data/pinyin_engine.js"></script>
-  <script src="data/guanyin_scriptures.js"></script>
-  <script src="js/safe_storage.js"></script>
-  <script src="js/calendar.js"></script>
-  <script src="js/dedication_card.js"></script>
-  <script src="js/app.js"></script>
+      <!-- 1. 字體選擇 (楷體 / 宋體 / 黑體) -->
+      <div class="mb-4">
+        <label class="block text-xs font-semibold c-gold mb-2">經文字體選擇：</label>
+        <div class="grid grid-cols-3 gap-2 text-xs">
+          <button onclick="setFontFamily('kaiti')" id="fontBtn_kaiti" class="py-2 rounded-lg border border-zen bg-panel font-kaiti hover:border-zen-focus text-sm transition-all text-center">
+            經典楷體
+          </button>
+          <button onclick="setFontFamily('songti')" id="fontBtn_songti" class="py-2 rounded-lg border border-zen bg-panel font-songti hover:border-zen-focus text-sm transition-all text-center">
+            禪宗宋體
+          </button>
+          <button onclick="setFontFamily('heiti')" id="fontBtn_heiti" class="py-2 rounded-lg border border-zen bg-panel font-heiti hover:border-zen-focus text-sm transition-all text-center">
+            現代黑體
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. 字級大小設定 (5 段微調) -->
+      <div class="mb-4">
+        <div class="flex items-center justify-between mb-2">
+          <label class="text-xs font-semibold c-gold">經文字級大小：</label>
+          <span id="fontSizeDisplay" class="text-xs font-mono c-sub">20px</span>
+        </div>
+        <div class="grid grid-cols-5 gap-1.5 text-xs text-center">
+          <button onclick="setFontSizeStep(0)" id="sizeBtn_0" class="py-1.5 rounded border border-zen bg-panel hover:border-zen-focus text-xs">小 (20px)</button>
+          <button onclick="setFontSizeStep(1)" id="sizeBtn_1" class="py-1.5 rounded border border-zen bg-panel hover:border-zen-focus text-xs font-bold">中 (24px)</button>
+          <button onclick="setFontSizeStep(2)" id="sizeBtn_2" class="py-1.5 rounded border border-zen bg-panel hover:border-zen-focus text-xs">大 (28px)</button>
+          <button onclick="setFontSizeStep(3)" id="sizeBtn_3" class="py-1.5 rounded border border-zen bg-panel hover:border-zen-focus text-xs">特大 (34px)</button>
+          <button onclick="setFontSizeStep(4)" id="sizeBtn_4" class="py-1.5 rounded border border-zen bg-panel hover:border-zen-focus text-xs">巨幅 (40px)</button>
+        </div>
+      </div>
+
+      <!-- 3. 段落對齊 (置中 vs 靠左) -->
+      <div class="mb-4">
+        <label class="block text-xs font-semibold c-gold mb-2">段落對齊方式：</label>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <button onclick="setTextAlign('center')" id="alignBtn_center" class="py-2 rounded-lg border border-zen bg-panel hover:border-zen-focus transition-all text-center">
+            禪意置中（推薦）
+          </button>
+          <button onclick="setTextAlign('left')" id="alignBtn_left" class="py-2 rounded-lg border border-zen bg-panel hover:border-zen-focus transition-all text-center">
+            傳統靠左
+          </button>
+        </div>
+      </div>
+
+      <!-- 4. 行距寬裕度 -->
+      <div class="mb-5">
+        <label class="block text-xs font-semibold c-gold mb-2">行距與呼吸感：</label>
+        <div class="grid grid-cols-3 gap-2 text-xs">
+          <button onclick="setLineHeight('tight')" id="lhBtn_tight" class="py-1.5 rounded-lg border border-zen bg-panel hover:border-zen-focus text-center">
+            緊湊 (1.6)
+          </button>
+          <button onclick="setLineHeight('normal')" id="lhBtn_normal" class="py-1.5 rounded-lg border border-zen bg-panel hover:border-zen-focus text-center">
+            適度 (1.8)
+          </button>
+          <button onclick="setLineHeight('relaxed')" id="lhBtn_relaxed" class="py-1.5 rounded-lg border border-zen bg-panel hover:border-zen-focus text-center">
+            空靈 (2.1)
+          </button>
+        </div>
+      </div>
+
+      <button onclick="closeTypographyModal()" class="w-full py-2.5 rounded-xl btn-ochre text-xs font-bold transition-all shadow-md">
+        完成排版設定
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ==================== 彈窗 2：遍數與佛號設定抽屜 (DRAWER) ==================== -->
+  <div id="practiceDrawerModal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 modal-backdrop hidden">
+    <div class="zen-card w-full max-w-lg rounded-t-3xl sm:rounded-2xl p-5 sm:p-7 border border-zen shadow-2xl relative max-h-[85vh] overflow-y-auto">
+      
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-zen">
+        <div class="flex items-center gap-2">
+          <span id="drawerIcon" class="text-xl">🪷</span>
+          <div>
+            <h3 id="drawerTitle" class="text-base sm:text-lg font-bold c-main">設定定課遍數</h3>
+            <p id="drawerDesc" class="text-xs c-muted">自訂經咒遍數與佛號聲數</p>
+          </div>
+        </div>
+        <button onclick="closePracticeDrawer()" class="c-muted hover:c-main text-xl font-bold p-1">✕</button>
+      </div>
+
+      <!-- 普門品專用：長行全品 vs 偈頌專修 -->
+      <div id="pumenpinScopeSelector" class="mb-4 hidden">
+        <label class="block text-xs font-semibold c-gold mb-2">持誦範圍選擇：</label>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <button onclick="setPumenpinScope('all')" id="scopeBtn_all" class="py-2.5 px-3 rounded-xl border border-zen bg-panel hover:border-zen-focus text-center transition-all">
+            <div class="font-bold c-main">全品持誦</div>
+            <div class="text-[10px] c-muted">長行 + 三十二偈頌 (~20分)</div>
+          </button>
+          <button onclick="setPumenpinScope('jisong')" id="scopeBtn_jisong" class="py-2.5 px-3 rounded-xl border border-zen bg-panel hover:border-zen-focus text-center transition-all">
+            <div class="font-bold c-main">偈頌專修</div>
+            <div class="text-[10px] c-muted">純誦三十二偈讚 (~8分)</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- 經咒遍數設定 -->
+      <div class="mb-5">
+        <div class="flex items-center justify-between mb-2">
+          <label class="text-[11px] font-medium c-muted">經咒持誦目標遍數：</label>
+          <span id="mantraRepDisplay" class="text-xs font-mono font-bold c-main">1 遍</span>
+        </div>
+        <div id="mantraRepOptions" class="grid grid-cols-5 gap-1.5 text-xs"></div>
+      </div>
+
+      <!-- 觀世音菩薩聖號聲數設定 (首推 10 聲精進短課) -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-2">
+          <label class="text-[11px] font-medium c-muted">觀世音菩薩聖號稱念：</label>
+          <span id="buddhaCountDisplay" class="text-xs font-mono font-bold c-main">10 聲</span>
+        </div>
+        <div class="grid grid-cols-4 gap-1.5 text-xs">
+          <button onclick="setTargetBuddhaCount(10)" id="buddhaBtn_10" class="py-2 rounded-lg border border-zen bg-panel hover:border-zen-focus text-center transition-all">
+            <span class="block font-bold">10 聲</span>
+            <span class="text-[9px] c-crimson font-medium">短課推薦</span>
+          </button>
+          <button onclick="setTargetBuddhaCount(108)" id="buddhaBtn_108" class="py-2 rounded-lg border border-zen bg-panel hover:border-zen-focus text-center transition-all">
+            <span class="block font-bold">108 聲</span>
+            <span class="text-[9px] c-muted">一串念珠</span>
+          </button>
+          <button onclick="setTargetBuddhaCount(300)" id="buddhaBtn_300" class="py-2 rounded-lg border border-zen bg-panel hover:border-zen-focus text-center transition-all">
+            <span class="block font-bold">300 聲</span>
+            <span class="text-[9px] c-muted">定課精進</span>
+          </button>
+          <button onclick="setTargetBuddhaCount(0)" id="buddhaBtn_0" class="py-2 rounded-lg border border-zen bg-panel hover:border-zen-focus text-center transition-all">
+            <span class="block font-bold">自由計數</span>
+            <span class="text-[9px] c-muted">隨喜持念</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 啟動定課按鈕 -->
+      <button onclick="startPracticeFromDrawer()" class="w-full py-3 rounded-xl btn-ochre text-sm font-bold tracking-wider transition-all shadow-lg flex items-center justify-center gap-2">
+        <span>🙏</span>
+        <span>開始今日定課</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ==================== 彈窗 3：日課打卡與禪意迴向卡 (RECORDS & CARD) ==================== -->
+  <div id="dailyRecordsModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 modal-backdrop hidden">
+    <div class="zen-card w-full max-w-lg rounded-2xl p-4 sm:p-6 border border-zen shadow-2xl relative max-h-[92vh] overflow-y-auto">
+      
+      <div class="flex items-center justify-between mb-3 pb-2.5 border-b border-zen">
+        <div class="flex items-center gap-2">
+          <span class="text-base">🙏</span>
+          <h3 class="text-base font-bold c-main">今日定課打卡與迴向</h3>
+        </div>
+        <button onclick="closeDailyRecords()" class="c-muted hover:c-main text-xl font-bold p-1">✕</button>
+      </div>
+
+      <!-- 今日打卡狀態與手動補卡 -->
+      <div class="p-3 rounded-xl bg-panel-elevated border border-zen mb-3 flex items-center justify-between">
+        <div>
+          <span class="text-xs c-muted block">今日修持狀態</span>
+          <span id="todayStatusText" class="text-sm font-bold c-crimson">今日尚未打卡</span>
+        </div>
+        <button id="btnCheckInNow" onclick="manualCheckInToday()" class="px-3.5 py-1.5 rounded-full btn-ochre text-xs font-bold shadow transition-all">
+          立即打卡
+        </button>
+      </div>
+
+      <!-- 修持月曆視圖 -->
+      <div class="mb-4">
+        <div class="flex items-center justify-between mb-1 text-xs font-bold c-sub">
+          <span id="calendarMonthTitle">2026年 10月</span>
+          <span class="c-muted text-[11px]">🙏 代表已圓滿</span>
+        </div>
+        <div class="grid grid-cols-7 gap-1 text-center text-xs c-muted mb-1 font-sans">
+          <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+        </div>
+        <div id="calendarDaysGrid" class="grid grid-cols-7 gap-1 text-center text-xs"></div>
+      </div>
+
+      <!-- 禪意迴向小卡製作與即時預覽區塊 (保證手機 100% 作用) -->
+      <div class="pt-3 border-t border-zen">
+        <div class="flex items-center justify-between mb-2">
+          <h4 class="text-xs font-bold c-gold">禪意迴向卡製作</h4>
+          <span class="text-[10px] c-muted">功德迴向・廣結善緣</span>
+        </div>
+        
+        <!-- 法鼓山歷年春節主題祝福語快速選擇 -->
+        <div class="mb-3">
+          <label class="block text-xs font-semibold c-gold mb-1.5">法鼓山主題祝福語（點選快速套用）：</label>
+          <div class="flex flex-wrap gap-1.5 text-xs">
+            <button type="button" onclick="selectBlessing('平安無事', '心安就有平安・隨緣安住福慧圓滿')" class="px-2.5 py-1 rounded-lg border border-zen bg-panel hover:border-zen-focus text-xs c-main transition-all">平安無事</button>
+            <button type="button" onclick="selectBlessing('福慧增長', '慈悲沒有敵人・智慧不起煩惱')" class="px-2.5 py-1 rounded-lg border border-zen bg-panel hover:border-zen-focus text-xs c-main transition-all">福慧增長</button>
+            <button type="button" onclick="selectBlessing('平安自在', '身心和敬・處處安樂自在')" class="px-2.5 py-1 rounded-lg border border-zen bg-panel hover:border-zen-focus text-xs c-main transition-all">平安自在</button>
+            <button type="button" onclick="selectBlessing('大悲心起', '祈願眾生離苦・自度度人')" class="px-2.5 py-1 rounded-lg border border-zen bg-panel hover:border-zen-focus text-xs c-main transition-all">大悲心起</button>
+            <button type="button" onclick="selectBlessing('心安平安', '以智慧化解事端・以慈悲關懷他人')" class="px-2.5 py-1 rounded-lg border border-zen bg-panel hover:border-zen-focus text-xs c-main transition-all">心安平安</button>
+            <button type="button" onclick="selectBlessing('善念安樂', '日日發善念・處處結善緣')" class="px-2.5 py-1 rounded-lg border border-zen bg-panel hover:border-zen-focus text-xs c-main transition-all">善念安樂</button>
+            <button type="button" onclick="selectBlessing('有和長樂', '和和氣氣・長長久久')" class="px-2.5 py-1 rounded-lg border border-zen bg-panel hover:border-zen-focus text-xs c-main transition-all">有和長樂</button>
+            <button type="button" onclick="selectBlessing('光明遠大', '智慧轉境・前程一片光明')" class="px-2.5 py-1 rounded-lg border border-zen bg-panel hover:border-zen-focus text-xs c-main transition-all">光明遠大</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
+          <div>
+            <label class="block text-[11px] c-muted mb-0.5">主題祝福文（置中大字呈現）：</label>
+            <input type="text" id="blessingTitleInput" value="平安無事" placeholder="輸入祝福語 (例：平安無事)" class="w-full px-3 py-1.5 rounded-lg bg-panel-elevated border border-zen text-xs c-main outline-none focus:border-zen-focus">
+          </div>
+          <div>
+            <label class="block text-[11px] c-muted mb-0.5">祝福勉勵法語：</label>
+            <input type="text" id="blessingSubInput" value="心安就有平安・隨緣安住福慧圓滿" placeholder="輸入勉勵法語" class="w-full px-3 py-1.5 rounded-lg bg-panel-elevated border border-zen text-xs c-main outline-none focus:border-zen-focus">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2.5">
+          <div>
+            <label class="block text-[11px] c-muted mb-0.5">迴向功德主：</label>
+            <input type="text" id="dedicateNameInput" value="佛弟子" placeholder="迴向者姓名 (例：佛弟子)" class="w-full px-3 py-1.5 rounded-lg bg-panel-elevated border border-zen text-xs c-main outline-none focus:border-zen-focus">
+          </div>
+          <div>
+            <label class="block text-[11px] c-muted mb-0.5">祈福迴向對象：</label>
+            <input type="text" id="dedicateTargetInput" value="法界眾生、闔家眷屬" placeholder="祈福對象 (例：歷代先祖、闔家眷屬)" class="w-full px-3 py-1.5 rounded-lg bg-panel-elevated border border-zen text-xs c-main outline-none focus:border-zen-focus">
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-2 mb-3">
+          <button onclick="copyDedicationText()" class="px-3 py-1.5 rounded-md border border-zen bg-panel text-xs c-sub hover:c-main transition-all">
+            複製迴向文
+          </button>
+          <button onclick="generateDedicationCardImage()" class="px-3.5 py-1.5 rounded-md btn-ochre font-bold text-xs shadow transition-all">
+            生成 / 重新製作小卡
+          </button>
+        </div>
+
+        <!-- 迴向小卡即時圖片預覽 (手機長按即可直接保存) -->
+        <div id="cardPreviewWrapper" class="w-full rounded-xl overflow-hidden border border-zen bg-stone-950/30 p-2 text-center">
+          <img id="cardPreviewImage" src="" alt="禪意迴向小卡" class="w-full max-h-56 object-contain rounded-lg shadow mx-auto hidden">
+          <p id="cardPreviewTip" class="text-[11px] c-muted py-4">點擊上方「生成小卡」按鈕即可在此預覽與保存</p>
+        </div>
+
+        <canvas id="dedicationCanvas" class="hidden" width="800" height="520"></canvas>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== 彈窗 4：設定選單 (SETTINGS & NANO BANANA LOGO) ==================== -->
+  <div id="settingsModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop hidden">
+    <div class="zen-card w-full max-w-lg rounded-2xl p-5 sm:p-7 border border-zen shadow-2xl max-h-[90vh] overflow-y-auto">
+      
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-zen">
+        <div class="flex items-center gap-2">
+          <span class="text-base">⚙️</span>
+          <h3 class="text-base sm:text-lg font-bold c-main">修持系統設定</h3>
+        </div>
+        <button onclick="closeSettings()" class="c-muted hover:c-main text-xl font-bold p-1">✕</button>
+      </div>
+
+      <!-- 1. 護眼禪意調性切換 (無任何刺眼亮色) -->
+      <div class="mb-6">
+        <label class="block text-xs font-semibold c-gold mb-2">護眼禪風色調選擇：</label>
+        <div class="grid grid-cols-3 gap-2 text-xs">
+          <button onclick="setTheme('dark')" id="themeBtn_dark" class="p-2.5 rounded-xl border border-zen bg-[#1E2023] text-left transition-all">
+            <div class="w-4 h-4 rounded-full bg-[#31343B] border border-stone-500 mb-1.5"></div>
+            <div class="font-bold text-stone-200 text-xs">曜石銀灰</div>
+            <div class="text-[10px] text-stone-400">清幽雅致暗調</div>
+          </button>
+          <button onclick="setTheme('parchment')" id="themeBtn_parchment" class="p-2.5 rounded-xl border border-zen bg-[#F4EFE6] text-left transition-all">
+            <div class="w-4 h-4 rounded-full bg-[#EAE3D5] border border-stone-400 mb-1.5"></div>
+            <div class="font-bold text-stone-900 text-xs">宋代宣紙</div>
+            <div class="text-[10px] text-stone-600">宋瓷宣紙焦墨</div>
+          </button>
+          <button onclick="setTheme('celadon')" id="themeBtn_celadon" class="p-2.5 rounded-xl border border-zen bg-[#1C2221] text-left transition-all">
+            <div class="w-4 h-4 rounded-full bg-[#2F3938] border border-stone-500 mb-1.5"></div>
+            <div class="font-bold text-stone-200 text-xs">沉香天青</div>
+            <div class="text-[10px] text-stone-400">冷香天青雲霧</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. 5 款 Nano Banana 禪意極簡黑金標誌更換 -->
+      <div class="mb-5">
+        <label class="block text-xs font-semibold c-gold mb-2">自訂禪意標誌（5 款黑金筆意）：</label>
+        <div class="grid grid-cols-5 gap-2">
+          
+            <div onclick="selectLogo(0)" id="logoChoice_0" class="p-1 rounded-xl border border-zen bg-panel hover:border-zen-focus cursor-pointer flex flex-col items-center gap-1 transition-all">
+              <div class="w-10 h-10 rounded-lg overflow-hidden border border-zen/50">
+                <img src="assets/logos/logo_01_kundika_vase.jpg" alt="淨瓶甘露" class="w-full h-full object-cover">
+              </div>
+              <span class="text-[9px] text-center c-sub truncate w-full">淨瓶甘露</span>
+            </div>
+          
+            <div onclick="selectLogo(1)" id="logoChoice_1" class="p-1 rounded-xl border border-zen bg-panel hover:border-zen-focus cursor-pointer flex flex-col items-center gap-1 transition-all">
+              <div class="w-10 h-10 rounded-lg overflow-hidden border border-zen/50">
+                <img src="assets/logos/logo_02_willow_dew.jpg" alt="楊枝拂水" class="w-full h-full object-cover">
+              </div>
+              <span class="text-[9px] text-center c-sub truncate w-full">楊枝拂水</span>
+            </div>
+          
+            <div onclick="selectLogo(2)" id="logoChoice_2" class="p-1 rounded-xl border border-zen bg-panel hover:border-zen-focus cursor-pointer flex flex-col items-center gap-1 transition-all">
+              <div class="w-10 h-10 rounded-lg overflow-hidden border border-zen/50">
+                <img src="assets/logos/logo_03_zen_lotus.jpg" alt="大悲心蓮" class="w-full h-full object-cover">
+              </div>
+              <span class="text-[9px] text-center c-sub truncate w-full">大悲心蓮</span>
+            </div>
+          
+            <div onclick="selectLogo(3)" id="logoChoice_3" class="p-1 rounded-xl border border-zen bg-panel hover:border-zen-focus cursor-pointer flex flex-col items-center gap-1 transition-all">
+              <div class="w-10 h-10 rounded-lg overflow-hidden border border-zen/50">
+                <img src="assets/logos/logo_04_sound_enstasis.jpg" alt="耳根圓通" class="w-full h-full object-cover">
+              </div>
+              <span class="text-[9px] text-center c-sub truncate w-full">耳根圓通</span>
+            </div>
+          
+            <div onclick="selectLogo(4)" id="logoChoice_4" class="p-1 rounded-xl border border-zen bg-panel hover:border-zen-focus cursor-pointer flex flex-col items-center gap-1 transition-all">
+              <div class="w-10 h-10 rounded-lg overflow-hidden border border-zen/50">
+                <img src="assets/logos/logo_05_compassion_boat.jpg" alt="一葉慈航" class="w-full h-full object-cover">
+              </div>
+              <span class="text-[9px] text-center c-sub truncate w-full">一葉慈航</span>
+            </div>
+          
+        </div>
+        <p id="currentLogoDesc" class="text-[11px] c-muted mt-2 italic text-center">
+          01. 淨瓶甘露：淨瓶垂甘露・慈悲潤大千
+        </p>
+      </div>
+
+      <div class="pt-3 border-t border-zen flex justify-end">
+        <button onclick="closeSettings()" class="px-4 py-2 rounded-xl btn-ochre text-xs font-bold transition-all">
+          確定儲存
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast 輕量通知 -->
+  <div id="toastNotification" class="fixed top-14 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 opacity-0 -translate-y-2">
+    <div class="zen-card rounded-full px-4 py-2 border border-zen shadow-xl flex items-center gap-2 bg-panel">
+      <span id="toastIcon" class="text-sm">🙏</span>
+      <span id="toastMessage" class="text-xs font-medium c-main">提示訊息</span>
+    </div>
+  </div>
+
+  <!-- ==================== 前端邏輯腳本 (VANILLA JAVASCRIPT) ==================== -->
+  <script>
+    // 1. 安全快取機制 (SafeStorage)
+    const SafeStorage = (function () {
+      const _mem = {};
+      return {
+        getItem: function (key) {
+          try {
+            if (window.localStorage) return window.localStorage.getItem(key);
+          } catch (e) {
+            return _mem[key] || null;
+          }
+          return _mem[key] || null;
+        },
+        setItem: function (key, value) {
+          try {
+            if (window.localStorage) {
+              window.localStorage.setItem(key, value);
+              return;
+            }
+          } catch (e) {
+            _mem[key] = String(value);
+          }
+          _mem[key] = String(value);
+        }
+      };
+    })();
+
+    // 2. 經文純淨資料庫
+    const cleanData = {"pumenpin":{"id":"pumenpin","name":"《觀世音菩薩普門品》課誦","shortName":"普門品課誦","theme":"慈悲救護・普門示現","sections":[{"id":"yangzhi_pumenpin","title":"【楊枝淨水讚】","desc":"嚴淨壇場・啟請大悲觀世音菩薩","lines":["楊枝淨水　遍灑三千","性空八德利人天","福壽廣增延　滅罪消愆","火燄化紅蓮","南無清涼地菩薩摩訶薩（三稱）","南無大悲觀世音菩薩（三稱）"]},{"id":"kaijing_pumenpin","title":"【開經偈】","desc":"開經發心・解真實義","lines":["無上甚深微妙法","百千萬劫難遭遇","我今見聞得受持","願解如來真實義"]},{"id":"pumenpin_changhang","title":"【普門品・長行】","desc":"姚秦三藏法師鳩摩羅什譯（CBETA T0262）","lines":["爾時，無盡意菩薩即從座起，偏袒右肩，合掌向佛而作是言：","「世尊！觀世音菩薩以何因緣名觀世音？」","佛告無盡意菩薩：「善男子！若有無量百千萬億眾生受諸苦惱，聞是觀世音菩薩，一心稱名，觀世音菩薩即時觀其音聲，皆得解脫。","若有持是觀世音菩薩名者，設入大火，火不能燒，由是菩薩威神力故。","若為大水所漂，稱其名號，即得淺處。","若有百千萬億眾生，為求金、銀、琉璃、硨磲、馬瑙、珊瑚、虎珀、真珠等寶，入於大海。假使黑風吹其船舫，飄墮羅剎鬼國，其中若有，乃至一人，稱觀世音菩薩名者，是諸人等皆得解脫羅剎之難。以是因緣，名觀世音。","若復有人臨當被害，稱觀世音菩薩名者，彼所執刀杖尋段段壞，而得解脫。","若三千大千國土滿中夜叉、羅剎欲來惱人，聞其稱觀世音菩薩名者，是諸惡鬼尚不能以惡眼視之，況復加害。","設復有人，若有罪、若無罪，杻械、枷鎖檢繫其身，稱觀世音菩薩名者，皆悉斷壞，即得解脫。","若三千大千國土滿中怨賊，有一商主將諸商人，齎持重寶經過嶮路。其中一人作是唱言：『諸善男子！勿得恐怖！汝等應當一心稱觀世音菩薩名號。是菩薩能以無畏施於眾生。汝等若稱名者，於此怨賊當得解脫。』眾商人聞，俱發聲言：『南無觀世音菩薩。』稱其名故，即得解脫。","無盡意！觀世音菩薩摩訶薩威神之力，巍巍如是。若有眾生多於婬欲，常念恭敬觀世音菩薩，便得離欲。若多瞋恚，常念恭敬觀世音菩薩，便得離瞋。若多愚癡，常念恭敬觀世音菩薩，便得離癡。","無盡意！觀世音菩薩有如是等大威神力，多所饒益。是故眾生常應心念。若有女人，設欲求男，禮拜供養觀世音菩薩，便生福德智慧之男；設欲求女，便生端正有相之女。宿殖德本，眾人愛敬。","無盡意！觀世音菩薩有如是力。若有眾生恭敬禮拜觀世音菩薩，福不唐捐。是故眾生皆應受持觀世音菩薩名號。","無盡意！若有人受持六十二億恒河沙菩薩名字，復盡形供養飲食、衣服、臥具、醫藥。於汝意云何？是善男子、善女人，功德多不？」","無盡意言：「甚多，世尊！」","佛言：「若復有人受持觀世音菩薩名號，乃至一時禮拜、供養。是二人福，正等無異，於百千萬億劫不可窮盡。無盡意！受持觀世音菩薩名號，得如是無量無邊福德之利。」","無盡意菩薩白佛言：「世尊！觀世音菩薩云何遊此娑婆世界？云何而為眾生說法？方便之力，其事云何？」","佛告無盡意菩薩：「善男子！若有國土眾生應以佛身得度者，觀世音菩薩即現佛身而為說法。應以辟支佛身得度者，即現辟支佛身而為說法。應以聲聞身得度者，即現聲聞身而為說法。","應以梵王身得度者，即現梵王身而為說法。應以帝釋身得度者，即現帝釋身而為說法。應以自在天身得度者，即現自在天身而為說法。應以大自在天身得度者，即現大自在天身而為說法。應以天大將軍身得度者，即現天大將軍身而為說法。應以毘沙門身得度者，即現毘沙門身而為說法。","應以小王身得度者，即現小王身而為說法。應以長者身得度者，即現長者身而為說法。應以居士身得度者，即現居士身而為說法。應以宰官身得度者，即現宰官身而為說法。應以婆羅門身得度者，即現婆羅門身而為說法。","應以比丘、比丘尼、優婆塞、優婆夷身得度者，即現比丘、比丘尼、優婆塞、優婆夷身而為說法。應以長者、居士、宰官、婆羅門婦女身得度者，即現婦女身而為說法。應以童男、童女身得度者，即現童男、童女身而為說法。","應以天、龍、夜叉、乾闥婆、阿修羅、迦樓羅、緊那羅、摩睺羅伽、人非人等身得度者，即皆現之而為說法。應以執金剛神得度者，即現執金剛神而為說法。","無盡意！是觀世音菩薩成就如是功德，以種種形，遊諸國土，度脫眾生。是故汝等應當一心供養觀世音菩薩。是觀世音菩薩摩訶薩於怖畏急難之中，能施無畏。是故此娑婆世界，皆號之為施無畏者。」","無盡意菩薩白佛言：「世尊！我今當供養觀世音菩薩。」即解頸眾寶珠、瓔珞，價直百千兩金，而以與之，作是言：「仁者！受此法施珍寶瓔珞。」","時觀世音菩薩不肯受之。無盡意復白觀世音菩薩言：「仁者！愍我等故，受此瓔珞。」","爾時佛告觀世音菩薩：「當愍此無盡意菩薩及四眾、天、龍、夜叉、乾闥婆、阿修羅、迦樓羅、緊那羅、摩睺羅伽、人非人等故，受是瓔珞。」","即時觀世音菩薩愍諸四眾及於天、龍、人非人等，受其瓔珞，分作二分：一分奉釋迦牟尼佛，一分奉多寶佛塔。","「無盡意！觀世音菩薩有如是自在神力，遊於娑婆世界。」"]},{"id":"pumenpin_jisong","title":"【普門品・偈頌】","desc":"爾時無盡意菩薩以偈問曰・三十二偈重頌","lines":["世尊妙相具　我今重問彼　佛子何因緣　名為觀世音","具足妙相尊　偈答無盡意　汝聽觀音行　善應諸方所","弘誓深如海　歷劫不思議　侍多千億佛　發大清淨願","我為汝略說　聞名及見身　心念不空過　能滅諸有苦","假使興害意　推落大火坑　念彼觀音力　火坑變成池","或漂流巨海　龍魚諸鬼難　念彼觀音力　波浪不能沒","或在須彌峰　為人所推墮　念彼觀音力　如日虛空住","或被惡人逐　墮落金剛山　念彼觀音力　不能損一毛","或值怨賊繞　各執刀加害　念彼觀音力　咸即起慈心","或蒙王難苦　臨刑欲壽終　念彼觀音力　刀尋段段壞","或囚禁枷鎖　手足被杻械　念彼觀音力　釋然得解脫","咒詛諸毒藥　所欲害身者　念彼觀音力　還著於本人","或遇惡羅剎　毒龍諸鬼等　念彼觀音力　時悉不敢害","若惡獸圍繞　利牙爪可怖　念彼觀音力　疾走無邊方","蚖蛇及蝮蠍　氣毒煙火然　念彼觀音力　尋聲自回去","雲雷鼓掣電　降雹澍大雨　念彼觀音力　應時得消散","眾生被困厄　無量苦逼身　觀音妙智力　能救世間苦","具足神通力　廣修智方便　十方諸國土　無剎不現身","種種諸惡趣　地獄鬼畜生　生老病死苦　以漸悉令滅","真觀清淨觀　廣大智慧觀　梵觀及慈觀　常願常瞻仰","無垢清淨光　慧日破諸闇　能伏災風火　普明照世間","悲體戒雷震　慈意妙大雲　澍甘露法雨　滅除煩惱焰","諍訟經官處　怖畏軍陣中　念彼觀音力　眾怨悉退散","妙音觀世音　梵音海潮音　勝彼世間音　是故須常念","念念勿生疑　觀世音淨聖　於苦惱死厄　能為作依怙","具一切功德　慈眼視眾生　福聚海無量　是故應頂禮","爾時持地菩薩即從座起，前白佛言：「世尊！若有眾生聞是觀世音菩薩品自在之業、普門示現神通力者，當知是人功德不少。」","佛說是普門品時，眾中八萬四千眾生，皆發無等等阿耨多羅三藐三菩提心。"]},{"id":"dabei_fayuan","title":"【發願】","desc":"大悲發願祈願文（依《大悲心陀羅尼經》發宏誓願）","lines":["經云：若有比丘、比丘尼、優婆塞、優婆夷、童男、童女欲誦持者，於諸眾生起慈悲心，先當從我發如是願：","南無大悲觀世音　願我速知一切法","南無大悲觀世音　願我早得智慧眼","南無大悲觀世音　願我速度一切眾","南無大悲觀世音　願我早得善方便","南無大悲觀世音　願我速乘般若船","南無大悲觀世音　願我早得越苦海","南無大悲觀世音　願我速得戒定道","南無大悲觀世音　願我早登涅槃山","南無大悲觀世音　願我速會無為舍","南無大悲觀世音　願我早同法性身","我若向刀山　刀山自摧折","我若向火湯　火湯自枯竭","我若向地獄　地獄自消滅","我若向餓鬼　餓鬼自飽滿","我若向修羅　惡心自調伏","我若向畜生　自得大智慧"]},{"id":"guanyin_zanji","title":"【觀音讚偈】","desc":"讚頌大士悲智行願・起大信心","lines":["觀音菩薩妙難思　清淨莊嚴累劫修","三十二應遍塵剎　百千萬劫化閻浮","瓶中甘露常時灑　手內楊枝不計秋","千處祈求千處現　苦海常作度人舟"]},{"id":"shenghao_10","title":"【稱念聖號】","desc":"一心頂禮持誦觀世音菩薩名號","lines":["南無觀世音菩薩（十稱）"]},{"id":"sanguiyi","title":"【三皈依】","desc":"安住三寶・正念相繼","lines":["自皈依佛　當願眾生　體解大道　發無上心","自皈依法　當願眾生　深入經藏　智慧如海","自皈依僧　當願眾生　統理大眾　一切無礙"]},{"id":"huixiang","title":"【迴向偈】","desc":"普皆迴向・圓滿道業","lines":["願消三障諸煩惱　願得智慧真明了","普願罪障悉消除　世世常行菩薩道"]}],"youtubeId":"3UyZFJXQ5Is","youtubeTitle":"《觀世音菩薩普門品》念誦","title":"《觀世音菩薩普門品》課誦"},"dabeizhou":{"id":"dabeizhou","name":"〈大悲咒〉課誦","shortName":"大悲咒課誦","theme":"總持神咒・拔苦滅罪","sections":[{"id":"yangzhi_dabeizhou","title":"【楊枝淨水讚】","desc":"嚴淨壇場・啟請大悲觀世音菩薩","lines":["楊枝淨水　遍灑三千","性空八德利人天","福壽廣增延　滅罪消愆","火燄化紅蓮","南無清涼地菩薩摩訶薩（三稱）","南無大悲觀世音菩薩（三稱）"]},{"id":"dabeizhou_84","title":"【千手千眼無礙大悲心陀羅尼】","desc":"唐三藏法師伽梵達摩譯（法鼓山課誦 84 句定本）","lines":["南無喝囉怛那哆囉夜耶","南無阿唎耶","婆盧羯帝爍缽囉耶","菩提薩埵婆耶","摩訶薩埵婆耶","摩訶迦盧尼迦耶","唵","薩皤囉罰曳","數怛那怛寫","南無悉吉慄埵伊蒙阿唎耶","婆盧吉帝室佛囉楞馱婆","南無那囉謹墀","醯唎摩訶皤哆沙咩","薩婆阿他豆輸朋","阿逝孕","薩婆薩哆那摩婆薩哆那摩婆伽","摩罰特豆","怛姪他","唵　阿婆盧醯","盧迦帝","迦羅帝","夷醯唎","摩訶菩提薩埵","薩婆薩婆","摩囉摩囉","摩醯摩醯唎馱孕","俱盧俱盧羯蒙","度盧度盧罰闍耶帝","摩訶罰闍耶帝","陀囉陀囉","地唎尼","室佛囉耶","遮囉遮囉","麼麼罰摩囉","穆帝隸","伊醯伊醯","室那室那","阿囉參佛囉舍利","罰沙罰參","佛囉舍耶","呼盧呼盧摩囉","呼盧呼盧醯利","娑囉娑囉","悉唎悉唎","蘇嚧蘇嚧","菩提夜菩提夜","菩馱夜菩馱夜","彌帝唎夜","那囉謹墀","地利瑟尼那","婆夜摩那","娑婆訶","悉陀夜","娑婆訶","摩訶悉陀夜","娑婆訶","悉陀喻藝","室皤囉耶","娑婆訶","那囉謹墀","娑婆訶","摩囉那囉","娑婆訶","悉囉僧阿穆佉耶","娑婆訶","娑婆摩訶阿悉陀夜","娑婆訶","者吉囉阿悉陀夜","娑婆訶","波陀摩羯悉陀夜","娑婆訶","那囉謹墀皤伽囉耶","娑婆訶","摩婆利勝羯囉夜","娑婆訶","南無喝囉怛那哆囉夜耶","南無阿利耶","婆嚧吉帝","爍皤囉夜","娑婆訶","唵　悉殿都","漫多囉","跋陀耶","娑婆訶"]},{"id":"dabei_fayuan","title":"【發願】","desc":"大悲發願祈願文（依《大悲心陀羅尼經》發宏誓願）","lines":["經云：若有比丘、比丘尼、優婆塞、優婆夷、童男、童女欲誦持者，於諸眾生起慈悲心，先當從我發如是願：","南無大悲觀世音　願我速知一切法","南無大悲觀世音　願我早得智慧眼","南無大悲觀世音　願我速度一切眾","南無大悲觀世音　願我早得善方便","南無大悲觀世音　願我速乘般若船","南無大悲觀世音　願我早得越苦海","南無大悲觀世音　願我速得戒定道","南無大悲觀世音　願我早登涅槃山","南無大悲觀世音　願我速會無為舍","南無大悲觀世音　願我早同法性身","我若向刀山　刀山自摧折","我若向火湯　火湯自枯竭","我若向地獄　地獄自消滅","我若向餓鬼　餓鬼自飽滿","我若向修羅　惡心自調伏","我若向畜生　自得大智慧"]},{"id":"guanyin_zanji","title":"【觀音讚偈】","desc":"讚頌大士悲智行願・起大信心","lines":["觀音菩薩妙難思　清淨莊嚴累劫修","三十二應遍塵剎　百千萬劫化閻浮","瓶中甘露常時灑　手內楊枝不計秋","千處祈求千處現　苦海常作度人舟"]},{"id":"shenghao_10","title":"【稱念聖號】","desc":"一心頂禮持誦觀世音菩薩名號","lines":["南無觀世音菩薩（十稱）"]},{"id":"sanguiyi","title":"【三皈依】","desc":"安住三寶・正念相繼","lines":["自皈依佛　當願眾生　體解大道　發無上心","自皈依法　當願眾生　深入經藏　智慧如海","自皈依僧　當願眾生　統理大眾　一切無礙"]},{"id":"huixiang","title":"【迴向偈】","desc":"普皆迴向・圓滿道業","lines":["願消三障諸煩惱　願得智慧真明了","普願罪障悉消除　世世常行菩薩道"]}],"youtubeId":"NFWMSwfr4to","youtubeTitle":"〈大悲咒〉念誦","title":"〈大悲咒〉課誦"},"xinjing":{"id":"xinjing","name":"《般若波羅蜜多心經》課誦","shortName":"心經課誦","theme":"般若空慧・度一切苦","sections":[{"id":"yangzhi_xinjing","title":"【楊枝淨水讚】","desc":"嚴淨壇場・啟請般若會上佛菩薩","lines":["楊枝淨水　遍灑三千","性空八德利人天","福壽廣增延　滅罪消愆","火燄化紅蓮","南無清涼地菩薩摩訶薩（三稱）","南無般若會上佛菩薩（三稱）"]},{"id":"xinjing_260","title":"【般若波羅蜜多心經】","desc":"唐三藏法師玄奘譯（CBETA T0251）","lines":["觀自在菩薩。行深般若波羅蜜多時。照見五蘊皆空。度一切苦厄。","舍利子。色不異空。空不異色。色即是空。空即是色。受想行識。亦復如是。","舍利子。是諸法空相。不生不滅。不垢不淨。不增不減。","是故空中無色。無受想行識。無眼耳鼻舌身意。無色聲香味觸法。無眼界。乃至無意識界。","無無明。亦無無明盡。乃至無老死。亦無老死盡。","無苦集滅道。無智亦無得。以無所得故。","菩提薩埵。依般若波羅蜜多故。心無罣礙。無罣礙故。無有恐怖。遠離顛倒夢想。究竟涅槃。","三世諸佛。依般若波羅蜜多故。得阿耨多羅三藐三菩提。","故知般若波羅蜜多。是大神咒。是大明咒。是無上咒。是無等等咒。能除一切苦。真實不虛。","故說般若波羅蜜多咒。即說咒曰：","揭諦揭諦。波羅揭諦。波羅僧揭諦。菩提薩婆訶。"]},{"id":"dabei_fayuan","title":"【發願】","desc":"大悲發願祈願文（依《大悲心陀羅尼經》發宏誓願）","lines":["經云：若有比丘、比丘尼、優婆塞、優婆夷、童男、童女欲誦持者，於諸眾生起慈悲心，先當從我發如是願：","南無大悲觀世音　願我速知一切法","南無大悲觀世音　願我早得智慧眼","南無大悲觀世音　願我速度一切眾","南無大悲觀世音　願我早得善方便","南無大悲觀世音　願我速乘般若船","南無大悲觀世音　願我早得越苦海","南無大悲觀世音　願我速得戒定道","南無大悲觀世音　願我早登涅槃山","南無大悲觀世音　願我速會無為舍","南無大悲觀世音　願我早同法性身","我若向刀山　刀山自摧折","我若向火湯　火湯自枯竭","我若向地獄　地獄自消滅","我若向餓鬼　餓鬼自飽滿","我若向修羅　惡心自調伏","我若向畜生　自得大智慧"]},{"id":"guanyin_zanji","title":"【觀音讚偈】","desc":"讚頌大士悲智行願・起大信心","lines":["觀音菩薩妙難思　清淨莊嚴累劫修","三十二應遍塵剎　百千萬劫化閻浮","瓶中甘露常時灑　手內楊枝不計秋","千處祈求千處現　苦海常作度人舟"]},{"id":"shenghao_10","title":"【稱念聖號】","desc":"一心頂禮持誦觀世音菩薩名號","lines":["南無觀世音菩薩（十稱）"]},{"id":"sanguiyi","title":"【三皈依】","desc":"安住三寶・正念相繼","lines":["自皈依佛　當願眾生　體解大道　發無上心","自皈依法　當願眾生　深入經藏　智慧如海","自皈依僧　當願眾生　統理大眾　一切無礙"]},{"id":"huixiang","title":"【迴向偈】","desc":"普皆迴向・圓滿道業","lines":["願消三障諸煩惱　願得智慧真明了","普願罪障悉消除　世世常行菩薩道"]}],"youtubeId":"5YQBjX8O1Qo","youtubeTitle":"《般若波羅蜜多心經》念誦","title":"《般若波羅蜜多心經》課誦"}};
+
+    // 3. 5 款 Nano Banana Logo
+    const LOGO_DATA_URIS = ["assets/logos/logo_01_kundika_vase.jpg","assets/logos/logo_02_willow_dew.jpg","assets/logos/logo_03_zen_lotus.jpg","assets/logos/logo_04_sound_enstasis.jpg","assets/logos/logo_05_compassion_boat.jpg"];
+    const LOGO_TITLES = [{"name":"淨瓶甘露","desc":"淨瓶垂甘露・慈悲潤大千"},{"name":"楊枝拂水","desc":"金筆楊枝・清淨塵垢"},{"name":"大悲心蓮","desc":"火燄化紅蓮・自性清淨"},{"name":"耳根圓通","desc":"反聞自性・入流亡所"},{"name":"一葉慈航","desc":"苦海度人舟・同登彼岸"}];
+
+    // 3.5. 真品法鼓山大磬、引磬與真品寺院樟木大木魚音訊樣本 (Base64)
+    const AUDIO_SAMPLES = {"muyu":"data:audio/mp3;base64,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","daqing":"data:audio/mp3;base64,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","yinqing":"data:audio/mp3;base64,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"};
+
+    // 4. Web Audio + HTML5 Audio 雙引擎音效架構（確保手機 Safari/Chrome 100% 順暢發聲）
+    const ZenAudio = (function () {
+      let audioCtx = null;
+      const audioBuffers = { muyu: null, daqing: null, yinqing: null };
+      const html5Audios = {};
+      let isUnlocked = false;
+
+      function getContext() {
+        if (!audioCtx) {
+          try {
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            if (AudioContextClass) audioCtx = new AudioContextClass();
+          } catch (e) {
+            console.warn('AudioContext not available:', e);
+          }
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume().catch(() => {});
+        }
+        return audioCtx;
+      }
+
+      function base64ToArrayBuffer(base64Data) {
+        try {
+          const binaryString = window.atob(base64Data.split(',')[1]);
+          const len = binaryString.length;
+          const bytes = new Uint8Array(len);
+          for (let i = 0; i < len; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+          }
+          return bytes.buffer;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function initAudio() {
+        if (isUnlocked) return;
+        isUnlocked = true;
+
+        ['muyu', 'daqing', 'yinqing'].forEach(k => {
+          if (AUDIO_SAMPLES[k]) {
+            try {
+              const a = new Audio(AUDIO_SAMPLES[k]);
+              a.preload = 'auto';
+              html5Audios[k] = a;
+            } catch (e) {}
+          }
+        });
+
+        const ctx = getContext();
+        if (ctx) {
+          ['muyu', 'daqing', 'yinqing'].forEach(key => {
+            if (AUDIO_SAMPLES[key]) {
+              try {
+                const ab = base64ToArrayBuffer(AUDIO_SAMPLES[key]);
+                if (ab) {
+                  ctx.decodeAudioData(ab, function (buf) {
+                    audioBuffers[key] = buf;
+                  }, function () {});
+                }
+              } catch (e) {}
+            }
+          });
+        }
+      }
+
+      function unlockForMobile() {
+        initAudio();
+        const ctx = getContext();
+        if (ctx && ctx.state === 'suspended') {
+          ctx.resume().catch(() => {});
+        }
+        if (ctx) {
+          try {
+            const emptyBuf = ctx.createBuffer(1, 1, 22050);
+            const src = ctx.createBufferSource();
+            src.buffer = emptyBuf;
+            src.connect(ctx.destination);
+            src.start(0);
+          } catch (e) {}
+        }
+      }
+
+      function playSample(key, vol = 0.9, pitchVar = 0.02) {
+        initAudio();
+        const ctx = getContext();
+
+        if (ctx && audioBuffers[key]) {
+          try {
+            const src = ctx.createBufferSource();
+            src.buffer = audioBuffers[key];
+            src.playbackRate.value = 1.0 + (Math.random() - 0.5) * pitchVar;
+            const gain = ctx.createGain();
+            gain.gain.setValueAtTime(vol, ctx.currentTime);
+            src.connect(gain);
+            gain.connect(ctx.destination);
+            src.start(0);
+            return true;
+          } catch (e) {}
+        }
+
+        if (html5Audios[key]) {
+          try {
+            const a = html5Audios[key].cloneNode();
+            a.volume = vol;
+            a.play().catch(() => {});
+            return true;
+          } catch (e) {}
+        }
+
+        return false;
+      }
+
+      return {
+        unlock: unlockForMobile,
+
+        // 1. 法鼓山真品樟木大木魚 (480Hz 沉穩渾厚)
+        playWoodfish: function () {
+          try {
+            if (playSample('muyu', 0.95, 0)) return;
+
+            const ctx = getContext();
+            if (!ctx) return;
+            const now = ctx.currentTime;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(480, now);
+            osc.frequency.exponentialRampToValueAtTime(440, now + 0.04);
+            gain.gain.setValueAtTime(0.7, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now);
+            osc.stop(now + 0.09);
+          } catch (e) {
+            console.warn('Woodfish audio error:', e);
+          }
+        },
+
+        // 2. 法鼓山真品引磬 (1960Hz / 1963.5Hz 雙頻拍音)
+        playChime: function () {
+          try {
+            if (playSample('yinqing', 0.88, 0.01)) return;
+
+            const ctx = getContext();
+            if (!ctx) return;
+            const now = ctx.currentTime;
+            [1960, 1963.5].forEach(f => {
+              const osc = ctx.createOscillator();
+              const gain = ctx.createGain();
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(f, now);
+              gain.gain.setValueAtTime(0.4, now);
+              gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.0);
+              osc.connect(gain);
+              gain.connect(ctx.destination);
+              osc.start(now);
+              osc.stop(now + 2.1);
+            });
+          } catch (e) {
+            console.warn('Chime audio error:', e);
+          }
+        },
+
+        // 3. 法鼓山青銅大磬 (472Hz / 475.2Hz，3.2Hz 天然拍音)
+        playGrandBell: function () {
+          try {
+            if (playSample('daqing', 0.95, 0.01)) return;
+
+            const ctx = getContext();
+            if (!ctx) return;
+            const now = ctx.currentTime;
+            [472, 475.2, 869].forEach((f, i) => {
+              const osc = ctx.createOscillator();
+              const gain = ctx.createGain();
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(f, now);
+              gain.gain.setValueAtTime(0.01, now);
+              gain.gain.linearRampToValueAtTime(i === 2 ? 0.3 : 0.5, now + 0.015);
+              gain.gain.exponentialRampToValueAtTime(0.0001, now + 4.2);
+              osc.connect(gain);
+              gain.connect(ctx.destination);
+              osc.start(now);
+              osc.stop(now + 4.3);
+            });
+          } catch (e) {
+            console.warn('Grand Bell audio error:', e);
+          }
+        }
+      };
+    })();
+
+    document.addEventListener('touchstart', ZenAudio.unlock, { once: true, passive: true });
+    document.addEventListener('touchend', ZenAudio.unlock, { once: true, passive: true });
+    document.addEventListener('click', ZenAudio.unlock, { once: true, passive: true });
+
+    // 5. 系統狀態
+    const AppState = {
+      currentView: 'home',
+      currentPracticeKey: 'pumenpin',
+      pumenpinScope: 'all',
+      readingMode: 'book',
+      currentBookPageIdx: 0,
+      bookPagesList: [],
+      targetMantraRep: 1,
+      currentMantraRep: 0,
+      targetBuddhaCount: 10,
+      currentBuddhaCount: 0,
+      selectedLogoIndex: 0,
+      theme: 'dark', // 'dark' (曜石銀灰) | 'parchment' (宋代宣紙) | 'celadon' (沉香天青)
+      fontFamily: 'kaiti',
+      fontSizeStep: 1,
+      textAlign: 'center',
+      lineHeight: 'normal'
+    };
+
+    // 6. 初始化與偏好載入
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = SafeStorage.getItem('zen_theme') || 'dark';
+      setTheme(savedTheme, false);
+
+      const savedLogo = SafeStorage.getItem('zen_logo_index');
+      if (savedLogo !== null && !isNaN(parseInt(savedLogo))) {
+        selectLogo(parseInt(savedLogo), false);
+      }
+
+      const savedFont = SafeStorage.getItem('zen_font_family') || 'kaiti';
+      setFontFamily(savedFont, false);
+
+      const savedSize = SafeStorage.getItem('zen_font_size_step');
+      if (savedSize !== null && !isNaN(parseInt(savedSize))) {
+        setFontSizeStep(parseInt(savedSize), false);
+      }
+
+      const savedAlign = SafeStorage.getItem('zen_text_align') || 'center';
+      setTextAlign(savedAlign, false);
+
+      const savedLh = SafeStorage.getItem('zen_line_height') || 'normal';
+      setLineHeight(savedLh, false);
+
+      updateDailyCheckStatus();
+
+      // 空白鍵敲木魚、Q鍵引磬、B鍵大磬、左右鍵翻頁
+      document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && !e.target.matches('input, textarea, select')) {
+          e.preventDefault();
+          strikeWoodfish();
+        }
+        if ((e.key === 'q' || e.key === 'Q') && !e.target.matches('input, textarea, select')) {
+          strikeYinqing();
+        }
+        if ((e.key === 'b' || e.key === 'B') && !e.target.matches('input, textarea, select')) {
+          strikeDaqing();
+        }
+        if (AppState.currentView === 'reading' && AppState.readingMode === 'book') {
+          if (e.key === 'ArrowRight' || e.key === 'PageDown') nextBookPage();
+          if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevBookPage();
+        }
+      });
+
+      // 手機滑動翻頁 (Touch Swipe)
+      let touchStartX = 0;
+      let touchStartY = 0;
+      const cardWrap = document.getElementById('bookPageCard');
+      if (cardWrap) {
+        cardWrap.addEventListener('touchstart', (e) => {
+          touchStartX = e.changedTouches[0].screenX;
+          touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        cardWrap.addEventListener('touchend', (e) => {
+          const deltaX = e.changedTouches[0].screenX - touchStartX;
+          const deltaY = e.changedTouches[0].screenY - touchStartY;
+          if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+            if (deltaX < 0) nextBookPage();
+            else prevBookPage();
+          }
+        }, { passive: true });
+      }
+    });
+
+    // 7. 視圖導航切換
+    function showView(viewId) {
+      AppState.currentView = viewId;
+      if (viewId === 'home') {
+        document.getElementById('homeView').classList.remove('hidden');
+        document.getElementById('readingView').classList.add('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        document.getElementById('homeView').classList.add('hidden');
+        document.getElementById('readingView').classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function returnToHome() {
+      showView('home');
+      closeDdmPlayer();
+      if (autoMuyuInterval) toggleAutoMuyu();
+    }
+
+    function quickStartRecommended() {
+      openPracticeDrawer('pumenpin');
+    }
+
+    // 8. 遍數設定抽屜
+    function openPracticeDrawer(key) {
+      AppState.currentPracticeKey = key;
+      const practice = cleanData[key];
+      if (!practice) return;
+
+      const pTitle = practice.shortName || practice.name || practice.title || '定課';
+      document.getElementById('drawerTitle').textContent = pTitle + ' ・ 遍數設定';
+      document.getElementById('drawerDesc').textContent = practice.theme || '恭敬持誦・自訂經咒持誦遍數與佛號聲數';
+
+      const pumenpinScopeEl = document.getElementById('pumenpinScopeSelector');
+      if (key === 'pumenpin') {
+        pumenpinScopeEl.classList.remove('hidden');
+        setPumenpinScope(AppState.pumenpinScope || 'all');
+      } else {
+        pumenpinScopeEl.classList.add('hidden');
+      }
+
+      renderMantraRepOptions(key);
+      setTargetBuddhaCount(AppState.targetBuddhaCount || 10);
+      document.getElementById('practiceDrawerModal').classList.remove('hidden');
+    }
+
+    function closePracticeDrawer() {
+      document.getElementById('practiceDrawerModal').classList.add('hidden');
+    }
+
+    function setPumenpinScope(scope) {
+      AppState.pumenpinScope = scope;
+      ['all', 'jisong'].forEach(s => {
+        const b = document.getElementById('scopeBtn_' + s);
+        if (b) {
+          if (s === scope) {
+            b.classList.add('border-amber-700', 'bg-panel-elevated');
+          } else {
+            b.classList.remove('border-amber-700', 'bg-panel-elevated');
+          }
+        }
+      });
+    }
+
+    function renderMantraRepOptions(key) {
+      const container = document.getElementById('mantraRepOptions');
+      container.innerHTML = '';
+      let reps = [1, 3, 7, 21, 49];
+      let defRep = 1;
+
+      if (key === 'dabeizhou') {
+        reps = [3, 7, 21, 49, 108];
+        defRep = 7;
+      } else if (key === 'xinjing') {
+        reps = [1, 3, 7, 21, 49];
+        defRep = 3;
+      }
+
+      setTargetMantraRep(defRep);
+
+      reps.forEach(rep => {
+        const btn = document.createElement('button');
+        btn.id = 'repBtn_' + rep;
+        btn.className = 'py-2 rounded-lg border border-zen bg-panel hover:border-zen-focus text-center transition-all font-bold';
+        btn.textContent = rep + ' 遍';
+        btn.onclick = () => setTargetMantraRep(rep);
+        container.appendChild(btn);
+      });
+
+      updateRepBtnActive(defRep);
+    }
+
+    function setTargetMantraRep(rep) {
+      AppState.targetMantraRep = rep;
+      document.getElementById('mantraRepDisplay').textContent = rep + ' 遍';
+      updateRepBtnActive(rep);
+    }
+
+    function updateRepBtnActive(rep) {
+      const btns = document.querySelectorAll('#mantraRepOptions button');
+      btns.forEach(b => {
+        if (b.id === 'repBtn_' + rep) {
+          b.classList.add('btn-ochre');
+          b.classList.remove('bg-panel');
+        } else {
+          b.classList.remove('btn-ochre');
+          b.classList.add('bg-panel');
+        }
+      });
+    }
+
+    function setTargetBuddhaCount(count) {
+      AppState.targetBuddhaCount = count;
+      document.getElementById('buddhaCountDisplay').textContent = count > 0 ? (count + ' 聲') : '自由持念';
+
+      [10, 108, 300, 0].forEach(c => {
+        const b = document.getElementById('buddhaBtn_' + c);
+        if (b) {
+          if (c === count) {
+            b.classList.add('border-amber-700', 'bg-panel-elevated');
+          } else {
+            b.classList.remove('border-amber-700', 'bg-panel-elevated');
+          }
+        }
+      });
+    }
+
+    // 9. 啟動定課與建構經本頁面
+    function startPracticeFromDrawer() {
+      closePracticeDrawer();
+      AppState.currentMantraRep = 0;
+      AppState.currentBuddhaCount = 0;
+      AppState.currentBookPageIdx = 0;
+
+      const practice = cleanData[AppState.currentPracticeKey];
+      if (!practice) return;
+
+      const pBadgeTitle = practice.shortName || practice.name || practice.title || '觀音定課';
+      document.getElementById('readingPracticeBadge').textContent = '【' + pBadgeTitle + '】';
+
+      const scopeText = AppState.currentPracticeKey === 'pumenpin' 
+        ? (AppState.pumenpinScope === 'jisong' ? '偈頌專修' : '全品持誦')
+        : (practice.subtitle || '');
+      document.getElementById('readingScopeIndicator').textContent = scopeText;
+
+      preparePagesAndRender();
+      showView('reading');
+      ZenAudio.playChime();
+    }
+
+    function preparePagesAndRender() {
+      const practice = cleanData[AppState.currentPracticeKey];
+      if (!practice) return;
+
+      let sections = [...practice.sections];
+
+      if (AppState.currentPracticeKey === 'pumenpin' && AppState.pumenpinScope === 'jisong') {
+        sections = sections.filter(s => s.id !== 'pumenpin_changhang');
+      }
+
+      AppState.bookPagesList = [];
+
+      sections.forEach(sec => {
+        // 1. 【楊枝淨水讚】：完整 1 頁，絕不切斷
+        if (sec.id.includes('yangzhi')) {
+          AppState.bookPagesList.push({
+            id: sec.id,
+            title: '【楊枝淨水讚】',
+            desc: '淨水滌塵・性空八德',
+            lines: sec.lines
+          });
+          return;
+        }
+
+        // 2. 【開經偈】：完整 1 頁
+        if (sec.id.includes('kaijing')) {
+          AppState.bookPagesList.push({
+            id: sec.id,
+            title: '【開經偈】',
+            desc: '百千萬劫難遭遇・願解真實義',
+            lines: sec.lines
+          });
+          return;
+        }
+
+        // 3. 【心經】：對齊法鼓山原版，分為自然大器的 2 頁
+        if (sec.id === 'xinjing_260') {
+          const p1 = sec.lines.slice(0, 5);
+          const p2 = sec.lines.slice(5);
+
+          AppState.bookPagesList.push(
+            { id: sec.id + '_1', title: '【般若波羅蜜多心經】(上)', desc: '照見五蘊皆空・諸法空相', lines: p1 },
+            { id: sec.id + '_2', title: '【般若波羅蜜多心經】(下)', desc: '心無罣礙・度一切苦厄', lines: p2 }
+          );
+          return;
+        }
+
+        // 4. 【大悲發願祈願文】：分成 2 頁大篇章
+        if (sec.id === 'dabei_fayuan') {
+          const vows = sec.lines.filter(l => l.startsWith('南無大悲觀世音'));
+          const six = sec.lines.filter(l => l.startsWith('我若向'));
+          
+          AppState.bookPagesList.push({
+            id: sec.id + '_part1',
+            title: '【大悲發願祈願文】',
+            desc: '依經發十大宏願',
+            lines: [
+              '經云：若有比丘、比丘尼、優婆塞、優婆夷、童男、童女欲誦持者，於諸眾生起慈悲心，先當從我發如是願：',
+              ...vows
+            ]
+          });
+
+          AppState.bookPagesList.push({
+            id: sec.id + '_part2',
+            title: '【大悲發願祈願文】',
+            desc: '六向無畏願',
+            lines: six
+          });
+          return;
+        }
+
+        // 5. 【大悲咒】：84 句分為 3 個章節頁
+        if (sec.id === 'dabeizhou_84') {
+          const chunkSize = 28;
+          for (let i = 0; i < sec.lines.length; i += chunkSize) {
+            AppState.bookPagesList.push({
+              id: sec.id + '_chunk_' + (i/chunkSize + 1),
+              title: '【大悲咒】',
+              desc: '千手千眼無礙陀羅尼 (' + (i+1) + '~' + Math.min(i+chunkSize, sec.lines.length) + '句)',
+              lines: sec.lines.slice(i, i + chunkSize)
+            });
+          }
+          return;
+        }
+
+        // 6. 【三皈依】與【迴向偈】：完整 1 頁
+        if (sec.id === 'sanguiyi' || sec.id === 'huixiang') {
+          if (!AppState.bookPagesList.find(p => p.id === 'dedication_page')) {
+            const sanguiyi = sections.find(s => s.id === 'sanguiyi');
+            const huixiang = sections.find(s => s.id === 'huixiang');
+            const combinedLines = [];
+            if (sanguiyi) {
+              combinedLines.push('【三皈依】');
+              combinedLines.push(...sanguiyi.lines);
+            }
+            if (huixiang) {
+              combinedLines.push('【迴向偈】');
+              combinedLines.push(...huixiang.lines);
+            }
+            AppState.bookPagesList.push({
+              id: 'dedication_page',
+              title: '【三皈依與迴向】',
+              desc: '自皈依三寶・功德普迴向',
+              lines: combinedLines
+            });
+          }
+          return;
+        }
+
+        // 6.5. 【觀音讚偈】：大悲發願文後之莊嚴讚偈 (獨立 1 頁)
+        if (sec.id === 'guanyin_zanji') {
+          AppState.bookPagesList.push({
+            id: 'guanyin_zanji',
+            title: '【觀音讚偈】',
+            desc: '讚頌大士悲智行願・起大信心',
+            lines: sec.lines
+          });
+          return;
+        }
+
+        // 7. 【稱念聖號】：緊接觀音讚偈後
+        if (sec.id.includes('shenghao')) {
+          AppState.bookPagesList.push({
+            id: sec.id,
+            title: '【稱念觀音聖號】',
+            desc: '一心持名・反聞自性',
+            lines: [
+              '南無普陀山琉璃世界　大慈大悲觀世音菩薩',
+              '南無觀世音菩薩（十稱）'
+            ]
+          });
+          return;
+        }
+
+        // 8. 【普門品・偈頌】：32 偈分為 6 頁
+        if (sec.id === 'pumenpin_jisong') {
+          const chunkSize = 6;
+          for (let i = 0; i < sec.lines.length; i += chunkSize) {
+            AppState.bookPagesList.push({
+              id: sec.id + '_ji_' + (i/chunkSize + 1),
+              title: '【普門品・偈頌】',
+              desc: '念彼觀音力（' + (i+1) + '~' + Math.min(i+chunkSize, sec.lines.length) + '）',
+              lines: sec.lines.slice(i, i + chunkSize)
+            });
+          }
+          return;
+        }
+
+        // 9. 【普門品・長行】：自然段落分頁
+        const chunkSize = 5;
+        for (let i = 0; i < sec.lines.length; i += chunkSize) {
+          AppState.bookPagesList.push({
+            id: sec.id + '_ch_' + (i/chunkSize + 1),
+            title: sec.title,
+            desc: sec.desc || '',
+            lines: sec.lines.slice(i, i + chunkSize)
+          });
+        }
+      });
+
+      if (AppState.currentBookPageIdx >= AppState.bookPagesList.length) {
+        AppState.currentBookPageIdx = 0;
+      }
+
+      renderBookPage('none');
+      renderScrollContent(sections);
+    }
+
+    // 渲染經本翻頁（修正：精準匹配聖號標題，徹底消除經文內誤觸的黃色長句）
+    function renderBookPage(animDirection = 'left') {
+      const list = AppState.bookPagesList;
+      if (!list || list.length === 0) return;
+
+      const idx = AppState.currentBookPageIdx;
+      const page = list[idx];
+      const total = list.length;
+
+      document.getElementById('bookCurrentPageNum').textContent = idx + 1;
+      document.getElementById('bookTotalPageNum').textContent = total;
+      document.getElementById('bookPageTitle').textContent = page.title;
+      document.getElementById('bookPageSubtitle').textContent = page.desc ? page.desc : '';
+
+      const contentEl = document.getElementById('bookPageContent');
+      let html = '';
+
+      page.lines.forEach(line => {
+        const isHeaderTag = line.startsWith('【') && line.endsWith('】');
+        const isFayuan = line.startsWith('南無大悲觀世音');
+        const isSix = line.startsWith('我若向');
+        const isJingyun = line.startsWith('經云：');
+        
+        // 嚴格修正：僅在純聖號持誦標記時才作為聖號樣式，經文長行之敘事絕不誤亮黃色
+        const isExactShenghao = (line.trim() === '南無觀世音菩薩（十稱）' || line.trim() === '南無觀世音菩薩' || line.trim() === '南無觀世音菩薩（七字轉四字）');
+
+        if (isHeaderTag) {
+          html += `<div class="text-xs sm:text-sm font-bold c-gold pt-2 pb-0.5 tracking-widest">${line}</div>`;
+        } else if (isFayuan) {
+          html += `<div class="py-0.5 c-gold font-medium">${line}</div>`;
+        } else if (isSix) {
+          html += `<div class="py-0.5 c-crimson font-medium">${line}</div>`;
+        } else if (isJingyun) {
+          // 啟白發願文：大眾同誦，正式主文樣式，絕不縮小或淡化
+          html += `<p class="py-1 leading-relaxed c-main font-medium">${line}</p>`;
+        } else if (isExactShenghao) {
+          html += `<div class="py-1 text-base sm:text-lg font-bold c-gold tracking-widest">${line}</div>`;
+        } else {
+          // 普通經句：一律採用舒緩護眼的主內文字色 c-main，絕無突兀亮色
+          html += `<p class="py-0.5 leading-relaxed c-main">${line}</p>`;
+        }
+      });
+
+      contentEl.innerHTML = html;
+
+      // 翻頁微動效
+      const card = document.getElementById('bookPageCard');
+      card.classList.remove('page-turn-left', 'page-turn-right');
+      void card.offsetWidth;
+      if (animDirection === 'left') card.classList.add('page-turn-left');
+      else if (animDirection === 'right') card.classList.add('page-turn-right');
+
+      // 按鈕狀態更新
+      const prevBtn = document.getElementById('bookPrevPageBtn');
+      const nextBtn = document.getElementById('bookNextPageBtn');
+      const nextText = document.getElementById('bookNextBtnText');
+
+      prevBtn.disabled = idx === 0;
+      if (idx === total - 1) {
+        nextText.textContent = '圓滿迴向';
+        nextBtn.onclick = finishPracticeAndCheckIn;
+      } else {
+        nextText.textContent = '下一頁';
+        nextBtn.onclick = nextBookPage;
+      }
+    }
+
+    function prevBookPage() {
+      if (AppState.currentBookPageIdx > 0) {
+        AppState.currentBookPageIdx--;
+        renderBookPage('right');
+      }
+    }
+
+    function nextBookPage() {
+      if (AppState.currentBookPageIdx < AppState.bookPagesList.length - 1) {
+        AppState.currentBookPageIdx++;
+        renderBookPage('left');
+      }
+    }
+
+    function handleCardClick(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const width = rect.width;
+      if (clickX < width * 0.35) {
+        prevBookPage();
+      } else if (clickX > width * 0.65) {
+        nextBookPage();
+      }
+    }
+
+    function renderScrollContent(sections) {
+      const navPills = document.getElementById('sectionNavPills');
+      const container = document.getElementById('scriptureContentContainer');
+      navPills.innerHTML = '';
+      container.innerHTML = '';
+
+      sections.forEach((sec, idx) => {
+        const pill = document.createElement('button');
+        pill.className = 'px-3 py-1 rounded-full bg-panel-elevated border border-zen hover:border-zen-focus text-xs c-sub whitespace-nowrap transition-all';
+        pill.textContent = sec.title.replace(/[【】]/g, '');
+        pill.onclick = () => {
+          const el = document.getElementById('sec_anchor_' + sec.id);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        };
+        navPills.appendChild(pill);
+
+        const secDiv = document.createElement('div');
+        secDiv.id = 'sec_anchor_' + sec.id;
+        secDiv.className = 'space-y-3 pt-2';
+
+        let innerHtml = `
+          <div class="border-b border-zen pb-2">
+            <h3 class="text-base sm:text-lg font-bold c-gold tracking-wider">${sec.title}</h3>
+            ${sec.desc ? `<p class="text-xs c-muted mt-0.5">${sec.desc}</p>` : ''}
+          </div>
+          <div class="space-y-1.5">
+        `;
+
+        sec.lines.forEach(line => {
+          if (line.startsWith('南無大悲觀世音')) {
+            innerHtml += `<p class="c-gold font-medium my-1">${line}</p>`;
+          } else if (line.startsWith('我若向')) {
+            innerHtml += `<p class="c-crimson font-medium my-1">${line}</p>`;
+          } else if (line.startsWith('經云：')) {
+            innerHtml += `<p class="text-xs sm:text-sm c-muted italic mb-2">${line}</p>`;
+          } else {
+            innerHtml += `<p class="my-1">${line}</p>`;
+          }
+        });
+
+        innerHtml += '</div>';
+        secDiv.innerHTML = innerHtml;
+        container.appendChild(secDiv);
+      });
+    }
+
+    // 10. 法器敲擊與計數
+    function strikeWoodfish() {
+      ZenAudio.playWoodfish();
+      const btn = document.getElementById('strikeWoodfishBtn');
+      if (btn) {
+        btn.classList.add('striking');
+        setTimeout(() => btn.classList.remove('striking'), 120);
+      }
+    }
+
+    function strikeYinqing() {
+      ZenAudio.playChime();
+      const btn = document.getElementById('strikeYinqingBtn');
+      if (btn) {
+        btn.classList.add('striking');
+        setTimeout(() => btn.classList.remove('striking'), 120);
+      }
+    }
+
+    function strikeDaqing() {
+      ZenAudio.playGrandBell();
+      const btn = document.getElementById('strikeDaqingBtn');
+      if (btn) {
+        btn.classList.add('striking');
+        setTimeout(() => btn.classList.remove('striking'), 120);
+      }
+    }
+
+    document.getElementById('incrementRepBtn').addEventListener('click', () => {
+      incrementPracticeCount();
+    });
+
+    function incrementPracticeCount() {
+      if (AppState.currentMantraRep < AppState.targetMantraRep) {
+        AppState.currentMantraRep++;
+        strikeWoodfish();
+        if (AppState.currentMantraRep >= AppState.targetMantraRep) {
+          ZenAudio.playChime();
+          showToast('🎉 經咒持誦圓滿達標（' + AppState.targetMantraRep + ' 遍）！');
+        }
+      } else {
+        AppState.currentBuddhaCount++;
+        strikeWoodfish();
+        if (AppState.targetBuddhaCount > 0 && AppState.currentBuddhaCount === AppState.targetBuddhaCount) {
+          ZenAudio.playChime();
+          showToast('🙏 觀音聖號已滿 ' + AppState.targetBuddhaCount + ' 聲，發願圓滿！');
+        }
+      }
+    }
+
+    // 自動木魚節拍器 (45 BPM 禪定常速)
+    let autoMuyuInterval = null;
+    function toggleAutoMuyu() {
+      const btn = document.getElementById('autoMuyuBtn');
+      if (autoMuyuInterval) {
+        clearInterval(autoMuyuInterval);
+        autoMuyuInterval = null;
+        if (btn) {
+          btn.classList.remove('btn-ochre');
+          btn.classList.add('bg-panel-elevated', 'c-muted');
+        }
+        showToast('已停止自動木魚伴奏');
+      } else {
+        ZenAudio.playWoodfish();
+        autoMuyuInterval = setInterval(() => {
+          ZenAudio.playWoodfish();
+          const fishBtn = document.getElementById('strikeWoodfishBtn');
+          if (fishBtn) {
+            fishBtn.classList.add('striking');
+            setTimeout(() => fishBtn.classList.remove('striking'), 100);
+          }
+        }, 1333); // ~45 BPM
+        if (btn) {
+          btn.classList.remove('bg-panel-elevated', 'c-muted');
+          btn.classList.add('btn-ochre');
+        }
+        showToast('已開啟自動木魚（45 BPM 禪定速）');
+      }
+    }
+
+    // 10.5. 法鼓山官方影音伴誦控制
+    function openDdmPlayer() {
+      const practice = cleanData[AppState.currentPracticeKey];
+      if (!practice || !practice.youtubeId) return;
+
+      const titleEl = document.getElementById('ddmPlayerTitle');
+      const iframe = document.getElementById('ddmIframe');
+      const modal = document.getElementById('ddmPlayerModal');
+
+      const pPlayerTitle = practice.shortName || practice.name || practice.title || '觀音法門';
+      if (titleEl) titleEl.textContent = '法鼓山' + pPlayerTitle + '官方念誦';
+      if (iframe) {
+        iframe.src = 'https://www.youtube-nocookie.com/embed/' + practice.youtubeId + '?autoplay=1&enablejsapi=1&rel=0';
+      }
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeDdmPlayer() {
+      const modal = document.getElementById('ddmPlayerModal');
+      const iframe = document.getElementById('ddmIframe');
+      if (modal) modal.classList.add('hidden');
+      if (iframe) iframe.src = '';
+    }
+
+    // 10.6 指引彈窗 (修持功能與法器目的說明)
+    function openGuideModal() {
+      document.getElementById('guideModal').classList.remove('hidden');
+    }
+    function closeGuideModal() {
+      document.getElementById('guideModal').classList.add('hidden');
+    }
+
+    // 11. 外觀主題切換（頂部一鍵切換與詳細設定同步）
+    const THEMES_LIST = [
+      { key: 'dark', name: '曜石', icon: '🌙', desc: '曜石銀灰' },
+      { key: 'parchment', name: '宣紙', icon: '📜', desc: '宋代宣紙' },
+      { key: 'celadon', name: '天青', icon: '🍵', desc: '沉香天青' }
+    ];
+
+    function cycleTheme() {
+      const currentIdx = THEMES_LIST.findIndex(t => t.key === AppState.theme);
+      const nextIdx = (currentIdx + 1) % THEMES_LIST.length;
+      setTheme(THEMES_LIST[nextIdx].key, true);
+    }
+
+    function setTheme(theme, notify = true) {
+      AppState.theme = theme;
+      SafeStorage.setItem('zen_theme', theme);
+      document.documentElement.setAttribute('data-theme', theme);
+
+      // 同步頂部按鈕圖示與文字
+      const currentInfo = THEMES_LIST.find(t => t.key === theme) || THEMES_LIST[0];
+      const quickIcon = document.getElementById('quickThemeIcon');
+      const quickText = document.getElementById('quickThemeText');
+      if (quickIcon) quickIcon.textContent = currentInfo.icon;
+      if (quickText) quickText.textContent = currentInfo.name;
+
+      // 同步設定選單按鈕高亮
+      ['themeBtn_dark', 'themeBtn_parchment', 'themeBtn_celadon'].forEach(id => {
+        const b = document.getElementById(id);
+        if (b) b.classList.remove('border-amber-700', 'font-bold');
+      });
+      const activeBtn = document.getElementById('themeBtn_' + theme);
+      if (activeBtn) activeBtn.classList.add('border-amber-700', 'font-bold');
+
+      if (notify) {
+        showToast('已切換護眼調性：' + currentInfo.desc);
+      }
+    }
+
+    // 12. 排版控制面板
+    function openTypographyModal() {
+      document.getElementById('typographyModal').classList.remove('hidden');
+    }
+    function closeTypographyModal() {
+      document.getElementById('typographyModal').classList.add('hidden');
+    }
+
+    function setFontFamily(fontKey, notify = true) {
+      AppState.fontFamily = fontKey;
+      SafeStorage.setItem('zen_font_family', fontKey);
+
+      const bookEl = document.getElementById('bookPageContent');
+      const scrollEl = document.getElementById('scriptureContentContainer');
+      [bookEl, scrollEl].forEach(el => {
+        if (!el) return;
+        el.classList.remove('font-kaiti', 'font-songti', 'font-heiti');
+        el.classList.add('font-' + fontKey);
+      });
+
+      ['kaiti', 'songti', 'heiti'].forEach(k => {
+        const b = document.getElementById('fontBtn_' + k);
+        if (b) {
+          if (k === fontKey) b.classList.add('border-amber-700', 'btn-ochre');
+          else b.classList.remove('border-amber-700', 'btn-ochre');
+        }
+      });
+
+      if (notify) showToast('已設定字體：' + (fontKey === 'kaiti' ? '經典楷體' : fontKey === 'songti' ? '禪宗宋體' : '現代黑體'));
+    }
+
+    const FONT_SIZE_MAP = [
+      { size: '20px', class: 'font-step-0', label: '小 (20px)' },
+      { size: '24px', class: 'font-step-1', label: '中 (24px，標準)' },
+      { size: '28px', class: 'font-step-2', label: '大 (28px，清晰)' },
+      { size: '34px', class: 'font-step-3', label: '特大 (34px，尊親)' },
+      { size: '40px', class: 'font-step-4', label: '巨幅 (40px，壇場)' }
+    ];
+
+    function setFontSizeStep(step, notify = true) {
+      if (step < 0 || step >= FONT_SIZE_MAP.length) return;
+      AppState.fontSizeStep = step;
+      SafeStorage.setItem('zen_font_size_step', step);
+
+      const item = FONT_SIZE_MAP[step];
+      document.getElementById('fontSizeDisplay').textContent = item.label;
+
+      const bookEl = document.getElementById('bookPageContent');
+      const scrollEl = document.getElementById('scriptureContentContainer');
+      [bookEl, scrollEl].forEach(el => {
+        if (!el) return;
+        FONT_SIZE_MAP.forEach(m => el.classList.remove(m.class));
+        el.classList.add(item.class);
+      });
+
+      for (let i = 0; i < 5; i++) {
+        const b = document.getElementById('sizeBtn_' + i);
+        if (b) {
+          if (i === step) b.classList.add('border-amber-700', 'btn-ochre');
+          else b.classList.remove('border-amber-700', 'btn-ochre');
+        }
+      }
+
+      if (notify) showToast('字級：' + item.label);
+    }
+
+    function setTextAlign(align, notify = true) {
+      AppState.textAlign = align;
+      SafeStorage.setItem('zen_text_align', align);
+
+      const bookEl = document.getElementById('bookPageContent');
+      const scrollEl = document.getElementById('scriptureContentContainer');
+      [bookEl, scrollEl].forEach(el => {
+        if (!el) return;
+        el.classList.remove('text-center', 'text-left');
+        el.classList.add('text-' + align);
+      });
+
+      ['center', 'left'].forEach(a => {
+        const b = document.getElementById('alignBtn_' + a);
+        if (b) {
+          if (a === align) b.classList.add('border-amber-700', 'btn-ochre');
+          else b.classList.remove('border-amber-700', 'btn-ochre');
+        }
+      });
+
+      if (notify) showToast('對齊：' + (align === 'center' ? '禪意居中' : '傳統靠左'));
+    }
+
+    function setLineHeight(lhKey, notify = true) {
+      AppState.lineHeight = lhKey;
+      SafeStorage.setItem('zen_line_height', lhKey);
+
+      const bookEl = document.getElementById('bookPageContent');
+      const scrollEl = document.getElementById('scriptureContentContainer');
+      
+      const map = {
+        tight: 'leading-snug',
+        normal: 'leading-relaxed',
+        relaxed: 'leading-loose'
+      };
+
+      [bookEl, scrollEl].forEach(el => {
+        if (!el) return;
+        el.classList.remove('leading-snug', 'leading-relaxed', 'leading-loose');
+        el.classList.add(map[lhKey] || 'leading-relaxed');
+      });
+
+      ['tight', 'normal', 'relaxed'].forEach(k => {
+        const b = document.getElementById('lhBtn_' + k);
+        if (b) {
+          if (k === lhKey) b.classList.add('border-amber-700', 'btn-ochre');
+          else b.classList.remove('border-amber-700', 'btn-ochre');
+        }
+      });
+
+      if (notify) showToast('行距：' + (lhKey === 'tight' ? '緊湊' : lhKey === 'normal' ? '適度' : '空靈'));
+    }
+
+    function toggleReadingMode() {
+      const isBook = AppState.readingMode === 'book';
+      AppState.readingMode = isBook ? 'scroll' : 'book';
+
+      const bookWrap = document.getElementById('bookModeContainer');
+      const scrollWrap = document.getElementById('scrollModeContainer');
+      const modeIcon = document.getElementById('readingModeIcon');
+      const modeText = document.getElementById('readingModeText');
+
+      if (AppState.readingMode === 'book') {
+        bookWrap.classList.remove('hidden');
+        scrollWrap.classList.add('hidden');
+        modeIcon.textContent = '📜';
+        modeText.textContent = '卷軸模式';
+        renderBookPage('none');
+        showToast('已切換為：經本摺頁翻書模式');
+      } else {
+        bookWrap.classList.add('hidden');
+        scrollWrap.classList.remove('hidden');
+        modeIcon.textContent = '📖';
+        modeText.textContent = '經本模式';
+        showToast('已切換為：卷軸連續讀誦模式');
+      }
+    }
+
+    // 13. 日課修持記錄與禪意迴向卡
+    function getTodayString() {
+      const d = new Date();
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    }
+
+    function getPracticeLogs() {
+      const raw = SafeStorage.getItem('zen_practice_logs');
+      if (!raw) return {};
+      try {
+        return JSON.parse(raw);
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function savePracticeLogForToday(extra = {}) {
+      const logs = getPracticeLogs();
+      const today = getTodayString();
+      logs[today] = {
+        date: today,
+        practiceKey: AppState.currentPracticeKey,
+        mantraRep: AppState.currentMantraRep,
+        buddhaCount: AppState.currentBuddhaCount,
+        timestamp: Date.now(),
+        ...extra
+      };
+      SafeStorage.setItem('zen_practice_logs', JSON.stringify(logs));
+      updateDailyCheckStatus();
+    }
+
+    function finishPracticeAndCheckIn() {
+      ZenAudio.playChime();
+      savePracticeLogForToday({ completed: true });
+      showToast('🙏 今日定課已圓滿打卡！功德迴向法界');
+      setTimeout(() => {
+        openDailyRecords();
+        generateDedicationCardImage();
+      }, 400);
+    }
+
+    function manualCheckInToday() {
+      savePracticeLogForToday({ manual: true, completed: true });
+      ZenAudio.playChime();
+      renderCalendar();
+      showToast('🙏 今日定課打卡成功！');
+      generateDedicationCardImage();
+    }
+
+    function updateDailyCheckStatus() {
+      const logs = getPracticeLogs();
+      const today = getTodayString();
+      const isChecked = !!logs[today];
+      const indicator = document.getElementById('dailyCheckIndicator');
+      if (indicator) {
+        if (isChecked) indicator.classList.remove('hidden');
+        else indicator.classList.add('hidden');
+      }
+
+      const statusText = document.getElementById('todayStatusText');
+      const checkInBtn = document.getElementById('btnCheckInNow');
+      if (statusText) {
+        if (isChecked) {
+          statusText.textContent = '今日已圓滿打卡（合掌祈福 🙏）';
+          statusText.className = 'text-sm font-bold c-crimson';
+          if (checkInBtn) checkInBtn.classList.add('hidden');
+        } else {
+          statusText.textContent = '今日尚未打卡';
+          statusText.className = 'text-sm font-bold c-gold';
+          if (checkInBtn) checkInBtn.classList.remove('hidden');
+        }
+      }
+    }
+
+    function openDailyRecords() {
+      updateDailyCheckStatus();
+      renderCalendar();
+      document.getElementById('dailyRecordsModal').classList.remove('hidden');
+    }
+
+    function closeDailyRecords() {
+      document.getElementById('dailyRecordsModal').classList.add('hidden');
+    }
+
+    function renderCalendar() {
+      const grid = document.getElementById('calendarDaysGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth();
+      document.getElementById('calendarMonthTitle').textContent = year + '年 ' + (month + 1) + '月';
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const logs = getPracticeLogs();
+      const todayDate = now.getDate();
+
+      for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'h-8 rounded-lg bg-panel/20 opacity-20';
+        grid.appendChild(emptyCell);
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+        const hasLog = !!logs[dateStr];
+        const isToday = day === todayDate;
+
+        const cell = document.createElement('div');
+        cell.className = `h-8 rounded-lg p-0.5 flex flex-col items-center justify-between border transition-all text-[10px] ${
+          isToday ? 'border-amber-700 bg-amber-900/15' : 'border-zen bg-panel'
+        } ${hasLog ? 'border-red-900/50 bg-red-950/20' : ''}`;
+
+        cell.innerHTML = `
+          <span class="${isToday ? 'font-bold c-gold' : 'c-muted'}">${day}</span>
+          <span>${hasLog ? '🙏' : ''}</span>
+        `;
+        grid.appendChild(cell);
+      }
+    }
+
+    // 13.5 迴向小卡 Canvas 繪製（溫潤雅致，符合禪美學）
+    function generateDedicationCardImage() {
+      const canvas = document.getElementById('dedicationCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const author = document.getElementById('dedicateNameInput').value.trim() || '佛弟子';
+      const target = document.getElementById('dedicateTargetInput').value.trim() || '法界眾生、闔家眷屬';
+
+      // 依當前主題自適應底色
+      if (AppState.theme === 'parchment') {
+        ctx.fillStyle = '#EAE2D3';
+      } else if (AppState.theme === 'celadon') {
+        ctx.fillStyle = '#222928';
+      } else {
+        ctx.fillStyle = '#24262A';
+      }
+      ctx.fillRect(0, 0, 800, 520);
+
+      // 外邊框：紅赭
+      ctx.strokeStyle = AppState.theme === 'parchment' ? '#8F3B30' : '#A85A48';
+      ctx.lineWidth = 3.5;
+      ctx.strokeRect(28, 28, 744, 464);
+
+      // 內細框
+      ctx.strokeStyle = AppState.theme === 'parchment' ? 'rgba(143, 59, 48, 0.25)' : 'rgba(168, 90, 72, 0.25)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(38, 38, 724, 444);
+
+      // 頂部標題
+      ctx.fillStyle = AppState.theme === 'parchment' ? '#8F3B30' : '#D1B07A';
+      ctx.font = 'bold 25px "Noto Serif TC", serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('觀音法門定課・修持迴向', 400, 95);
+
+      // 功德主與對象
+      ctx.fillStyle = AppState.theme === 'parchment' ? '#332B24' : '#EDE7DE';
+      ctx.font = '16px "Noto Serif TC", serif';
+      ctx.fillText('迴向功德主：' + author + '    ｜    祈福對象：' + target, 400, 145);
+
+      // 迴向偈
+      ctx.fillStyle = AppState.theme === 'parchment' ? '#8F3B30' : '#D1B07A';
+      ctx.font = '21px "Noto Serif TC", serif';
+      ctx.fillText('願消三障諸煩惱　願得智慧真明了', 400, 225);
+      ctx.fillText('普願罪障悉消除　世世常行菩薩道', 400, 270);
+
+      // 讚偈
+      ctx.fillStyle = AppState.theme === 'parchment' ? '#63564B' : '#B8B3AA';
+      ctx.font = '15px "Noto Serif TC", serif';
+      ctx.fillText('千處祈求千處現　苦海常作度人舟', 400, 345);
+      ctx.fillText('南無大悲觀世音菩薩摩訶薩', 400, 380);
+
+      // 底部落款
+      ctx.fillStyle = AppState.theme === 'parchment' ? '#8E7E70' : '#88837A';
+      ctx.font = '13px sans-serif';
+      ctx.fillText('法鼓山觀音法門定課系統敬製 ・ ' + getTodayString(), 400, 445);
+
+      try {
+        const dataUrl = canvas.toDataURL('image/png');
+        const imgEl = document.getElementById('cardPreviewImage');
+        const tipEl = document.getElementById('cardPreviewTip');
+
+        if (imgEl) {
+          imgEl.src = dataUrl;
+          imgEl.classList.remove('hidden');
+        }
+        if (tipEl) {
+          tipEl.textContent = '📱 手機長按圖片即可「儲存影像」或分享；電腦可右鍵另存圖片';
+        }
+
+        showToast('迴向小卡已繪製生成！');
+      } catch (e) {
+        showToast('迴向文準備完畢');
+      }
+    }
+
+    function copyDedicationText() {
+      const author = document.getElementById('dedicateNameInput').value.trim() || '佛弟子';
+      const target = document.getElementById('dedicateTargetInput').value.trim() || '法界眾生、闔家眷屬';
+      const text = `【觀音法門定課・修持迴向】\n功德主：${author}\n祈福對象：${target}\n\n願消三障諸煩惱，願得智慧真明了；\n普願罪障悉消除，世世常行菩薩道。\n\n千處祈求千處現，苦海常作度人舟。\n南無大悲觀世音菩薩！\n（法鼓山觀音法門定課系統 ${getTodayString()}）`;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast('已複製迴向文至剪貼簿！');
+        }).catch(() => fallbackCopy(text));
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast('已複製迴向文！');
+      } catch (e) {
+        showToast('請手動選取文字');
+      }
+      document.body.removeChild(ta);
+    }
+
+    // 14. 設定選單與 Nano Banana 標誌切換
+    function openSettings() {
+      document.getElementById('settingsModal').classList.remove('hidden');
+    }
+    function closeSettings() {
+      document.getElementById('settingsModal').classList.add('hidden');
+    }
+
+    function selectLogo(idx, notify = true) {
+      if (idx < 0 || idx >= LOGO_DATA_URIS.length) return;
+      AppState.selectedLogoIndex = idx;
+      SafeStorage.setItem('zen_logo_index', idx);
+
+      const headerLogoImg = document.getElementById('headerLogoImg');
+      if (headerLogoImg) headerLogoImg.src = LOGO_DATA_URIS[idx];
+
+      for (let i = 0; i < LOGO_DATA_URIS.length; i++) {
+        const choice = document.getElementById('logoChoice_' + i);
+        if (choice) {
+          if (i === idx) choice.classList.add('border-amber-700', 'bg-panel-elevated');
+          else choice.classList.remove('border-amber-700', 'bg-panel-elevated');
+        }
+      }
+
+      const descEl = document.getElementById('currentLogoDesc');
+      if (descEl && LOGO_TITLES[idx]) {
+        descEl.textContent = '0' + (idx + 1) + '. ' + LOGO_TITLES[idx].name + '：' + LOGO_TITLES[idx].desc;
+      }
+
+      if (notify) showToast('已更換禪意標誌：' + LOGO_TITLES[idx].name);
+    }
+
+    // 15. 自訂 Toast
+    let toastTimer = null;
+    function showToast(msg, icon = '🙏') {
+      const toast = document.getElementById('toastNotification');
+      const msgEl = document.getElementById('toastMessage');
+      const iconEl = document.getElementById('toastIcon');
+      if (!toast || !msgEl) return;
+
+      msgEl.textContent = msg;
+      if (iconEl) iconEl.textContent = icon;
+
+      toast.classList.remove('opacity-0', '-translate-y-2');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', '-translate-y-2');
+      }, 2300);
+    }
+
+    // 頂部按鈕事件綁定
+    document.getElementById('brandLogoHomeBtn').addEventListener('click', returnToHome);
+    document.getElementById('openTypographyBtn').addEventListener('click', openTypographyModal);
+    document.getElementById('openDailyRecordsBtn').addEventListener('click', openDailyRecords);
+    document.getElementById('openSettingsBtn').addEventListener('click', openSettings);
+  </script>
+
+  <!-- ==================== 懸浮迷你伴讀控制器 (MINI COMPANION BAR) ==================== -->
+  <div id="miniCompanionBar" class="fixed bottom-16 sm:bottom-20 right-3 sm:right-6 z-40 bg-panel-elevated border border-zen rounded-full px-3.5 py-1.5 shadow-2xl backdrop-blur-md flex items-center gap-2.5 hidden transition-all">
+    <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+    <span class="text-xs c-main font-medium">🔊 僧團伴讀中</span>
+    <button onclick="expandDdmPlayer()" class="px-2.5 py-0.5 rounded-full bg-panel border border-zen text-[11px] c-gold hover:border-zen-focus transition-all">
+      展開影音
+    </button>
+    <button onclick="stopDdmPlayer()" class="text-xs c-muted hover:c-main p-0.5 font-bold" title="停止伴讀">
+      ✕
+    </button>
+  </div>
+
 </body>
 </html>

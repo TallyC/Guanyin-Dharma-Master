@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="stone">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>觀音法門定課 v1.2 — 普門品・大悲咒・心經（法鼓山修持定課）</title>
+  <meta name="description" content="法鼓山觀音法門修持定課：普門品、大悲咒、心經三音對照，雲端祈福小卡與修持日曆。">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ==================== 頂部全功能導覽列 ==================== -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand-group">
+        <!-- 使用純 SVG 向量繪製金色蓮花，杜絕任何 emoji 在 Windows 缺字變問號 '?' -->
+        <div class="brand-emblem" title="觀音法門">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3c-2.5 3-4 6-4 9a4 4 0 0 0 8 0c0-3-1.5-6-4-9z"/>
+            <path d="M12 12c-3-1.5-6-1.5-8 1a5 5 0 0 0 7 4"/>
+            <path d="M12 12c3-1.5 6-1.5 8 1a5 5 0 0 1-7 4"/>
+          </svg>
+        </div>
+        <div class="brand-title">
+          <span>觀音法門定課</span>
+          <span class="badge-version">v1.5</span>
+        </div>
+      </div>
+
+      <!-- 頂部功能快捷按鈕 -->
+      <div class="header-actions">
+        <button id="recordPracticeBtn" class="btn-header btn-primary" title="記錄今日定課">
+          <span>🙏</span><span id="recordPracticeText">今日定課打卡</span>
+        </button>
+        <button id="openCalendarBtn" class="btn-header" title="檢視每日修持日曆">
+          <span>📅</span><span>修持日曆</span>
+        </button>
+        <button id="openDedicationBtn" class="btn-header" title="開啟法鼓山雲端祈福迴向小卡">
+          <span>🌸</span><span>雲端祈福卡</span>
+        </button>
+        <button id="themeToggleBtn" class="btn-header" title="切換日間暖沙 / 夜間曜石護眼主題">
+          <span id="themeIcon">🌙</span><span id="themeText">夜修暗調</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== 定課模式切換選單 ==================== -->
+  <nav class="mode-navigation" aria-label="定課模式切換">
+    <div class="nav-inner">
+      <div class="mode-tab-bar">
+        <button class="mode-tab-btn active" data-mode="merged">
+          <span>三門合併完整定課</span>
+        </button>
+        <button class="mode-tab-btn" data-mode="pumenpin">
+          <span>普門品課誦</span>
+        </button>
+        <button class="mode-tab-btn" data-mode="dabeizhou">
+          <span>大悲咒課誦</span>
+        </button>
+        <button class="mode-tab-btn" data-mode="xinjing">
+          <span>心經課誦</span>
+        </button>
+      </div>
+
+      <!-- 右側切換至經書版與段落直達 -->
+      <div style="display:flex; align-items:center; gap:0.6rem;">
+        <a href="book.html" class="btn-header" style="text-decoration:none; background:var(--accent-gold-light); color:var(--accent-gold); border-color:var(--accent-gold); font-weight:600;" title="切換至傳統經書摺本模式">
+          <span>📖</span><span>仿造經書版</span>
+        </a>
+        <div style="display:flex; align-items:center; gap:0.4rem; margin-left:0.3rem;">
+          <label for="sectionQuickSelect" style="font-size:0.84rem; color:var(--text-muted);">段落直達：</label>
+          <select id="sectionQuickSelect" class="btn-header" style="padding:0.35rem 0.6rem; cursor:pointer;">
+            <!-- 動態產生 -->
+          </select>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== 主課誦區 ==================== -->
+  <main class="main-container">
+
+    <!-- 頂部誦經人因工程控制列 (集中於上方) -->
+    <div class="top-controls-toolbar">
+      <!-- 1. 音標與標點顯隱開關 -->
+      <div class="toolbar-group">
+        <span class="toolbar-label">顯示開關：</span>
+        <label class="toggle-item">
+          <input type="checkbox" id="toggleZhuyin" checked>
+          <span>注音</span>
+        </label>
+        <label class="toggle-item">
+          <input type="checkbox" id="togglePinyin" checked>
+          <span>拼音</span>
+        </label>
+        <label class="toggle-item">
+          <input type="checkbox" id="togglePunct" checked>
+          <span>標點</span>
+        </label>
+      </div>
+
+      <!-- 2. 字級大小切換 -->
+      <div class="toolbar-group">
+        <span class="toolbar-label">字級：</span>
+        <div class="btn-toggle-group">
+          <button class="btn-toggle-opt active" data-size="normal">標準</button>
+          <button class="btn-toggle-opt" data-size="large">大字</button>
+          <button class="btn-toggle-opt" data-size="xlarge">特大</button>
+        </div>
+      </div>
+
+      <!-- 3. 研讀與背誦遮蔽切換 -->
+      <div class="toolbar-group">
+        <span class="toolbar-label">讀誦模式：</span>
+        <div class="btn-toggle-group">
+          <button class="btn-toggle-opt active" data-mask="none">三音齊全</button>
+          <button class="btn-toggle-opt" data-mask="ruby">純國字</button>
+          <button class="btn-toggle-opt" data-mask="char">默誦背誦</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 經卷聖殿主體 (徹底無畫線、無經文前小標，連貫經本) -->
+    <article class="scripture-scroll-board">
+      <header class="board-header">
+        <h1 id="scriptureTitle" class="board-title">觀音法門完整定課（三門合修）</h1>
+        <p id="scriptureSubtitle" class="board-subtitle">大悲總持・普門廣度・般若空慧・法鼓山課誦儀軌連貫修持</p>
+      </header>
+
+      <!-- 經文主體 (純粹連貫經卷) -->
+      <div id="scriptureContainer" class="board-content">
+        <!-- 由 app.js 注入 -->
+      </div>
+    </article>
+
+  </main>
+
+  <!-- ==================== 模態彈窗體系 ==================== -->
+
+  <!-- 1. 定課打卡日曆彈窗 -->
+  <div id="calendarModal" class="zen-modal-overlay hidden" aria-hidden="true" role="dialog">
+    <div class="zen-modal-card modal-lg">
+      <div class="modal-header-bar">
+        <div class="modal-title-wrap">
+          <span style="font-size:1.3rem;">🙏</span>
+          <h3 class="modal-title">定課修持日曆</h3>
+        </div>
+        <button id="closeCalendarModalBtn" class="btn-close-modal" aria-label="關閉">✕</button>
+      </div>
+      <div class="modal-body-content">
+        <div id="calendarMount"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 法鼓山風格雲端祈福迴向小卡彈窗 -->
+  <div id="dedicationModal" class="zen-modal-overlay hidden" aria-hidden="true" role="dialog">
+    <div class="zen-modal-card modal-xl">
+      <div class="modal-header-bar">
+        <div class="modal-title-wrap">
+          <span style="font-size:1.3rem;">🌸</span>
+          <h3 class="modal-title">法鼓山觀音定課・雲端祈福小卡</h3>
+        </div>
+        <button id="closeDedicationModalBtn" class="btn-close-modal" aria-label="關閉">✕</button>
+      </div>
+      <div class="modal-body-content">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start;">
+          
+          <!-- 左側即時預覽 Canvas -->
+          <div>
+            <div style="background:#ffffff; border-radius:12px; padding:0.5rem; border:1px solid var(--border-main); box-shadow:var(--shadow-sm); display:flex; justify-content:center;">
+              <canvas id="dedicationCardCanvas" width="900" height="1200" style="max-width:100%; height:auto; border-radius:8px; display:block;"></canvas>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:0.6rem; margin-top:1rem;">
+              <button id="downloadCardBtn" class="btn-header btn-primary" style="justify-content:center; padding:0.75rem; font-size:0.95rem;">
+                <span>📥</span> 下載雲端祈福小卡 (PNG 圖片)
+              </button>
+              <button id="copyCardTextBtn" class="btn-header" style="justify-content:center; padding:0.65rem;">
+                <span>📋</span> 複製法鼓山祈願文 (LINE / 社群分享)
+              </button>
+            </div>
+          </div>
+
+          <!-- 右側設定面板 -->
+          <div style="display:flex; flex-direction:column; gap:1.2rem;">
+
+            <!-- 風格選擇 -->
+            <div>
+              <label style="display:block; font-size:0.88rem; font-weight:600; color:var(--accent-gold); margin-bottom:0.4rem;">
+                祈福小卡雅緻風格：
+              </label>
+              <div style="display:flex; flex-direction:column; gap:0.45rem;">
+                <label style="display:flex; align-items:center; gap:0.6rem; padding:0.55rem 0.85rem; background:var(--bg-card-subtle); border-radius:8px; border:1px solid var(--border-main); cursor:pointer;">
+                  <input type="radio" name="cardStyle" value="warm_gold" checked>
+                  <span style="font-size:0.88rem; font-weight:600; color:var(--text-main);">🌅 晨曦暖金（法鼓暖米宣・水墨聖蓮・心安平安）</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:0.6rem; padding:0.55rem 0.85rem; background:var(--bg-card-subtle); border-radius:8px; border:1px solid var(--border-main); cursor:pointer;">
+                  <input type="radio" name="cardStyle" value="fresh_bamboo">
+                  <span style="font-size:0.88rem; font-weight:600; color:var(--text-main);">🍃 若竹清心（清爽淡綠・生機喜悅・甘露清涼）</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:0.6rem; padding:0.55rem 0.85rem; background:var(--bg-card-subtle); border-radius:8px; border:1px solid var(--border-main); cursor:pointer;">
+                  <input type="radio" name="cardStyle" value="pure_white">
+                  <span style="font-size:0.88rem; font-weight:600; color:var(--text-main);">📜 雪宣澄心（雪白宣紙・硃砂印泥・極簡典雅）</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 法鼓山經典雲端祈福選單 -->
+            <div>
+              <label for="blessingPresetSelect" style="display:block; font-size:0.88rem; font-weight:600; color:var(--accent-gold); margin-bottom:0.4rem;">
+                法鼓山經典祈願祝福語：
+              </label>
+              <select id="blessingPresetSelect" class="btn-header" style="width:100%; padding:0.6rem 0.8rem; font-size:0.88rem;">
+                <option value="心安平安，消災消難；身心康泰，六時吉祥。">🌱 【祈福消災】心安平安，消災消難；身心康泰，六時吉祥</option>
+                <option value="知福幸福，廣種福田；培福修慧，廣結善緣。">🌾 【培福修慧】知福幸福，廣種福田；培福修慧，廣結善緣</option>
+                <option value="光明遠大，和樂無諍；慈悲無敵，智慧無惱。">💼 【光明遠大】光明遠大，和樂無諍；慈悲無敵，智慧無惱</option>
+                <option value="心安身安，闔家和樂；福慧傳家，和喜自在。">🏡 【福慧傳家】心安身安，闔家和樂；福慧傳家，和喜自在</option>
+                <option value="福慧雙修，深入經藏；開發智慧，成就善法。">📚 【開發智慧】福慧雙修，深入經藏；開發智慧，成就善法</option>
+                <option value="放捨諸相，心無罣礙；往生淨土，蓮登九品。">🕊️ 【往生淨土・超薦】放捨諸相，心無罣礙；往生淨土，蓮登九品</option>
+                <option value="custom">✏️ 自訂祈願祝福語</option>
+              </select>
+            </div>
+
+            <!-- 祈福人 (迴向者) 與 受迴向者 (對象) -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+              <div>
+                <label for="dedicatorInput" style="display:block; font-size:0.84rem; font-weight:600; color:var(--accent-gold); margin-bottom:0.3rem;">祈福人（迴向者）：</label>
+                <input type="text" id="dedicatorInput" class="btn-header" style="width:100%; padding:0.5rem 0.7rem; font-size:0.9rem;" value="佛弟子">
+              </div>
+              <div>
+                <label for="recipientInput" style="display:block; font-size:0.84rem; font-weight:600; color:var(--accent-gold); margin-bottom:0.3rem;">受迴向者（祈福對象）：</label>
+                <input type="text" id="recipientInput" class="btn-header" style="width:100%; padding:0.5rem 0.7rem; font-size:0.9rem;" value="父母師長與一切有情">
+              </div>
+            </div>
+
+            <!-- 祈願內容輸入 -->
+            <div>
+              <label for="blessingMsgInput" style="display:block; font-size:0.84rem; font-weight:600; color:var(--accent-gold); margin-bottom:0.3rem;">祈福法語內容：</label>
+              <textarea id="blessingMsgInput" class="btn-header" style="width:100%; padding:0.55rem 0.75rem; font-size:0.9rem; resize:vertical;" rows="3">心安平安，消災消難；身心康泰，六時吉祥。</textarea>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 字音自訂校訂彈窗 -->
+  <div id="editCharModal" class="zen-modal-overlay hidden" aria-hidden="true" role="dialog">
+    <div class="zen-modal-card modal-md">
+      <div class="modal-header-bar">
+        <div class="modal-title-wrap">
+          <span style="font-size:1.3rem;">✏️</span>
+          <h3 class="modal-title">字音自訂校訂</h3>
+        </div>
+        <button id="closeEditCharModalBtn" class="btn-close-modal" aria-label="關閉">✕</button>
+      </div>
+      <div class="modal-body-content" style="display:flex; flex-direction:column; gap:1rem;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:0.6rem 0.9rem; background:var(--bg-card-subtle); border-radius:6px; border:1px solid var(--border-main);">
+          <span style="font-size:0.88rem; color:var(--text-muted);">原典經文字元：</span>
+          <span id="editCharOriginalPreview" style="font-size:2.2rem; color:var(--accent-gold); font-weight:700;">觀</span>
+        </div>
+
+        <div>
+          <label for="editCharText" style="display:block; font-size:0.84rem; font-weight:600; color:var(--accent-gold); margin-bottom:0.25rem;">國字：</label>
+          <input type="text" id="editCharText" class="btn-header" style="width:100%; padding:0.45rem 0.7rem;" maxlength="2">
+        </div>
+
+        <div>
+          <label for="editCharZhuyin" style="display:block; font-size:0.84rem; font-weight:600; color:var(--accent-gold); margin-bottom:0.25rem;">注音符號（如 ㄍㄨㄢ）：</label>
+          <input type="text" id="editCharZhuyin" class="btn-header" style="width:100%; padding:0.45rem 0.7rem;" placeholder="例如：ㄍㄨㄢ">
+          <span style="font-size:0.75rem; color:var(--text-muted);">輸入注音自動換算為帶調拼音</span>
+        </div>
+
+        <div>
+          <label for="editCharPinyin" style="display:block; font-size:0.84rem; font-weight:600; color:var(--accent-gold); margin-bottom:0.25rem;">漢語拼音：</label>
+          <input type="text" id="editCharPinyin" class="btn-header" style="width:100%; padding:0.45rem 0.7rem;" placeholder="例如：guān">
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:0.6rem; margin-top:0.4rem;">
+          <button id="resetCharEditBtn" class="btn-header">還原預設</button>
+          <button id="saveCharEditBtn" class="btn-header btn-primary">儲存校訂</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast 通知容器 -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- 引用腳本檔案 -->
+  <script src="data/pinyin_engine.js"></script>
+  <script src="data/guanyin_scriptures.js"></script>
+  <script src="js/safe_storage.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/dedication_card.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
